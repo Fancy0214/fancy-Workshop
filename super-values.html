@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>舒伯职业价值观测评</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #EBF4FF 0%, #F0F5FF 40%, #E8F0FE 100%);
+    color: #1A202C;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  /* Top Bar */
+  .top-bar {
+    background: #2B6CB0;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(43,108,176,0.3);
+  }
+  .top-bar a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+  }
+  .top-bar a:hover { opacity: 1; }
+  .top-bar h1 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  /* Container */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+  /* Card */
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2B6CB0;
+    margin-bottom: 8px;
+  }
+  .card-desc {
+    font-size: 14px;
+    color: #718096;
+    margin-bottom: 20px;
+  }
+  /* Nav Tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .nav-tab {
+    padding: 10px 20px;
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4A5568;
+    transition: all 0.25s;
+    font-family: inherit;
+  }
+  .nav-tab:hover { border-color: #2B6CB0; color: #2B6CB0; }
+  .nav-tab.active {
+    background: #2B6CB0;
+    color: #fff;
+    border-color: #2B6CB0;
+  }
+  /* Sections */
+  .section { display: none; }
+  .section.active { display: block; }
+  /* Progress */
+  .progress-bar-wrap {
+    background: #E2E8F0;
+    border-radius: 10px;
+    height: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2B6CB0, #4299E1);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-text {
+    font-size: 13px;
+    color: #718096;
+    margin-bottom: 8px;
+    text-align: right;
+    font-weight: 500;
+  }
+  /* Question */
+  .question-group {
+    margin-bottom: 32px;
+    animation: fadeIn 0.4s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .q-category {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2B6CB0;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .q-category .badge {
+    background: #EBF4FF;
+    color: #2B6CB0;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .q-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #F0F4F8;
+  }
+  .q-item:last-child { border-bottom: none; }
+  .q-text {
+    font-size: 15px;
+    color: #2D3748;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .q-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .q-opt {
+    width: 44px;
+    height: 44px;
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #718096;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .q-opt:hover { border-color: #4299E1; color: #2B6CB0; }
+  .q-opt.selected {
+    background: #2B6CB0;
+    color: #fff;
+    border-color: #2B6CB0;
+    transform: scale(1.08);
+  }
+  .q-opt-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #A0AEC0;
+    margin-top: 2px;
+    padding: 0 2px;
+  }
+  /* Buttons */
+  .btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary {
+    background: #2B6CB0;
+    color: #fff;
+  }
+  .btn-primary:hover { background: #245BA0; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(43,108,176,0.3); }
+  .btn-secondary {
+    background: #EBF4FF;
+    color: #2B6CB0;
+  }
+  .btn-secondary:hover { background: #D6E8FA; }
+  .btn-danger {
+    background: #FFF5F5;
+    color: #E53E3E;
+  }
+  .btn-danger:hover { background: #FED7D7; }
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  /* Result */
+  .result-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .result-header h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #2B6CB0;
+    margin-bottom: 4px;
+  }
+  .result-header p { font-size: 14px; color: #718096; }
+  .radar-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .radar-wrap canvas {
+    max-width: 100%;
+    height: auto !important;
+  }
+  /* Top Values */
+  .top-values {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .top-value-item {
+    background: linear-gradient(135deg, #EBF4FF, #F0F7FF);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    border: 2px solid #BEE3F8;
+  }
+  .top-value-item .rank {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    background: #2B6CB0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+  .top-value-item .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2B6CB0;
+    margin-bottom: 2px;
+  }
+  .top-value-item .score {
+    font-size: 13px;
+    color: #718096;
+  }
+  .top-value-item .bar {
+    height: 4px;
+    background: #E2E8F0;
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .top-value-item .bar-fill {
+    height: 100%;
+    background: #2B6CB0;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+  /* All values table */
+  .values-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .values-table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #A0AEC0;
+    text-transform: uppercase;
+    border-bottom: 2px solid #E2E8F0;
+  }
+  .values-table td {
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #F0F4F8;
+  }
+  .values-table tr:hover { background: #F7FAFC; }
+  .values-table .vt-name { font-weight: 600; color: #2D3748; }
+  .values-table .vt-score { font-weight: 700; color: #2B6CB0; }
+  .values-table .vt-bar { width: 120px; }
+  .values-table .vt-bar-inner {
+    height: 8px;
+    background: linear-gradient(90deg, #2B6CB0, #4299E1);
+    border-radius: 8px;
+    transition: width 0.5s;
+  }
+  .values-table .vt-bar-bg {
+    height: 8px;
+    background: #EDF2F7;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  /* Interpretation */
+  .interp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .interp-card {
+    background: #F7FAFC;
+    border-radius: 14px;
+    padding: 20px;
+    border-left: 4px solid #2B6CB0;
+    transition: transform 0.2s;
+  }
+  .interp-card:hover { transform: translateY(-2px); }
+  .interp-card .ic-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .interp-card .ic-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2B6CB0;
+  }
+  .interp-card .ic-score {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: #2B6CB0;
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+  .interp-card .ic-desc {
+    font-size: 13px;
+    color: #4A5568;
+    line-height: 1.7;
+  }
+  .interp-card .ic-careers {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #718096;
+  }
+  .interp-card .ic-careers strong { color: #2B6CB0; }
+  /* History */
+  .history-list { list-style: none; }
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #F0F4F8;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-date { font-size: 14px; font-weight: 600; color: #2D3748; }
+  .history-top { font-size: 13px; color: #718096; }
+  .history-btns { display: flex; gap: 8px; }
+  .history-btns button {
+    padding: 6px 14px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    background: #fff;
+    color: #4A5568;
+  }
+  .history-btns button:hover { border-color: #2B6CB0; color: #2B6CB0; }
+  .history-btns .del-btn:hover { border-color: #E53E3E; color: #E53E3E; }
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #A0AEC0;
+  }
+  .empty-state svg { margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+  /* Intro */
+  .intro-hero {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .intro-hero .icon-circle {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #2B6CB0, #4299E1);
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(43,108,176,0.25);
+  }
+  .intro-hero h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #2B6CB0;
+    margin-bottom: 8px;
+  }
+  .intro-hero p {
+    font-size: 15px;
+    color: #718096;
+    max-width: 520px;
+    margin: 0 auto 24px;
+  }
+  .value-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .value-tag {
+    padding: 6px 14px;
+    background: #EBF4FF;
+    color: #2B6CB0;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .how-it-works {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .hiw-step {
+    text-align: center;
+    padding: 20px 12px;
+    background: #F7FAFC;
+    border-radius: 14px;
+  }
+  .hiw-step .step-num {
+    width: 32px;
+    height: 32px;
+    background: #2B6CB0;
+    color: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .hiw-step .step-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3748;
+    margin-bottom: 4px;
+  }
+  .hiw-step .step-desc {
+    font-size: 12px;
+    color: #718096;
+  }
+  /* Detail Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: modalIn 0.3s ease;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  .modal-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2B6CB0;
+    margin-bottom: 12px;
+  }
+  .modal-content p { font-size: 14px; color: #4A5568; line-height: 1.8; margin-bottom: 12px; }
+  .modal-close {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #A0AEC0;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+  }
+  .modal-close:hover { color: #2D3748; }
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container { padding: 16px 10px 40px; }
+    .card { padding: 20px 16px; }
+    .top-bar h1 { font-size: 15px; }
+    .intro-hero h2 { font-size: 22px; }
+    .q-options { gap: 6px; }
+    .q-opt { width: 40px; height: 40px; font-size: 14px; }
+    .top-values { grid-template-columns: 1fr 1fr; }
+    .values-table .vt-bar { width: 80px; }
+    .interp-grid { grid-template-columns: 1fr; }
+    .nav-tab { padding: 8px 14px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <a href="../fancy-workshop.html">← 返回主页</a>
+  <h1>🧭 舒伯职业价值观测评</h1>
+  <span></span>
+</div>
+
+<div class="container">
+  <!-- Nav Tabs -->
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" data-tab="intro">📋 测评介绍</button>
+    <button class="nav-tab" data-tab="quiz">📝 开始测评</button>
+    <button class="nav-tab" data-tab="result">📊 测评结果</button>
+    <button class="nav-tab" data-tab="interp">📖 价值观解读</button>
+    <button class="nav-tab" data-tab="history">📁 历史记录</button>
+  </div>
+
+  <!-- Intro Section -->
+  <div class="section active" id="sec-intro">
+    <div class="card">
+      <div class="intro-hero">
+        <div class="icon-circle">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </div>
+        <h2>发现你的职业价值驱动</h2>
+        <p>舒伯职业价值观量表（WVI）由美国职业指导专家唐纳德·舒伯（Donald Super）编制，帮助你深入了解在职业选择中最看重的内在价值。</p>
+      </div>
+      <div class="value-preview" id="valuePreview"></div>
+      <div class="how-it-works">
+        <div class="hiw-step">
+          <div class="step-num">1</div>
+          <div class="step-title">回答问题</div>
+          <div class="step-desc">针对15种价值观共45道题打分</div>
+        </div>
+        <div class="hiw-step">
+          <div class="step-num">2</div>
+          <div class="step-title">生成报告</div>
+          <div class="step-desc">系统自动计算并绘制雷达图</div>
+        </div>
+        <div class="hiw-step">
+          <div class="step-num">3</div>
+          <div class="step-title">深入解读</div>
+          <div class="step-desc">了解各价值观含义与匹配职业</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px;">
+        <button class="btn btn-primary" onclick="switchTab('quiz')">🚀 开始测评</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Section -->
+  <div class="section" id="sec-quiz">
+    <div class="card">
+      <div class="progress-text" id="progressText">已答 0 / 45 题</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div id="quizContent"></div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btnSubmit" onclick="submitQuiz()">✨ 提交测评</button>
+        <button class="btn btn-secondary" onclick="resetQuiz()">🔄 重新作答</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Section -->
+  <div class="section" id="sec-result">
+    <div class="card">
+      <div class="result-header">
+        <h2>🎯 你的职业价值观画像</h2>
+        <p id="resultDate"></p>
+      </div>
+      <div class="radar-wrap">
+        <canvas id="radarChart" width="480" height="480"></canvas>
+      </div>
+      <h3 style="font-size:16px;font-weight:700;color:#2D3748;margin-bottom:14px;">🏆 核心价值观 TOP 5</h3>
+      <div class="top-values" id="topValues"></div>
+      <h3 style="font-size:16px;font-weight:700;color:#2D3748;margin:24px 0 14px;">📊 全部价值观得分</h3>
+      <table class="values-table" id="valuesTable"></table>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="switchTab('interp')">📖 查看详细解读</button>
+        <button class="btn btn-secondary" onclick="switchTab('quiz')">📝 重新测评</button>
+        <button class="btn btn-secondary" onclick="exportResult()">📥 导出结果</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interpretation Section -->
+  <div class="section" id="sec-interp">
+    <div class="card">
+      <div class="card-title">📖 职业价值观详细解读</div>
+      <div class="card-desc">点击各卡片查看更详细的解读内容</div>
+      <div class="interp-grid" id="interpGrid"></div>
+    </div>
+  </div>
+
+  <!-- History Section -->
+  <div class="section" id="sec-history">
+    <div class="card">
+      <div class="card-title">📁 历史测评记录</div>
+      <div class="card-desc">你的所有测评记录保存在本地浏览器中</div>
+      <div id="historyContent"></div>
+      <div class="btn-group">
+        <button class="btn btn-danger" onclick="clearHistory()">🗑️ 清空所有记录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-content" id="modalContent" onclick="event.stopPropagation()"></div>
+</div>
+
+<script>
+// ============ DATA ============
+const VALUES = [
+  {
+    name: '利他主义', short: '利他',
+    desc: '致力于为他人福祉和幸福服务，从帮助别人中获得满足感和价值感。',
+    full: '利他主义取向的人重视帮助他人、改善社会福利、促进他人的成长与发展。他们通常选择能直接对人们的生活产生积极影响的职业。这类人富有同理心和社会责任感，愿意为他人付出时间和精力。',
+    careers: '医生、护士、教师、社工、心理咨询师、志愿者组织工作者',
+    icon: '🤝'
+  },
+  {
+    name: '美感', short: '美感',
+    desc: '追求美的事物，注重审美体验，希望工作环境或成果具有艺术性。',
+    full: '美感取向的人对美有强烈的追求，重视审美体验和艺术创造。他们希望在工作中能够创造或欣赏美，偏好具有艺术氛围的工作环境和富有创造性的职业。美感对他们而言不仅是享受，更是生活的必需品。',
+    careers: '艺术家、设计师、建筑师、摄影师、音乐家、花艺师',
+    icon: '🎨'
+  },
+  {
+    name: '创造力', short: '创造',
+    desc: '渴望在工作中发挥创意，创造新的想法、产品或解决方案。',
+    full: '创造力取向的人热衷于创新和发明，喜欢提出新想法、尝试新方法。他们不愿从事重复性、按部就班的工作，而追求能够展现个人创造力和想象力的职业。面对未知和挑战时，他们往往充满热情。',
+    careers: '发明家、研发工程师、编剧、广告创意总监、游戏设计师、创业者',
+    icon: '💡'
+  },
+  {
+    name: '智力刺激', short: '智力',
+    desc: '喜欢需要深入思考、分析和解决问题的智力挑战型工作。',
+    full: '智力刺激取向的人享受思考、分析和解决复杂问题的过程。他们对新知识、新理论有强烈的好奇心，喜欢不断学习和探索。简单重复的工作会让他们感到厌倦，他们需要持续的心智挑战来保持工作热情。',
+    careers: '科学家、研究员、哲学家、战略顾问、数据分析家、法官',
+    icon: '🧠'
+  },
+  {
+    name: '成就感', short: '成就',
+    desc: '重视通过努力达成目标所带来的满足感和自我价值实现。',
+    full: '成就感取向的人追求目标的实现和任务的完成，他们设定高标准并努力达成。无论是攻克一个难题还是完成一个大项目，达成目标的过程和结果都能给他们带来深刻的满足感。他们自我驱动力强，渴望不断超越自我。',
+    careers: '企业家、运动员、项目经理、销售精英、外科医生、作家',
+    icon: '🏆'
+  },
+  {
+    name: '独立性', short: '独立',
+    desc: '希望在工作中拥有自主权，能够独立决策和安排工作。',
+    full: '独立性取向的人重视自由和自主，不喜欢被严格监督和微观管理。他们希望在工作中能够自己做决策、安排工作节奏和方式。过度的规则约束和官僚体制会让他们感到压抑。他们更倾向于成为自己的"老板"。',
+    careers: '自由职业者、顾问、独立开发者、作家、大学教授、摄影师',
+    icon: '🦅'
+  },
+  {
+    name: '声望', short: '声望',
+    desc: '注重职业的社会地位和他人认可，渴望获得尊重和影响力。',
+    full: '声望取向的人看重职业的社会地位、名誉和他人对自己的评价。他们希望从事受人尊敬的职业，在专业领域内获得认可和影响力。地位和荣誉对他们来说是重要的激励因素，这并非虚荣，而是对卓越和专业性的追求。',
+    careers: '律师、政治家、高级管理、知名学者、法官、外交官',
+    icon: '👑'
+  },
+  {
+    name: '管理', short: '管理',
+    desc: '喜欢领导和管理工作，享受通过团队实现目标的过程。',
+    full: '管理取向的人喜欢领导、组织和影响他人。他们享受通过团队协作实现目标的过程，善于做出决策、分配资源和协调人际关系。管理对他们而言不仅是权力，更是责任和影响力的体现。',
+    careers: '企业高管、项目经理、校长、部门经理、制片人、军事指挥官',
+    icon: '👔'
+  },
+  {
+    name: '经济报酬', short: '经济',
+    desc: '重视经济收益和物质回报，追求高薪和财富积累。',
+    full: '经济报酬取向的人将物质回报视为衡量职业价值的重要标准。他们追求高收入、良好的福利和经济保障。这并不代表贪婪，而是对经济独立和物质生活品质的合理追求。经济回报也是衡量职业成就感的客观指标之一。',
+    careers: '投资银行家、金融分析师、企业高管、销售总监、基金经理',
+    icon: '💰'
+  },
+  {
+    name: '安全感', short: '安全',
+    desc: '注重工作的稳定性和保障，偏好可预测的职业发展路径。',
+    full: '安全感取向的人重视职业稳定、工作保障和可预见性。他们偏好不会轻易被裁员或淘汰的工作，重视完善的福利保障和退休计划。稳定的工作环境能让他们安心工作并长期投入。他们可能不喜欢频繁的职业变动和高风险创业。',
+    careers: '公务员、教师、国企员工、医疗人员、公务员、军人',
+    icon: '🛡️'
+  },
+  {
+    name: '工作环境', short: '环境',
+    desc: '注重工作场所的物理环境、氛围和整体条件。',
+    full: '工作环境取向的人关注办公场所的舒适度、安全性和整体氛围。良好的工作环境包括现代化的办公设施、适宜的温度和光线、和谐的同事关系等。对他们来说，工作环境的质量直接影响工作效率和生活幸福感。',
+    careers: '科技公司的园区工作、高校研究员、博物馆工作人员、度假村管理等',
+    icon: '🏢'
+  },
+  {
+    name: '上司关系', short: '上司',
+    desc: '看重与直属上司的相处关系，希望获得尊重、信任和支持。',
+    full: '上司关系取向的人重视与领导/管理者的关系质量。他们希望上司公平、有能力、善于沟通，能给予尊重和信任。良好的上下级关系能极大提升他们的工作积极性和归属感。反之，不良的上司关系会严重影响他们的工作满意度。',
+    careers: '几乎所有职业均适用，尤其在团队协作要求高的岗位更为重要',
+    icon: '🤝'
+  },
+  {
+    name: '同事关系', short: '同事',
+    desc: '重视与同事之间的友好关系和团队合作氛围。',
+    full: '同事关系取向的人看重与工作伙伴之间的友谊、信任和协作。他们喜欢在团队中工作，享受同事间的互助和良好的人际氛围。孤立的、竞争过度的工作环境会让他们感到不适。对他们来说，工作中的人际关系质量与工作本身同样重要。',
+    careers: '公关专员、人力资源、社区工作者、活动策划、培训师',
+    icon: '👥'
+  },
+  {
+    name: '生活方式', short: '生活',
+    desc: '追求工作与生活的平衡，希望工作不影响个人生活品质。',
+    full: '生活方式取向的人将个人生活质量置于首位，希望工作能够与家庭生活、兴趣爱好和个人追求保持平衡。他们可能愿意牺牲部分职业发展速度或经济收入，以换取更多的个人时间和更好的生活品质。弹性工作制和远程办公对他们具有很大吸引力。',
+    careers: '自由职业者、远程工作者、弹性岗位、教育工作者、独立咨询师',
+    icon: '🌿'
+  },
+  {
+    name: '变动性', short: '变动',
+    desc: '喜欢充满变化和多样性的工作，排斥单调重复的日常。',
+    full: '变动性取向的人喜欢充满变化、刺激和新奇的工作。他们享受面对不同的情况和挑战，对新鲜事物保持高度热情。重复、单调的工作会让他们感到无聊和不安。他们可能频繁更换工作或项目，不断寻求新的体验和成长机会。',
+    careers: '记者、导游、战地记者、导演、活动策划、创业者、飞行员',
+    icon: '🌊'
+  }
+];
+
+const QUESTIONS = [
+  // 利他主义
+  { cat: 0, q: '帮助他人解决困难会让我感到非常满足' },
+  { cat: 0, q: '我希望我的工作能够直接改善他人的生活' },
+  { cat: 0, q: '为社会做贡献是我选择职业的重要考虑' },
+  // 美感
+  { cat: 1, q: '我在意工作场所是否美观舒适' },
+  { cat: 1, q: '能创造或欣赏美的作品对我来说很重要' },
+  { cat: 1, q: '我倾向于选择有艺术氛围的职业环境' },
+  // 创造力
+  { cat: 2, q: '我享受提出新想法和创造新事物的过程' },
+  { cat: 2, q: '按部就班的工作会让我感到无聊' },
+  { cat: 2, q: '在工作中发挥创造力对我来说非常重要' },
+  // 智力刺激
+  { cat: 3, q: '我享受解决复杂问题时的心智挑战' },
+  { cat: 3, q: '持续学习新知识能给我带来很大满足感' },
+  { cat: 3, q: '我渴望从事需要深度思考和分析的工作' },
+  // 成就感
+  { cat: 4, q: '完成具有挑战性的目标让我非常有成就感' },
+  { cat: 4, q: '我为自己设定高标准并努力达成' },
+  { cat: 4, q: '看到自己努力的成果会让我充满自豪' },
+  // 独立性
+  { cat: 5, q: '我更喜欢独立决策而非被他人指导' },
+  { cat: 5, q: '在工作中自由安排时间和方式对我很重要' },
+  { cat: 5, q: '过多的监督和管控会让我感到压抑' },
+  // 声望
+  { cat: 6, q: '我希望从事受人尊敬的职业' },
+  { cat: 6, q: '获得他人认可和尊敬能给我带来动力' },
+  { cat: 6, q: '我希望我的工作在社会上具有较高地位' },
+  // 管理
+  { cat: 7, q: '我享受领导和协调团队完成目标的过程' },
+  { cat: 7, q: '做出重要决策和承担管理责任让我兴奋' },
+  { cat: 7, q: '我愿意为获得管理权力而付出额外努力' },
+  // 经济报酬
+  { cat: 8, q: '经济回报是衡量职业价值的重要标准' },
+  { cat: 8, q: '我追求高收入以确保更好的物质生活' },
+  { cat: 8, q: '丰厚的薪酬和福利对我选择职业有很大影响' },
+  // 安全感
+  { cat: 9, q: '工作稳定性对我选择职业非常重要' },
+  { cat: 9, q: '我倾向于选择不太可能被裁减的岗位' },
+  { cat: 9, q: '完善的保障制度让我感到安心' },
+  // 工作环境
+  { cat: 10, q: '舒适的办公环境能显著提升我的工作积极性' },
+  { cat: 10, q: '良好的工作氛围对我来说非常重要' },
+  { cat: 10, q: '我注重工作场所的安全和便利条件' },
+  // 上司关系
+  { cat: 11, q: '与上司的良好关系直接影响我的工作热情' },
+  { cat: 11, q: '我需要上司的尊重、信任和支持' },
+  { cat: 11, q: '公平和有能力的上司能让我发挥更大潜力' },
+  // 同事关系
+  { cat: 12, q: '友好的同事关系是我工作满意度的重要来源' },
+  { cat: 12, q: '我享受在和谐互助的团队中工作' },
+  { cat: 12, q: '良好的人际关系让我期待每天的工作' },
+  // 生活方式
+  { cat: 13, q: '工作与生活的平衡是我职业选择的首要考虑' },
+  { cat: 13, q: '我不会为了事业牺牲个人和家庭生活' },
+  { cat: 13, q: '弹性工作时间对我非常有吸引力' },
+  // 变动性
+  { cat: 14, q: '我喜欢工作中充满变化和新挑战' },
+  { cat: 14, q: '日复一日的重复工作让我难以忍受' },
+  { cat: 14, q: '我渴望体验不同类型的工作和项目' }
+];
+
+const SCORE_LABELS = ['非常不符合', '比较不符合', '一般', '比较符合', '非常符合'];
+
+// ============ STATE ============
+let answers = new Array(45).fill(0);
+
+// ============ INIT ============
+function init() {
+  // Preview tags
+  const vp = document.getElementById('valuePreview');
+  VALUES.forEach(v => {
+    const s = document.createElement('span');
+    s.className = 'value-tag';
+    s.textContent = v.icon + ' ' + v.name;
+    vp.appendChild(s);
+  });
+  buildQuiz();
+  buildInterp();
+  renderHistory();
+  // Load last result if exists
+  const scores = getLatestScores();
+  if (scores) {
+    renderResult(scores, false);
+  }
+}
+
+// ============ TAB NAV ============
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.nav-tab[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('sec-' + tab).classList.add('active');
+  if (tab === 'result') {
+    const scores = getLatestScores();
+    if (scores) {
+      renderResult(scores, false);
+      setTimeout(() => drawRadar(scores), 100);
+    }
+  }
+  if (tab === 'history') renderHistory();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.getElementById('navTabs').addEventListener('click', e => {
+  if (e.target.classList.contains('nav-tab')) switchTab(e.target.dataset.tab);
+});
+
+// ============ QUIZ ============
+function buildQuiz() {
+  const wrap = document.getElementById('quizContent');
+  wrap.innerHTML = '';
+  let lastCat = -1;
+  let catIdx = 0;
+  QUESTIONS.forEach((item, i) => {
+    if (item.cat !== lastCat) {
+      const g = document.createElement('div');
+      g.className = 'question-group';
+      const v = VALUES[item.cat];
+      g.innerHTML = `<div class="q-category">${v.icon} ${v.name} <span class="badge">价值观 ${item.cat + 1}/15</span></div>`;
+      g.id = 'qg-' + item.cat;
+      wrap.appendChild(g);
+      lastCat = item.cat;
+    }
+    const g = document.getElementById('qg-' + item.cat);
+    const d = document.createElement('div');
+    d.className = 'q-item';
+    let opts = '';
+    for (let s = 1; s <= 5; s++) {
+      opts += `<div class="q-opt" data-qi="${i}" data-score="${s}" onclick="pickScore(this,${i},${s})">${s}</div>`;
+    }
+    d.innerHTML = `
+      <div class="q-text">${i + 1}. ${item.q}</div>
+      <div class="q-options">${opts}</div>
+      <div class="q-opt-labels"><span>非常不符合</span><span>非常符合</span></div>
+    `;
+    g.appendChild(d);
+  });
+}
+
+function pickScore(el, qi, score) {
+  answers[qi] = score;
+  // Update UI
+  const siblings = el.parentElement.querySelectorAll('.q-opt');
+  siblings.forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = answers.filter(a => a > 0).length;
+  document.getElementById('progressText').textContent = `已答 ${answered} / 45 题`;
+  document.getElementById('progressBar').style.width = (answered / 45 * 100) + '%';
+}
+
+function resetQuiz() {
+  answers = new Array(45).fill(0);
+  document.querySelectorAll('.q-opt.selected').forEach(o => o.classList.remove('selected'));
+  updateProgress();
+}
+
+// ============ SUBMIT ============
+function submitQuiz() {
+  const answered = answers.filter(a => a > 0).length;
+  if (answered < 45) {
+    if (!confirm(`你还有 ${45 - answered} 题未作答，确定要提交吗？未答题目将记为0分。`)) return;
+  }
+  const scores = calcScores();
+  // Save to history
+  const history = getHistory();
+  const record = {
+    id: Date.now(),
+    date: new Date().toLocaleString('zh-CN'),
+    answers: [...answers],
+    scores: scores
+  };
+  history.unshift(record);
+  if (history.length > 20) history.length = 20;
+  localStorage.setItem('super_values_history', JSON.stringify(history));
+  renderResult(scores, true);
+  switchTab('result');
+}
+
+function calcScores() {
+  const scores = [];
+  for (let c = 0; c < 15; c++) {
+    let sum = 0;
+    QUESTIONS.forEach((item, i) => {
+      if (item.cat === c) sum += answers[i];
+    });
+    scores.push(sum);
+  }
+  return scores;
+}
+
+function getHistory() {
+  try {
+    return JSON.parse(localStorage.getItem('super_values_history') || '[]');
+  } catch { return []; }
+}
+
+function getLatestScores() {
+  const h = getHistory();
+  return h.length > 0 ? h[0].scores : null;
+}
+
+// ============ RENDER RESULT ============
+function renderResult(scores, animate) {
+  document.getElementById('resultDate').textContent = '测评时间：' + new Date().toLocaleString('zh-CN');
+
+  // Top 5
+  const ranked = scores.map((s, i) => ({ name: VALUES[i].name, short: VALUES[i].short, score: s, icon: VALUES[i].icon }))
+    .sort((a, b) => b.score - a.score);
+  const top5 = ranked.slice(0, 5);
+  const maxScore = 15;
+  const tv = document.getElementById('topValues');
+  tv.innerHTML = '';
+  top5.forEach((item, i) => {
+    const d = document.createElement('div');
+    d.className = 'top-value-item';
+    d.style.cursor = 'pointer';
+    d.onclick = () => showDetail(item.name);
+    d.innerHTML = `
+      <div class="rank">${i + 1}</div>
+      <div class="name">${item.icon} ${item.name}</div>
+      <div class="score">${item.score} / ${maxScore} 分</div>
+      <div class="bar"><div class="bar-fill" style="width:${item.score/maxScore*100}%"></div></div>
+    `;
+    tv.appendChild(d);
+  });
+
+  // Table
+  const table = document.getElementById('valuesTable');
+  let html = '<thead><tr><th>排名</th><th>价值观</th><th>得分</th><th>分布</th></tr></thead><tbody>';
+  ranked.forEach((item, i) => {
+    html += `<tr>
+      <td>${i + 1}</td>
+      <td class="vt-name">${item.icon} ${item.name}</td>
+      <td class="vt-score">${item.score} / ${maxScore}</td>
+      <td class="vt-bar"><div class="vt-bar-bg"><div class="vt-bar-inner" style="width:${item.score/maxScore*100}%"></div></div></td>
+    </tr>`;
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+
+  // Radar
+  setTimeout(() => drawRadar(scores), 150);
+}
+
+// ============ RADAR CHART ============
+function drawRadar(scores) {
+  const canvas = document.getElementById('radarChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const size = 480;
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width = size + 'px';
+  canvas.style.height = size + 'px';
+  ctx.scale(dpr, dpr);
+
+  const cx = size / 2, cy = size / 2;
+  const R = 190;
+  const n = 15;
+  const maxVal = 15;
+  const labels = VALUES.map(v => v.icon);
+
+  ctx.clearRect(0, 0, size, size);
+
+  // Grid
+  const levels = [3, 6, 9, 12, 15];
+  levels.forEach(level => {
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const angle = (Math.PI * 2 / n) * i - Math.PI / 2;
+      const r = (level / maxVal) * R;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = '#E2E8F0';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Axes
+  for (let i = 0; i < n; i++) {
+    const angle = (Math.PI * 2 / n) * i - Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(angle), cy + R * Math.sin(angle));
+    ctx.strokeStyle = '#EDF2F7';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Data polygon
+  ctx.beginPath();
+  for (let i = 0; i <= n; i++) {
+    const idx = i % n;
+    const angle = (Math.PI * 2 / n) * idx - Math.PI / 2;
+    const r = (scores[idx] / maxVal) * R;
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(43,108,176,0.18)';
+  ctx.fill();
+  ctx.strokeStyle = '#2B6CB0';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Data points
+  for (let i = 0; i < n; i++) {
+    const angle = (Math.PI * 2 / n) * i - Math.PI / 2;
+    const r = (scores[i] / maxVal) * R;
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#2B6CB0';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  // Labels
+  ctx.font = '13px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i < n; i++) {
+    const angle = (Math.PI * 2 / n) * i - Math.PI / 2;
+    const lr = R + 28;
+    let x = cx + lr * Math.cos(angle);
+    let y = cy + lr * Math.sin(angle);
+    // Score
+    ctx.fillStyle = '#2B6CB0';
+    ctx.font = 'bold 12px Inter, sans-serif';
+    ctx.fillText(scores[i], cx + (R + 14) * Math.cos(angle), cy + (R + 14) * Math.sin(angle));
+    // Icon
+    ctx.font = '16px serif';
+    ctx.fillText(VALUES[i].icon, x, y + 12);
+  }
+}
+
+// ============ INTERPRETATION ============
+function buildInterp() {
+  const grid = document.getElementById('interpGrid');
+  VALUES.forEach(v => {
+    const d = document.createElement('div');
+    d.className = 'interp-card';
+    d.style.cursor = 'pointer';
+    d.onclick = () => showDetail(v.name);
+    d.innerHTML = `
+      <div class="ic-head">
+        <div class="ic-name">${v.icon} ${v.name}</div>
+        <div class="ic-score" id="interp-score-${v.short}">--</div>
+      </div>
+      <div class="ic-desc">${v.desc}</div>
+      <div class="ic-careers"><strong>相关职业：</strong>${v.careers}</div>
+    `;
+    grid.appendChild(d);
+  });
+  // Update scores if available
+  const scores = getLatestScores();
+  if (scores) updateInterpScores(scores);
+}
+
+function updateInterpScores(scores) {
+  VALUES.forEach((v, i) => {
+    const el = document.getElementById('interp-score-' + v.short);
+    if (el) el.textContent = scores[i] + '分';
+  });
+}
+
+function showDetail(name) {
+  const v = VALUES.find(x => x.name === name);
+  if (!v) return;
+  const scores = getLatestScores();
+  const scoreText = scores ? `（你的得分：<strong style="color:#2B6CB0">${scores[VALUES.indexOf(v)]}</strong> / 15 分）` : '';
+  document.getElementById('modalContent').innerHTML = `
+    <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('show')">✕</button>
+    <h3>${v.icon} ${v.name}</h3>
+    <p>${v.full}</p>
+    <p>${scoreText}</p>
+    <p><strong>推荐职业方向：</strong>${v.careers}</p>
+  `;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay'))
+    document.getElementById('modalOverlay').classList.remove('show');
+}
+
+// ============ HISTORY ============
+function renderHistory() {
+  const wrap = document.getElementById('historyContent');
+  const history = getHistory();
+  if (history.length === 0) {
+    wrap.innerHTML = `<div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#CBD5E0" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <p>暂无测评记录，去完成一次测评吧！</p>
+    </div>`;
+    return;
+  }
+  let html = '<ul class="history-list">';
+  history.forEach((rec, idx) => {
+    const top = rec.scores.map((s, i) => ({ name: VALUES[i].name, score: s }))
+      .sort((a, b) => b.score - a.score).slice(0, 3).map(t => t.name).join('、');
+    html += `<li class="history-item">
+      <div>
+        <div class="history-date">${rec.date}</div>
+        <div class="history-top">TOP 3：${top}</div>
+      </div>
+      <div class="history-btns">
+        <button onclick="loadRecord(${idx})">📋 查看结果</button>
+        <button class="del-btn" onclick="deleteRecord(${idx})">🗑️ 删除</button>
+      </div>
+    </li>`;
+  });
+  html += '</ul>';
+  wrap.innerHTML = html;
+}
+
+function loadRecord(idx) {
+  const history = getHistory();
+  if (!history[idx]) return;
+  const rec = history[idx];
+  answers = [...rec.answers];
+  renderResult(rec.scores, false);
+  updateInterpScores(rec.scores);
+  switchTab('result');
+  setTimeout(() => drawRadar(rec.scores), 150);
+}
+
+function deleteRecord(idx) {
+  if (!confirm('确定删除这条记录？')) return;
+  const history = getHistory();
+  history.splice(idx, 1);
+  localStorage.setItem('super_values_history', JSON.stringify(history));
+  renderHistory();
+}
+
+function clearHistory() {
+  if (!confirm('确定清空所有历史记录？此操作不可撤销。')) return;
+  localStorage.removeItem('super_values_history');
+  renderHistory();
+}
+
+// ============ EXPORT ============
+function exportResult() {
+  const scores = getLatestScores();
+  if (!scores) { alert('暂无测评结果'); return; }
+  const ranked = scores.map((s, i) => ({ name: VALUES[i].name, score: s }))
+    .sort((a, b) => b.score - a.score);
+  let text = '=== 舒伯职业价值观测评结果 ===\n';
+  text += '时间：' + new Date().toLocaleString('zh-CN') + '\n\n';
+  text += '--- 排名 ---\n';
+  ranked.forEach((item, i) => {
+    text += `${String(i+1).padStart(2,' ')}. ${item.name}：${item.score} / 15\n`;
+  });
+  text += '\n--- TOP 5 核心价值观 ---\n';
+  ranked.slice(0, 5).forEach((item, i) => {
+    text += `${i+1}. ${item.name}\n`;
+    const v = VALUES.find(x => x.name === item.name);
+    if (v) text += `   ${v.desc}\n`;
+  });
+
+  // Download
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `职业价值观测评_${new Date().toLocaleDateString('zh-CN')}.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ============ START ============
+init();
+</script>
+</body>
+</html>

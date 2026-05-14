@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业文化评选 | Fancy's Workshop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2B6CB0;
+            --primary-light: #63B3ED;
+            --primary-lighter: #EBF8FF;
+            --accent: #38A169;
+            --accent-light: #C6F6D5;
+            --warm: #ED8936;
+            --warm-light: #FEFCBF;
+            --purple: #805AD5;
+            --purple-light: #E9D8FD;
+            --red: #E53E3E;
+            --red-light: #FED7D7;
+            --gold: #D69E2E;
+            --gold-light: #FAF089;
+            --gray-50: #F7FAFC;
+            --gray-100: #EDF2F7;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E0;
+            --gray-400: #A0AEC0;
+            --gray-500: #718096;
+            --gray-600: #4A5568;
+            --gray-700: #2D3748;
+            --gray-800: #1A202C;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --radius-sm: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-700);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--warm), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--gray-500);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-back:hover {
+            color: var(--primary);
+            background: var(--primary-lighter);
+        }
+
+        /* ===== Main Container ===== */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 88px 24px 40px;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            text-align: center;
+            padding: 40px 0 48px;
+            position: relative;
+        }
+
+        .hero-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--warm), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(237,137,54,0.3);
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--gray-500);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* ===== Tabs ===== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--warm);
+            color: var(--warm);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--warm), var(--gold));
+            border-color: transparent;
+            color: white;
+        }
+
+        .tab-btn .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .tab-btn:not(.active) .badge {
+            background: var(--gray-100);
+        }
+
+        /* ===== Tab Content ===== */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Cards ===== */
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .card-title-icon.orange { background: var(--warm-light); }
+        .card-title-icon.blue { background: var(--primary-lighter); }
+        .card-title-icon.green { background: var(--accent-light); }
+        .card-title-icon.purple { background: var(--purple-light); }
+        .card-title-icon.gold { background: var(--gold-light); }
+
+        /* ===== Buttons ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--warm), var(--gold));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(237,137,54,0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border: 1px solid var(--gray-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        /* ===== Form Elements ===== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 6px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--warm);
+            box-shadow: 0 0 0 3px rgba(237,137,54,0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* ===== Dimension Cards ===== */
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .dimension-card {
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            border: 1px solid var(--gray-100);
+            transition: all 0.2s ease;
+        }
+
+        .dimension-card:hover {
+            border-color: var(--gray-200);
+            background: white;
+        }
+
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .dimension-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .dimension-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .dimension-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-bottom: 12px;
+        }
+
+        .dimension-weight {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .weight-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .weight-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* ===== Nominee List ===== */
+        .nominee-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .nominee-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-100);
+            transition: all 0.2s ease;
+        }
+
+        .nominee-item:hover {
+            background: white;
+            border-color: var(--gray-200);
+        }
+
+        .nominee-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .nominee-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .nominee-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+        }
+
+        .nominee-dept {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .nominee-reason {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nominee-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nominee-dimensions {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .dim-tag {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* ===== Voting Section ===== */
+        .voting-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--warm-light), var(--gold-light));
+            border-radius: var(--radius-sm);
+        }
+
+        .voting-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .voting-period {
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        .voting-progress {
+            margin-top: 12px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--warm);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .vote-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .vote-card:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .vote-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .vote-candidate {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .vote-dimensions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .vote-dimension-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 10px;
+        }
+
+        .vote-dimension-item label {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 4px;
+        }
+
+        .star-rating button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--gray-300);
+            transition: all 0.15s ease;
+        }
+
+        .star-rating button:hover,
+        .star-rating button.active {
+            color: var(--gold);
+            transform: scale(1.1);
+        }
+
+        .vote-comment {
+            margin-top: 12px;
+        }
+
+        /* ===== Results Section ===== */
+        .results-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .result-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px;
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        .result-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-rank {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .result-rank.gold {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+        }
+
+        .result-rank.silver {
+            background: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+            color: white;
+        }
+
+        .result-rank.bronze {
+            background: linear-gradient(135deg, #CD7F32, #8B4513);
+            color: white;
+        }
+
+        .result-rank.default {
+            background: var(--gray-100);
+            color: var(--gray-500);
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+        }
+
+        .result-score {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--warm);
+        }
+
+        .result-details {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .result-detail {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .score-breakdown {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        /* ===== Winner Wall ===== */
+        .winner-wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .winner-card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .winner-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .winner-banner {
+            padding: 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .winner-banner.gold {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+
+        .winner-banner.silver {
+            background: linear-gradient(135deg, #E8E8E8, #B0B0B0);
+        }
+
+        .winner-banner.bronze {
+            background: linear-gradient(135deg, #CD7F32, #8B4513);
+        }
+
+        .winner-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 auto 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .winner-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .winner-title {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .winner-body {
+            padding: 20px;
+        }
+
+        .winner-period {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-bottom: 12px;
+        }
+
+        .winner-story {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        /* ===== History ===== */
+        .history-timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gray-200);
+        }
+
+        .history-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+
+        .history-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--warm);
+            border: 2px solid white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .history-date {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--warm);
+            margin-bottom: 8px;
+        }
+
+        .history-content {
+            background: white;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+            padding: 16px;
+        }
+
+        .history-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+
+        .history-winners {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .history-winner {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--gray-50);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        /* ===== Modal ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray-400);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* ===== Empty State ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            color: var(--gray-400);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .empty-desc {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* ===== Stats Bar ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-number.orange { color: var(--warm); }
+        .stat-number.blue { color: var(--primary); }
+        .stat-number.green { color: var(--accent); }
+        .stat-number.purple { color: var(--purple); }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 24px; }
+            .tabs { flex-wrap: nowrap; }
+            .dimension-grid { grid-template-columns: 1fr; }
+            .vote-dimensions { grid-template-columns: 1fr; }
+            .winner-wall { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .result-card { flex-direction: column; align-items: flex-start; }
+        }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--gray-800);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 300;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--accent);
+        }
+
+        .toast.error {
+            background: var(--red);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <span>🏆 企业文化评选</span>
+            </div>
+            <a href="../fancy-workshop.html" class="nav-back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                返回主页
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-icon">🏆</div>
+            <h1>企业文化评选</h1>
+            <p>定期评选文化标杆与优秀案例<br>让价值观看得见、摸得着、学得会</p>
+        </section>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="nominees">
+                👤 候选提名
+                <span class="badge" id="nomineeCount">0</span>
+            </button>
+            <button class="tab-btn" data-tab="dimensions">
+                📐 评选维度
+                <span class="badge" id="dimensionCount">4</span>
+            </button>
+            <button class="tab-btn" data-tab="voting">
+                🗳️ 投票评选
+            </button>
+            <button class="tab-btn" data-tab="results">
+                📊 结果排名
+            </button>
+            <button class="tab-btn" data-tab="winners">
+                🌟 获奖者墙
+            </button>
+            <button class="tab-btn" data-tab="history">
+                📜 历史记录
+            </button>
+        </div>
+
+        <!-- Tab Contents -->
+        <!-- Nominees Tab -->
+        <div class="tab-content active" id="nominees">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-title-icon orange">👤</div>
+                        候选人名单
+                    </div>
+                    <button class="btn btn-primary" onclick="openNomineeModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        提名候选人
+                    </button>
+                </div>
+                <div class="nominee-list" id="nomineeList">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Dimensions Tab -->
+        <div class="tab-content" id="dimensions">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-title-icon blue">📐</div>
+                        评选维度设置
+                    </div>
+                    <button class="btn btn-primary" onclick="openDimensionModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        添加维度
+                    </button>
+                </div>
+                <div class="dimension-grid" id="dimensionGrid">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Voting Tab -->
+        <div class="tab-content" id="voting">
+            <div class="voting-header">
+                <div>
+                    <div class="voting-title">🗳️ 本期评选投票</div>
+                    <div class="voting-period" id="votingPeriod">评选周期: 加载中...</div>
+                    <div class="voting-progress">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--gray-600); margin-bottom: 6px;">
+                            <span>投票进度</span>
+                            <span id="votingProgress">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="votingProgressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-number orange" id="totalVoters">0</div>
+                    <div class="stat-label">参与人数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number blue" id="totalVotes">0</div>
+                    <div class="stat-label">已投票数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number green" id="avgScore">0</div>
+                    <div class="stat-label">平均分数</div>
+                </div>
+            </div>
+
+            <div id="votingList">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div class="tab-content" id="results">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-title-icon green">📊</div>
+                        评选结果排名
+                    </div>
+                    <button class="btn btn-secondary" onclick="refreshResults()">
+                        🔄 刷新结果
+                    </button>
+                </div>
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Winners Tab -->
+        <div class="tab-content" id="winners">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-title-icon gold">🌟</div>
+                        获奖者展示墙
+                    </div>
+                </div>
+                <div class="winner-wall" id="winnerWall">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div class="tab-content" id="history">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-title-icon purple">📜</div>
+                        历史评选记录
+                    </div>
+                    <button class="btn btn-secondary" onclick="openHistoryModal()">
+                        ➕ 新建评选
+                    </button>
+                </div>
+                <div class="history-timeline" id="historyTimeline">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nominee Modal -->
+    <div class="modal-overlay" id="nomineeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">提名候选人</div>
+                <button class="modal-close" onclick="closeNomineeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">姓名 *</label>
+                    <input type="text" class="form-input" id="nomineeName" placeholder="输入候选人姓名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">部门</label>
+                    <input type="text" class="form-input" id="nomineeDept" placeholder="输入所属部门">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">提名维度 *</label>
+                    <div id="dimensionCheckboxes" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <!-- Dynamic checkboxes -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">提名理由</label>
+                    <textarea class="form-textarea" id="nomineeReason" placeholder="描述该候选人符合企业文化的具体案例..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeNomineeModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveNominee()">提交提名</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dimension Modal -->
+    <div class="modal-overlay" id="dimensionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">添加评选维度</div>
+                <button class="modal-close" onclick="closeDimensionModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">维度名称 *</label>
+                    <input type="text" class="form-input" id="dimensionName" placeholder="如: 客户服务">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">图标 (emoji)</label>
+                    <input type="text" class="form-input" id="dimensionIcon" placeholder="如: 🎯" maxlength="2">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">权重 (%)</label>
+                    <input type="number" class="form-input" id="dimensionWeight" placeholder="25" min="1" max="100">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">描述</label>
+                    <textarea class="form-textarea" id="dimensionDesc" placeholder="描述该维度的评选标准..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">颜色主题</label>
+                    <select class="form-select" id="dimensionColor">
+                        <option value="orange">橙色</option>
+                        <option value="blue">蓝色</option>
+                        <option value="green">绿色</option>
+                        <option value="purple">紫色</option>
+                        <option value="gold">金色</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDimensionModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveDimension()">保存维度</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">新建评选周期</div>
+                <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">评选名称 *</label>
+                    <input type="text" class="form-input" id="historyName" placeholder="如: 2024年度文化之星">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">开始日期</label>
+                    <input type="date" class="form-input" id="historyStartDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">结束日期</label>
+                    <input type="date" class="form-input" id="historyEndDate">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeHistoryModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveHistory()">创建评选</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ===== Data Management =====
+        const STORAGE_KEY = 'cultureAwards';
+
+        function getData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : getDefaultData();
+        }
+
+        function saveData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function getDefaultData() {
+            return {
+                dimensions: [
+                    { id: 1, name: '客户服务', icon: '🎯', weight: 25, color: 'orange', desc: '以客户为中心，提供卓越服务体验' },
+                    { id: 2, name: '团队协作', icon: '🤝', weight: 25, color: 'blue', desc: '积极配合，乐于分享，促进团队共同成长' },
+                    { id: 3, name: '创新进取', icon: '💡', weight: 25, color: 'green', desc: '勇于尝试新方法，持续改进工作流程' },
+                    { id: 4, name: '价值观践行', icon: '💎', weight: 25, color: 'purple', desc: '以身作则，践行企业核心价值观' }
+                ],
+                nominees: [],
+                votes: {},
+                winners: [],
+                history: [
+                    {
+                        id: 1,
+                        name: '2024年Q1季度评选',
+                        startDate: '2024-01-01',
+                        endDate: '2024-03-31',
+                        winners: ['张明', '李华', '王芳'],
+                        completed: true
+                    },
+                    {
+                        id: 2,
+                        name: '2024年Q2季度评选',
+                        startDate: '2024-04-01',
+                        endDate: '2024-06-30',
+                        winners: ['赵强', '刘洋'],
+                        completed: true
+                    }
+                ],
+                currentPeriod: {
+                    name: '2024年Q4季度评选',
+                    startDate: '2024-10-01',
+                    endDate: '2024-12-31'
+                },
+                voters: []
+            };
+        }
+
+        // Initialize data
+        let appData = getData();
+
+        // ===== Tab Navigation =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+                
+                // Refresh content when switching tabs
+                refreshCurrentTab(btn.dataset.tab);
+            });
+        });
+
+        function refreshCurrentTab(tabId) {
+            switch(tabId) {
+                case 'nominees': renderNominees(); break;
+                case 'dimensions': renderDimensions(); break;
+                case 'voting': renderVoting(); break;
+                case 'results': renderResults(); break;
+                case 'winners': renderWinners(); break;
+                case 'history': renderHistory(); break;
+            }
+        }
+
+        // ===== Nominees =====
+        function renderNominees() {
+            const list = document.getElementById('nomineeList');
+            document.getElementById('nomineeCount').textContent = appData.nominees.length;
+
+            if (appData.nominees.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">👤</div>
+                        <div class="empty-title">暂无候选人</div>
+                        <div class="empty-desc">点击上方按钮提名候选人</div>
+                        <button class="btn btn-primary" onclick="openNomineeModal()">提名候选人</button>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = appData.nominees.map(nominee => {
+                const dimTags = nominee.dimensions.map(dimId => {
+                    const dim = appData.dimensions.find(d => d.id === dimId);
+                    if (!dim) return '';
+                    return `<span class="dim-tag" style="background: var(--${dim.color}-light); color: var(--${dim.color});">${dim.icon} ${dim.name}</span>`;
+                }).join('');
+
+                return `
+                    <div class="nominee-item">
+                        <div class="nominee-avatar">${nominee.name.charAt(0)}</div>
+                        <div class="nominee-info">
+                            <div class="nominee-name">${nominee.name}</div>
+                            <div class="nominee-dept">${nominee.dept || '未设置部门'}</div>
+                            <div class="nominee-reason">${nominee.reason || '暂无提名理由'}</div>
+                            <div class="nominee-dimensions">${dimTags}</div>
+                        </div>
+                        <div class="nominee-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="editNominee(${nominee.id})">编辑</button>
+                            <button class="btn btn-sm btn-secondary" onclick="deleteNominee(${nominee.id})" style="color: var(--red);">删除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openNomineeModal() {
+            document.getElementById('nomineeModal').classList.add('active');
+            document.getElementById('nomineeName').value = '';
+            document.getElementById('nomineeDept').value = '';
+            document.getElementById('nomineeReason').value = '';
+            
+            // Render dimension checkboxes
+            const checkboxContainer = document.getElementById('dimensionCheckboxes');
+            checkboxContainer.innerHTML = appData.dimensions.map(dim => `
+                <label style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--gray-100); border-radius: 6px; cursor: pointer;">
+                    <input type="checkbox" name="nomineeDims" value="${dim.id}">
+                    <span>${dim.icon} ${dim.name}</span>
+                </label>
+            `).join('');
+        }
+
+        function closeNomineeModal() {
+            document.getElementById('nomineeModal').classList.remove('active');
+        }
+
+        function saveNominee() {
+            const name = document.getElementById('nomineeName').value.trim();
+            if (!name) {
+                showToast('请输入候选人姓名', 'error');
+                return;
+            }
+
+            const checkedDims = document.querySelectorAll('input[name="nomineeDims"]:checked');
+            if (checkedDims.length === 0) {
+                showToast('请至少选择一个提名维度', 'error');
+                return;
+            }
+
+            const nominee = {
+                id: Date.now(),
+                name: name,
+                dept: document.getElementById('nomineeDept').value.trim(),
+                reason: document.getElementById('nomineeReason').value.trim(),
+                dimensions: Array.from(checkedDims).map(cb => parseInt(cb.value))
+            };
+
+            appData.nominees.push(nominee);
+            saveData(appData);
+            closeNomineeModal();
+            renderNominees();
+            showToast('提名成功！', 'success');
+        }
+
+        function deleteNominee(id) {
+            if (confirm('确定要删除该候选人吗？')) {
+                appData.nominees = appData.nominees.filter(n => n.id !== id);
+                saveData(appData);
+                renderNominees();
+                showToast('已删除', 'success');
+            }
+        }
+
+        // ===== Dimensions =====
+        function renderDimensions() {
+            const grid = document.getElementById('dimensionGrid');
+            document.getElementById('dimensionCount').textContent = appData.dimensions.length;
+
+            const colorClasses = {
+                orange: { bg: 'var(--warm-light)', text: 'var(--warm)' },
+                blue: { bg: 'var(--primary-lighter)', text: 'var(--primary)' },
+                green: { bg: 'var(--accent-light)', text: 'var(--accent)' },
+                purple: { bg: 'var(--purple-light)', text: 'var(--purple)' },
+                gold: { bg: 'var(--gold-light)', text: 'var(--gold)' }
+            };
+
+            grid.innerHTML = appData.dimensions.map(dim => {
+                const colors = colorClasses[dim.color] || colorClasses.blue;
+                return `
+                    <div class="dimension-card">
+                        <div class="dimension-header">
+                            <div class="dimension-icon" style="background: ${colors.bg};">${dim.icon}</div>
+                            <div class="dimension-name">${dim.name}</div>
+                        </div>
+                        <div class="dimension-desc">${dim.desc || '暂无描述'}</div>
+                        <div class="dimension-weight">
+                            <span style="color: ${colors.text}; font-weight: 600;">${dim.weight}%</span>
+                            <div class="weight-bar">
+                                <div class="weight-fill" style="width: ${dim.weight}%; background: ${colors.text};"></div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px; display: flex; gap: 8px;">
+                            <button class="btn btn-sm btn-secondary" onclick="editDimension(${dim.id})">编辑</button>
+                            <button class="btn btn-sm btn-secondary" onclick="deleteDimension(${dim.id})" style="color: var(--red);">删除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openDimensionModal(editId = null) {
+            document.getElementById('dimensionModal').classList.add('active');
+            
+            if (editId) {
+                const dim = appData.dimensions.find(d => d.id === editId);
+                document.getElementById('dimensionName').value = dim.name;
+                document.getElementById('dimensionIcon').value = dim.icon;
+                document.getElementById('dimensionWeight').value = dim.weight;
+                document.getElementById('dimensionDesc').value = dim.desc || '';
+                document.getElementById('dimensionColor').value = dim.color;
+                document.getElementById('dimensionModal').dataset.editId = editId;
+            } else {
+                document.getElementById('dimensionName').value = '';
+                document.getElementById('dimensionIcon').value = '';
+                document.getElementById('dimensionWeight').value = '';
+                document.getElementById('dimensionDesc').value = '';
+                document.getElementById('dimensionColor').value = 'orange';
+                delete document.getElementById('dimensionModal').dataset.editId;
+            }
+        }
+
+        function closeDimensionModal() {
+            document.getElementById('dimensionModal').classList.remove('active');
+        }
+
+        function saveDimension() {
+            const name = document.getElementById('dimensionName').value.trim();
+            if (!name) {
+                showToast('请输入维度名称', 'error');
+                return;
+            }
+
+            const weight = parseInt(document.getElementById('dimensionWeight').value) || 25;
+            const dim = {
+                id: document.getElementById('dimensionModal').dataset.editId || Date.now(),
+                name: name,
+                icon: document.getElementById('dimensionIcon').value || '📊',
+                weight: weight,
+                color: document.getElementById('dimensionColor').value,
+                desc: document.getElementById('dimensionDesc').value.trim()
+            };
+
+            const editId = document.getElementById('dimensionModal').dataset.editId;
+            if (editId) {
+                const index = appData.dimensions.findIndex(d => d.id === parseInt(editId));
+                if (index !== -1) appData.dimensions[index] = dim;
+            } else {
+                appData.dimensions.push(dim);
+            }
+
+            saveData(appData);
+            closeDimensionModal();
+            renderDimensions();
+            showToast('维度已保存', 'success');
+        }
+
+        function editDimension(id) {
+            openDimensionModal(id);
+        }
+
+        function deleteDimension(id) {
+            if (appData.dimensions.length <= 1) {
+                showToast('至少保留一个评选维度', 'error');
+                return;
+            }
+            if (confirm('确定要删除该维度吗？')) {
+                appData.dimensions = appData.dimensions.filter(d => d.id !== id);
+                saveData(appData);
+                renderDimensions();
+                showToast('已删除', 'success');
+            }
+        }
+
+        // ===== Voting =====
+        function renderVoting() {
+            // Update period info
+            document.getElementById('votingPeriod').textContent = 
+                `评选周期: ${appData.currentPeriod.name} (${appData.currentPeriod.startDate} ~ ${appData.currentPeriod.endDate})`;
+
+            // Calculate stats
+            const totalVotes = Object.keys(appData.votes).length;
+            const nomineeCount = appData.nominees.length;
+            const progress = nomineeCount > 0 ? Math.round((totalVotes / nomineeCount) * 100) : 0;
+
+            document.getElementById('votingProgress').textContent = progress + '%';
+            document.getElementById('votingProgressBar').style.width = progress + '%';
+            document.getElementById('totalVoters').textContent = appData.voters.length;
+            document.getElementById('totalVotes').textContent = totalVotes;
+
+            // Calculate average score
+            let totalScore = 0;
+            let scoreCount = 0;
+            Object.values(appData.votes).forEach(vote => {
+                Object.values(vote.scores || {}).forEach(score => {
+                    totalScore += score;
+                    scoreCount++;
+                });
+            });
+            const avgScore = scoreCount > 0 ? (totalScore / scoreCount).toFixed(1) : 0;
+            document.getElementById('avgScore').textContent = avgScore;
+
+            // Render voting cards
+            const votingList = document.getElementById('votingList');
+
+            if (appData.nominees.length === 0) {
+                votingList.innerHTML = `
+                    <div class="card">
+                        <div class="empty-state">
+                            <div class="empty-icon">🗳️</div>
+                            <div class="empty-title">暂无候选人可投票</div>
+                            <div class="empty-desc">请先添加候选人</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            votingList.innerHTML = appData.nominees.map(nominee => {
+                const hasVoted = appData.votes[nominee.id];
+                const vote = hasVoted || { scores: {}, comment: '' };
+
+                const dimensionItems = appData.dimensions.map(dim => `
+                    <div class="vote-dimension-item">
+                        <label>${dim.icon} ${dim.name}</label>
+                        <div class="star-rating" data-nominee="${nominee.id}" data-dimension="${dim.id}">
+                            ${[1,2,3,4,5].map(star => `
+                                <button type="button" class="${vote.scores[dim.id] >= star ? 'active' : ''}" onclick="setStarRating(${nominee.id}, ${dim.id}, ${star})">★</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="vote-card">
+                        <div class="vote-card-header">
+                            <div class="vote-candidate">
+                                <div class="nominee-avatar">${nominee.name.charAt(0)}</div>
+                                <div>
+                                    <div class="nominee-name">${nominee.name}</div>
+                                    <div class="nominee-dept">${nominee.dept || '未设置部门'}</div>
+                                </div>
+                            </div>
+                            ${hasVoted ? '<span style="color: var(--accent); font-size: 13px; font-weight: 500;">✓ 已投票</span>' : ''}
+                        </div>
+                        <div class="vote-dimensions">
+                            ${dimensionItems}
+                        </div>
+                        <div class="vote-comment">
+                            <textarea class="form-textarea" id="comment-${nominee.id}" placeholder="添加评选评语（可选）" style="min-height: 60px;">${vote.comment || ''}</textarea>
+                        </div>
+                        <div style="margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end;">
+                            <button class="btn btn-primary" onclick="submitVote(${nominee.id})">提交评分</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setStarRating(nomineeId, dimensionId, rating) {
+            // Update UI
+            const container = document.querySelector(`.star-rating[data-nominee="${nomineeId}"][data-dimension="${dimensionId}"]`);
+            container.querySelectorAll('button').forEach((btn, index) => {
+                btn.classList.toggle('active', index < rating);
+            });
+
+            // Store temporarily
+            if (!appData._tempVotes) appData._tempVotes = {};
+            if (!appData._tempVotes[nomineeId]) appData._tempVotes[nomineeId] = { scores: {} };
+            appData._tempVotes[nomineeId].scores[dimensionId] = rating;
+        }
+
+        function submitVote(nomineeId) {
+            const tempVote = appData._tempVotes?.[nomineeId] || { scores: {} };
+            const comment = document.getElementById(`comment-${nomineeId}`).value;
+
+            // Check if all dimensions are rated
+            const allRated = appData.dimensions.every(dim => tempVote.scores[dim.id] > 0);
+            if (!allRated) {
+                // Keep existing scores if any
+                const existingVote = appData.votes[nomineeId] || { scores: {} };
+                const mergedScores = { ...existingVote.scores, ...tempVote.scores };
+                
+                const missingDims = appData.dimensions.filter(dim => !mergedScores[dim.id]);
+                if (missingDims.length > 0) {
+                    showToast(`请为所有维度打分`, 'error');
+                    return;
+                }
+                tempVote.scores = mergedScores;
+            }
+
+            appData.votes[nomineeId] = {
+                scores: tempVote.scores,
+                comment: comment,
+                timestamp: Date.now()
+            };
+
+            // Add to voters if not exists
+            if (!appData.voters.includes('current_user')) {
+                appData.voters.push('current_user');
+            }
+
+            saveData(appData);
+            renderVoting();
+            showToast('评分已提交', 'success');
+        }
+
+        // ===== Results =====
+        function renderResults() {
+            const resultsGrid = document.getElementById('resultsGrid');
+
+            // Calculate scores for each nominee
+            const results = appData.nominees.map(nominee => {
+                const vote = appData.votes[nominee.id];
+                let totalScore = 0;
+                let weightedScore = 0;
+                const breakdown = {};
+
+                if (vote && vote.scores) {
+                    appData.dimensions.forEach(dim => {
+                        const score = vote.scores[dim.id] || 0;
+                        const weight = dim.weight / 100;
+                        breakdown[dim.name] = score;
+                        totalScore += score;
+                        weightedScore += score * weight;
+                    });
+                }
+
+                return {
+                    ...nominee,
+                    totalScore: totalScore,
+                    weightedScore: weightedScore,
+                    breakdown: breakdown
+                };
+            }).sort((a, b) => b.weightedScore - a.weightedScore);
+
+            if (results.length === 0) {
+                resultsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <div class="empty-title">暂无评选结果</div>
+                        <div class="empty-desc">完成投票后即可查看结果</div>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsGrid.innerHTML = results.map((result, index) => {
+                let rankClass = 'default';
+                if (index === 0) rankClass = 'gold';
+                else if (index === 1) rankClass = 'silver';
+                else if (index === 2) rankClass = 'bronze';
+
+                const rankIcon = index < 3 ? ['🥇', '🥈', '🥉'][index] : index + 1;
+
+                const scoreBreakdown = Object.entries(result.breakdown).map(([name, score]) => 
+                    `<span class="score-item">${name}: ${score}分</span>`
+                ).join('');
+
+                return `
+                    <div class="result-card">
+                        <div class="result-rank ${rankClass}">${rankIcon}</div>
+                        <div class="nominee-avatar" style="background: linear-gradient(135deg, ${index === 0 ? '#FFD700, #FFA500' : index === 1 ? '#C0C0C0, #A0A0A0' : index === 2 ? '#CD7F32, #8B4513' : 'var(--primary-light), var(--accent)'});">${result.name.charAt(0)}</div>
+                        <div class="result-info">
+                            <div class="result-name">${result.name}</div>
+                            <div class="result-dept">${result.dept || '未设置部门'}</div>
+                            <div class="result-score">${result.weightedScore.toFixed(1)} 分</div>
+                            <div class="score-breakdown">${scoreBreakdown}</div>
+                        </div>
+                        ${index < 3 ? `<button class="btn btn-primary btn-sm" onclick="confirmWinner(${result.id})">确认获奖</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function refreshResults() {
+            renderResults();
+            showToast('结果已刷新', 'success');
+        }
+
+        function confirmWinner(nomineeId) {
+            const nominee = appData.nominees.find(n => n.id === nomineeId);
+            if (!nominee) return;
+
+            // Check if already a winner
+            if (appData.winners.find(w => w.id === nomineeId)) {
+                showToast('该候选人已在获奖名单中', 'error');
+                return;
+            }
+
+            const winner = {
+                id: nomineeId,
+                name: nominee.name,
+                dept: nominee.dept,
+                period: appData.currentPeriod.name,
+                reason: nominee.reason,
+                timestamp: Date.now()
+            };
+
+            appData.winners.push(winner);
+            saveData(appData);
+            showToast(`${nominee.name} 已加入获奖者墙`, 'success');
+            renderWinners();
+        }
+
+        // ===== Winners =====
+        function renderWinners() {
+            const winnerWall = document.getElementById('winnerWall');
+
+            if (appData.winners.length === 0) {
+                winnerWall.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-icon">🌟</div>
+                        <div class="empty-title">暂无获奖者</div>
+                        <div class="empty-desc">在结果页面确认获奖者后，将在此展示</div>
+                    </div>
+                `;
+                return;
+            }
+
+            winnerWall.innerHTML = appData.winners.map((winner, index) => {
+                const bannerClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : 'gold';
+                const initials = winner.name.charAt(0);
+                const date = new Date(winner.timestamp).toLocaleDateString('zh-CN');
+
+                return `
+                    <div class="winner-card">
+                        <div class="winner-banner ${bannerClass}">
+                            <div class="winner-avatar">${initials}</div>
+                            <div class="winner-name">${winner.name}</div>
+                            <div class="winner-title">${winner.dept || '优秀员工'}</div>
+                        </div>
+                        <div class="winner-body">
+                            <div class="winner-period">📅 ${winner.period}</div>
+                            <div class="winner-story">${winner.reason || '以卓越的表现践行企业文化，成为团队的榜样。'}</div>
+                            <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 12px; color: var(--gray-400);">确认时间: ${date}</span>
+                                <button class="btn btn-sm btn-secondary" onclick="removeWinner(${winner.id})">移除</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function removeWinner(id) {
+            if (confirm('确定要从获奖者墙移除该获奖者吗？')) {
+                appData.winners = appData.winners.filter(w => w.id !== id);
+                saveData(appData);
+                renderWinners();
+                showToast('已移除', 'success');
+            }
+        }
+
+        // ===== History =====
+        function renderHistory() {
+            const timeline = document.getElementById('historyTimeline');
+
+            if (appData.history.length === 0) {
+                timeline.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📜</div>
+                        <div class="empty-title">暂无历史记录</div>
+                        <div class="empty-desc">创建新的评选周期开始记录</div>
+                    </div>
+                `;
+                return;
+            }
+
+            timeline.innerHTML = appData.history.map(item => `
+                <div class="history-item">
+                    <div class="history-date">${item.startDate} ~ ${item.endDate}</div>
+                    <div class="history-content">
+                        <div class="history-title">${item.name}</div>
+                        <div class="history-winners">
+                            ${item.winners.map(w => `
+                                <span class="history-winner">
+                                    <span>🏆</span>
+                                    <span>${w}</span>
+                                </span>
+                            `).join('')}
+                            ${item.winners.length === 0 ? '<span style="color: var(--gray-400); font-size: 13px;">暂无获奖者</span>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openHistoryModal() {
+            document.getElementById('historyModal').classList.add('active');
+            document.getElementById('historyName').value = '';
+            document.getElementById('historyStartDate').value = '';
+            document.getElementById('historyEndDate').value = '';
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').classList.remove('active');
+        }
+
+        function saveHistory() {
+            const name = document.getElementById('historyName').value.trim();
+            if (!name) {
+                showToast('请输入评选名称', 'error');
+                return;
+            }
+
+            const historyItem = {
+                id: Date.now(),
+                name: name,
+                startDate: document.getElementById('historyStartDate').value || new Date().toISOString().split('T')[0],
+                endDate: document.getElementById('historyEndDate').value || new Date().toISOString().split('T')[0],
+                winners: [],
+                completed: false
+            };
+
+            appData.history.unshift(historyItem);
+            appData.currentPeriod = {
+                name: name,
+                startDate: historyItem.startDate,
+                endDate: historyItem.endDate
+            };
+
+            // Reset votes for new period
+            appData.votes = {};
+            appData.voters = [];
+
+            saveData(appData);
+            closeHistoryModal();
+            renderHistory();
+            renderVoting();
+            showToast('新评选周期已创建', 'success');
+        }
+
+        // ===== Toast =====
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== Initialize =====
+        document.addEventListener('DOMContentLoaded', () => {
+            appData = getData();
+            renderNominees();
+            renderDimensions();
+            renderVoting();
+            renderResults();
+            renderWinners();
+            renderHistory();
+        });
+    </script>
+</body>
+</html>

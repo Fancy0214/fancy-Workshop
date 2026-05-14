@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户旅程管理</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2B6CB0;
+            --primary-dark: #1e4f7a;
+            --primary-light: #3182ce;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --info: #4299e1;
+            --gray-50: #f7fafc;
+            --gray-100: #edf2f7;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e0;
+            --gray-400: #a0aec0;
+            --gray-500: #718096;
+            --gray-600: #4a5568;
+            --gray-700: #2d3748;
+            --gray-800: #1a202c;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            min-height: 100vh;
+            color: var(--gray-700);
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(43, 108, 176, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-icon.primary { background: rgba(43, 108, 176, 0.1); color: var(--primary); }
+        .stat-icon.success { background: rgba(72, 187, 120, 0.1); color: var(--success); }
+        .stat-icon.warning { background: rgba(237, 137, 54, 0.1); color: var(--warning); }
+        .stat-icon.info { background: rgba(66, 153, 225, 0.1); color: var(--info); }
+
+        .stat-info h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .stat-info p {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        /* Kanban Board */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 16px;
+            min-height: calc(100vh - 280px);
+        }
+
+        .kanban-column {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 16px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .column-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .column-count {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .column-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .stage-1 .column-icon { background: rgba(66, 153, 225, 0.15); color: var(--info); }
+        .stage-2 .column-icon { background: rgba(159, 122, 234, 0.15); color: #9f7aea; }
+        .stage-3 .column-icon { background: rgba(237, 137, 54, 0.15); color: var(--warning); }
+        .stage-4 .column-icon { background: rgba(237, 100, 166, 0.15); color: #ed64a6; }
+        .stage-5 .column-icon { background: rgba(72, 187, 120, 0.15); color: var(--success); }
+        .stage-6 .column-icon { background: rgba(56, 178, 172, 0.15); color: #38b2ac; }
+        .stage-7 .column-icon { background: rgba(129, 140, 248, 0.15); color: #818cf8; }
+
+        .column-body {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 100px;
+        }
+
+        .column-body.drag-over {
+            background: rgba(43, 108, 176, 0.05);
+            border-radius: 12px;
+        }
+
+        /* Customer Card */
+        .customer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            cursor: grab;
+            transition: all 0.2s;
+            border-left: 3px solid var(--primary);
+        }
+
+        .customer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .customer-card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-800);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .card-action-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            color: var(--gray-400);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .card-action-btn:hover {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .card-action-btn.delete:hover {
+            color: var(--danger);
+        }
+
+        .customer-company {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .task-progress {
+            font-size: 11px;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .task-progress i {
+            color: var(--success);
+        }
+
+        .last-contact {
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-title i {
+            color: var(--primary);
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--gray-100);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-500);
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .modal-body {
+            padding: 24px;
+            max-height: calc(90vh - 150px);
+            overflow-y: auto;
+        }
+
+        /* Form */
+        .form-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .form-input {
+            padding: 10px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+        }
+
+        .form-select {
+            padding: 10px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Task List */
+        .task-list {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .task-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--gray-300);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .task-checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        .task-delete {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            color: var(--gray-400);
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover .task-delete {
+            opacity: 1;
+        }
+
+        .task-delete:hover {
+            color: var(--danger);
+        }
+
+        .add-task-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .add-task-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        /* Follow-up Notes */
+        .notes-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            background: var(--gray-50);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .note-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .note-date {
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+
+        .note-delete {
+            width: 20px;
+            height: 20px;
+            border: none;
+            background: transparent;
+            color: var(--gray-400);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .note-delete:hover {
+            color: var(--danger);
+        }
+
+        .note-content {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .add-note-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .add-note-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: none;
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Empty State */
+        .empty-column {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray-400);
+            font-size: 13px;
+        }
+
+        .empty-column i {
+            font-size: 32px;
+            margin-bottom: 8px;
+            opacity: 0.5;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--gray-800);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .kanban-board {
+                grid-template-columns: repeat(4, 1fr);
+                overflow-x: auto;
+            }
+            
+            .kanban-column {
+                min-width: 250px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .kanban-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+            
+            .kanban-column {
+                min-width: 0;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-actions {
+                width: 100%;
+            }
+            
+            .header-actions .btn {
+                flex: 1;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../fancy-workshop.html" class="back-link">
+                <i class="ri-arrow-left-line"></i>
+                <span>返回主页</span>
+            </a>
+            <h1 class="page-title">
+                <i class="ri-route-line"></i>
+                客户旅程管理
+            </h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="exportData()">
+                    <i class="ri-download-line"></i>
+                    导出数据
+                </button>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="ri-user-add-line"></i>
+                    添加客户
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="ri-user-3-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalCustomers">0</h3>
+                    <p>总客户数</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="ri-time-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="pendingCustomers">0</h3>
+                    <p>跟进中</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="ri-contract-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="signedCustomers">0</h3>
+                    <p>已签约</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon info">
+                    <i class="ri-percent-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="conversionRate">0%</h3>
+                    <p>转化率</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="kanban-board" id="kanbanBoard">
+            <!-- Columns will be generated by JS -->
+        </div>
+    </main>
+
+    <!-- Customer Modal -->
+    <div class="modal-overlay" id="customerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="ri-user-line"></i>
+                    <span id="modalTitle">添加客户</span>
+                </h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Customer Info -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="ri-information-line"></i>
+                        客户信息
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">客户姓名 *</label>
+                            <input type="text" class="form-input" id="customerName" placeholder="输入客户姓名">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">所属公司</label>
+                            <input type="text" class="form-input" id="customerCompany" placeholder="输入公司名称">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系电话</label>
+                            <input type="tel" class="form-input" id="customerPhone" placeholder="输入联系电话">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">电子邮箱</label>
+                            <input type="email" class="form-input" id="customerEmail" placeholder="输入邮箱地址">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">当前阶段</label>
+                            <select class="form-select" id="customerStage">
+                                <option value="contact">初次接触</option>
+                                <option value="requirement">需求确认</option>
+                                <option value="proposal">方案呈现</option>
+                                <option value="objection">异议处理</option>
+                                <option value="sign">签约</option>
+                                <option value="production">出产</option>
+                                <option value="service">售后</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">备注</label>
+                            <input type="text" class="form-input" id="customerNote" placeholder="添加备注信息">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task List -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="ri-checkbox-line"></i>
+                        任务清单
+                    </h3>
+                    <div class="task-list" id="taskList">
+                        <!-- Tasks will be added here -->
+                    </div>
+                    <div class="add-task-row">
+                        <input type="text" class="add-task-input" id="newTaskInput" placeholder="输入新任务，按回车添加">
+                        <button class="btn btn-secondary btn-sm" onclick="addTask()">
+                            <i class="ri-add-line"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Follow-up Notes -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="ri-sticky-note-line"></i>
+                        跟进记录
+                    </h3>
+                    <div class="notes-list" id="notesList">
+                        <!-- Notes will be added here -->
+                    </div>
+                    <div class="add-note-row">
+                        <textarea class="add-note-input" id="newNoteInput" placeholder="输入跟进记录，按回车添加" rows="2"></textarea>
+                        <button class="btn btn-secondary btn-sm" onclick="addNote()">
+                            <i class="ri-add-line"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button class="btn btn-danger" id="deleteBtn" style="display: none;" onclick="deleteCustomer()">删除客户</button>
+                <button class="btn btn-primary" onclick="saveCustomer()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="ri-checkbox-circle-line"></i>
+        <span id="toastMessage">操作成功</span>
+    </div>
+
+    <script>
+        // Stages Configuration
+        const stages = [
+            { id: 'contact', name: '初次接触', icon: 'ri-user-received-2-line' },
+            { id: 'requirement', name: '需求确认', icon: 'ri-file-list-3-line' },
+            { id: 'proposal', name: '方案呈现', icon: 'ri-presentation-line' },
+            { id: 'objection', name: '异议处理', icon: 'ri-question-answer-line' },
+            { id: 'sign', name: '签约', icon: 'ri-contract-line' },
+            { id: 'production', name: '出产', icon: 'ri-truck-line' },
+            { id: 'service', name: '售后', icon: 'ri-service-line' }
+        ];
+
+        // Data Storage
+        let customers = [];
+        let currentCustomerId = null;
+        let currentTasks = [];
+        let currentNotes = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            renderBoard();
+            updateStats();
+            setupEventListeners();
+        });
+
+        // Load Data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('customerJourneyData');
+            if (saved) {
+                customers = JSON.parse(saved);
+            }
+        }
+
+        // Save Data to localStorage
+        function saveData() {
+            localStorage.setItem('customerJourneyData', JSON.stringify(customers));
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            document.getElementById('newTaskInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addTask();
+            });
+            
+            document.getElementById('newNoteInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    addNote();
+                }
+            });
+        }
+
+        // Render Kanban Board
+        function renderBoard() {
+            const board = document.getElementById('kanbanBoard');
+            board.innerHTML = '';
+
+            stages.forEach((stage, index) => {
+                const columnCustomers = customers.filter(c => c.stage === stage.id);
+                
+                const column = document.createElement('div');
+                column.className = `kanban-column stage-${index + 1}`;
+                column.innerHTML = `
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span class="column-icon"><i class="${stage.icon}"></i></span>
+                            ${stage.name}
+                        </div>
+                        <span class="column-count">${columnCustomers.length}</span>
+                    </div>
+                    <div class="column-body" data-stage="${stage.id}" 
+                         ondragover="handleDragOver(event)" 
+                         ondragleave="handleDragLeave(event)"
+                         ondrop="handleDrop(event)">
+                        ${columnCustomers.length > 0 ? 
+                            columnCustomers.map(c => renderCard(c)).join('') : 
+                            `<div class="empty-column">
+                                <i class="ri-inbox-line"></i>
+                                <p>暂无客户</p>
+                            </div>`
+                        }
+                    </div>
+                `;
+                board.appendChild(column);
+            });
+
+            // Add drag events to cards
+            document.querySelectorAll('.customer-card').forEach(card => {
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+            });
+        }
+
+        // Render Customer Card
+        function renderCard(customer) {
+            const completedTasks = customer.tasks.filter(t => t.completed).length;
+            const totalTasks = customer.tasks.length;
+            const lastNote = customer.notes.length > 0 ? 
+                formatDate(customer.notes[customer.notes.length - 1].date) : '暂无';
+
+            return `
+                <div class="customer-card" draggable="true" data-id="${customer.id}">
+                    <div class="card-header">
+                        <span class="customer-name">${escapeHtml(customer.name)}</span>
+                        <div class="card-actions">
+                            <button class="card-action-btn" onclick="openEditModal('${customer.id}')" title="编辑">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                            <button class="card-action-btn delete" onclick="quickDelete('${customer.id}')" title="删除">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    ${customer.company ? `
+                        <div class="customer-company">
+                            <i class="ri-building-line"></i>
+                            ${escapeHtml(customer.company)}
+                        </div>
+                    ` : ''}
+                    <div class="card-footer">
+                        <div class="task-progress">
+                            <i class="ri-checkbox-circle-fill"></i>
+                            ${completedTasks}/${totalTasks} 任务
+                        </div>
+                        <span class="last-contact">${lastNote}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Drag and Drop Handlers
+        function handleDragStart(e) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', e.target.dataset.id);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            const customerId = e.dataTransfer.getData('text/plain');
+            const newStage = e.currentTarget.dataset.stage;
+            
+            const customer = customers.find(c => c.id === customerId);
+            if (customer && customer.stage !== newStage) {
+                customer.stage = newStage;
+                customer.updatedAt = Date.now();
+                saveData();
+                renderBoard();
+                updateStats();
+                showToast('已更新客户阶段');
+            }
+        }
+
+        // Modal Functions
+        function openAddModal() {
+            currentCustomerId = null;
+            currentTasks = [];
+            currentNotes = [];
+            
+            document.getElementById('modalTitle').textContent = '添加客户';
+            document.getElementById('deleteBtn').style.display = 'none';
+            
+            // Clear form
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerCompany').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerEmail').value = '';
+            document.getElementById('customerStage').value = 'contact';
+            document.getElementById('customerNote').value = '';
+            
+            renderTasks();
+            renderNotes();
+            
+            document.getElementById('customerModal').classList.add('active');
+            document.getElementById('customerName').focus();
+        }
+
+        function openEditModal(id) {
+            const customer = customers.find(c => c.id === id);
+            if (!customer) return;
+            
+            currentCustomerId = id;
+            currentTasks = [...customer.tasks];
+            currentNotes = [...customer.notes];
+            
+            document.getElementById('modalTitle').textContent = '编辑客户';
+            document.getElementById('deleteBtn').style.display = 'inline-flex';
+            
+            // Fill form
+            document.getElementById('customerName').value = customer.name;
+            document.getElementById('customerCompany').value = customer.company || '';
+            document.getElementById('customerPhone').value = customer.phone || '';
+            document.getElementById('customerEmail').value = customer.email || '';
+            document.getElementById('customerStage').value = customer.stage;
+            document.getElementById('customerNote').value = customer.note || '';
+            
+            renderTasks();
+            renderNotes();
+            
+            document.getElementById('customerModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('customerModal').classList.remove('active');
+        }
+
+        // Task Functions
+        function renderTasks() {
+            const container = document.getElementById('taskList');
+            
+            if (currentTasks.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-400); font-size: 13px; text-align: center;">暂无任务</p>';
+                return;
+            }
+            
+            container.innerHTML = currentTasks.map((task, index) => `
+                <div class="task-item">
+                    <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${index})">
+                        ${task.completed ? '<i class="ri-check-line"></i>' : ''}
+                    </div>
+                    <span class="task-text ${task.completed ? 'completed' : ''}">${escapeHtml(task.text)}</span>
+                    <button class="task-delete" onclick="deleteTask(${index})">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addTask() {
+            const input = document.getElementById('newTaskInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+            
+            currentTasks.push({ text, completed: false });
+            input.value = '';
+            renderTasks();
+        }
+
+        function toggleTask(index) {
+            currentTasks[index].completed = !currentTasks[index].completed;
+            renderTasks();
+        }
+
+        function deleteTask(index) {
+            currentTasks.splice(index, 1);
+            renderTasks();
+        }
+
+        // Note Functions
+        function renderNotes() {
+            const container = document.getElementById('notesList');
+            
+            if (currentNotes.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-400); font-size: 13px; text-align: center;">暂无跟进记录</p>';
+                return;
+            }
+            
+            container.innerHTML = currentNotes.map((note, index) => `
+                <div class="note-item">
+                    <div class="note-header">
+                        <span class="note-date">${formatDateTime(note.date)}</span>
+                        <button class="note-delete" onclick="deleteNote(${index})">
+                            <i class="ri-close-line"></i>
+                        </button>
+                    </div>
+                    <div class="note-content">${escapeHtml(note.content)}</div>
+                </div>
+            `).join('');
+        }
+
+        function addNote() {
+            const input = document.getElementById('newNoteInput');
+            const content = input.value.trim();
+            
+            if (!content) return;
+            
+            currentNotes.push({
+                date: Date.now(),
+                content
+            });
+            input.value = '';
+            renderNotes();
+        }
+
+        function deleteNote(index) {
+            currentNotes.splice(index, 1);
+            renderNotes();
+        }
+
+        // Save Customer
+        function saveCustomer() {
+            const name = document.getElementById('customerName').value.trim();
+            
+            if (!name) {
+                showToast('请输入客户姓名', 'error');
+                return;
+            }
+            
+            const customerData = {
+                id: currentCustomerId || generateId(),
+                name,
+                company: document.getElementById('customerCompany').value.trim(),
+                phone: document.getElementById('customerPhone').value.trim(),
+                email: document.getElementById('customerEmail').value.trim(),
+                stage: document.getElementById('customerStage').value,
+                note: document.getElementById('customerNote').value.trim(),
+                tasks: currentTasks,
+                notes: currentNotes,
+                createdAt: currentCustomerId ? 
+                    (customers.find(c => c.id === currentCustomerId)?.createdAt || Date.now()) : 
+                    Date.now(),
+                updatedAt: Date.now()
+            };
+            
+            if (currentCustomerId) {
+                const index = customers.findIndex(c => c.id === currentCustomerId);
+                if (index !== -1) {
+                    customers[index] = customerData;
+                }
+            } else {
+                customers.push(customerData);
+            }
+            
+            saveData();
+            renderBoard();
+            updateStats();
+            closeModal();
+            showToast(currentCustomerId ? '客户已更新' : '客户已添加', 'success');
+        }
+
+        // Delete Customer
+        function deleteCustomer() {
+            if (!currentCustomerId) return;
+            
+            if (confirm('确定要删除此客户吗？此操作不可恢复。')) {
+                customers = customers.filter(c => c.id !== currentCustomerId);
+                saveData();
+                renderBoard();
+                updateStats();
+                closeModal();
+                showToast('客户已删除', 'success');
+            }
+        }
+
+        function quickDelete(id) {
+            if (confirm('确定要删除此客户吗？')) {
+                customers = customers.filter(c => c.id !== id);
+                saveData();
+                renderBoard();
+                updateStats();
+                showToast('客户已删除', 'success');
+            }
+        }
+
+        // Update Stats
+        function updateStats() {
+            const total = customers.length;
+            const pending = customers.filter(c => 
+                !['sign', 'production', 'service'].includes(c.stage)
+            ).length;
+            const signed = customers.filter(c => 
+                ['sign', 'production', 'service'].includes(c.stage)
+            ).length;
+            const conversion = total > 0 ? Math.round((signed / total) * 100) : 0;
+            
+            document.getElementById('totalCustomers').textContent = total;
+            document.getElementById('pendingCustomers').textContent = pending;
+            document.getElementById('signedCustomers').textContent = signed;
+            document.getElementById('conversionRate').textContent = conversion + '%';
+        }
+
+        // Export Data
+        function exportData() {
+            const dataStr = JSON.stringify(customers, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `customer-journey-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            showToast('数据已导出', 'success');
+        }
+
+        // Utility Functions
+        function generateId() {
+            return 'cust_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return `${date.getMonth() + 1}/${date.getDate()}`;
+        }
+
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = 'toast ' + type;
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

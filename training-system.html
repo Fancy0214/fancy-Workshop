@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新人培育体系 | 培训管理系统</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--primary:#667eea;--secondary:#764ba2;--success:#48bb78;--warning:#ed8936;--danger:#f56565;--info:#4299e1;--bg-light:#f7fafc;--bg-card:#fff;--text-primary:#2d3748;--text-secondary:#718096;--border:#e2e8f0;--shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05)}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;color:var(--text-primary)}
+        .navbar{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:1rem 2rem;box-shadow:var(--shadow);position:sticky;top:0;z-index:100}
+        .navbar-content{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
+        .navbar-brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;color:var(--text-primary)}
+        .navbar-brand .icon{width:40px;height:40px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.25rem}
+        .navbar-brand h1{font-size:1.25rem;font-weight:600}
+        .navbar-nav{display:flex;gap:.5rem;flex-wrap:wrap}
+        .nav-btn{padding:.5rem 1rem;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;border-radius:8px;transition:all .2s;font-size:.9rem}
+        .nav-btn:hover{background:var(--bg-light);color:var(--text-primary)}
+        .nav-btn.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
+        .nav-btn-home{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:var(--bg-light);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);text-decoration:none;font-size:.9rem;transition:all .2s}
+        .nav-btn-home:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+        .main-container{max-width:1400px;margin:0 auto;padding:2rem}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+        .stat-card{background:var(--bg-card);border-radius:12px;padding:1.5rem;box-shadow:var(--shadow);display:flex;align-items:center;gap:1rem}
+        .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+        .stat-icon.primary{background:rgba(102,126,234,.1);color:var(--primary)}
+        .stat-icon.success{background:rgba(72,187,120,.1);color:var(--success)}
+        .stat-icon.warning{background:rgba(237,137,54,.1);color:var(--warning)}
+        .stat-icon.info{background:rgba(66,153,225,.1);color:var(--info)}
+        .stat-content h3{font-size:1.75rem;font-weight:700}
+        .stat-content p{font-size:.85rem;color:var(--text-secondary)}
+        .page-content{display:none}
+        .page-content.active{display:block;animation:fadeIn .3s ease}
+        .card{background:var(--bg-card);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:1.5rem}
+        .card-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
+        .card-header h2{font-size:1.1rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+        .card-body{padding:1.5rem}
+        .btn{padding:.625rem 1.25rem;border:none;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .2s;display:inline-flex;align-items:center;gap:.5rem;font-family:inherit}
+        .btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
+        .btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+        .btn-secondary{background:var(--bg-light);color:var(--text-primary);border:1px solid var(--border)}
+        .btn-secondary:hover{background:var(--border)}
+        .btn-success{background:var(--success);color:#fff}
+        .btn-warning{background:var(--warning);color:#fff}
+        .btn-danger{background:var(--danger);color:#fff}
+        .btn-sm{padding:.375rem .75rem;font-size:.8rem}
+        .stages-timeline{display:flex;justify-content:space-between;position:relative;padding:2rem 0}
+        .stages-timeline::before{content:'';position:absolute;top:50%;left:5%;right:5%;height:4px;background:var(--border);transform:translateY(-50%);z-index:0}
+        .stage-item{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;cursor:pointer;flex:1;transition:transform .2s}
+        .stage-item:hover{transform:scale(1.05)}
+        .stage-circle{width:60px;height:60px;border-radius:50%;background:var(--bg-card);border:4px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;transition:all .3s;box-shadow:var(--shadow)}
+        .stage-item.active .stage-circle{border-color:var(--primary);background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
+        .stage-item.completed .stage-circle{border-color:var(--success);background:var(--success);color:#fff}
+        .stage-label{margin-top:.75rem;font-size:.85rem;font-weight:500;color:var(--text-secondary);text-align:center}
+        .stage-item.active .stage-label{color:var(--primary)}
+        .stage-item.completed .stage-label{color:var(--success)}
+        .table-container{overflow-x:auto}
+        table{width:100%;border-collapse:collapse}
+        th,td{padding:1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;font-size:.85rem}
+        td{font-size:.9rem}
+        tr:hover{background:var(--bg-light)}
+        .progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;min-width:120px}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:4px;transition:width .3s}
+        .badge{display:inline-block;padding:.25rem .75rem;border-radius:20px;font-size:.75rem;font-weight:500}
+        .badge-primary{background:rgba(102,126,234,.1);color:var(--primary)}
+        .badge-success{background:rgba(72,187,120,.1);color:var(--success)}
+        .badge-warning{background:rgba(237,137,54,.1);color:var(--warning)}
+        .badge-danger{background:rgba(245,101,101,.1);color:var(--danger)}
+        .badge-info{background:rgba(66,153,225,.1);color:var(--info)}
+        .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000}
+        .modal-overlay.active{display:flex}
+        .modal{background:var(--bg-card);border-radius:16px;width:90%;max-width:600px;max-height:90vh;overflow:auto;box-shadow:var(--shadow-lg)}
+        .modal-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+        .modal-header h3{font-size:1.1rem;font-weight:600}
+        .modal-close{width:32px;height:32px;border:none;background:var(--bg-light);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:var(--text-secondary)}
+        .modal-close:hover{background:var(--border)}
+        .modal-body{padding:1.5rem}
+        .modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.75rem}
+        .form-group{margin-bottom:1rem}
+        .form-group label{display:block;margin-bottom:.5rem;font-size:.9rem;font-weight:500}
+        .form-control{width:100%;padding:.75rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem;transition:all .2s;font-family:inherit}
+        .form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(102,126,234,.1)}
+        select.form-control{cursor:pointer}
+        textarea.form-control{min-height:80px;resize:vertical}
+        .resource-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+        .resource-card{background:var(--bg-light);border-radius:12px;padding:1.25rem;display:flex;gap:1rem;transition:all .2s;cursor:pointer}
+        .resource-card:hover{background:var(--border);transform:translateY(-2px)}
+        .resource-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+        .resource-icon.doc{background:rgba(66,153,225,.1);color:var(--info)}
+        .resource-icon.video{background:rgba(245,101,101,.1);color:var(--danger)}
+        .resource-icon.link{background:rgba(102,126,234,.1);color:var(--primary)}
+        .resource-content h4{font-size:.95rem;font-weight:600;margin-bottom:.25rem}
+        .resource-content p{font-size:.8rem;color:var(--text-secondary)}
+        .search-box{position:relative;max-width:300px}
+        .search-box input{width:100%;padding:.625rem 1rem .625rem 2.5rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem}
+        .search-box::before{content:'🔍';position:absolute;left:.75rem;top:50%;transform:translateY(-50%);font-size:.9rem}
+        .empty-state{text-align:center;padding:3rem 1rem;color:var(--text-secondary)}
+        .empty-state .icon{font-size:4rem;margin-bottom:1rem;opacity:.5}
+        .empty-state p{font-size:.95rem}
+        .action-btns{display:flex;gap:.5rem;flex-wrap:wrap}
+        .detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1rem 0}
+        .detail-item{padding:.75rem;background:var(--bg-light);border-radius:8px}
+        .detail-item label{font-size:.75rem;color:var(--text-secondary);display:block;margin-bottom:.25rem}
+        .detail-item span{font-size:.95rem;font-weight:500}
+        .stage-section{background:var(--bg-light);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+        .stage-section h4{font-size:.95rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+        .stage-section ul{list-style:none;padding:0}
+        .stage-section li{padding:.5rem 0;font-size:.9rem;color:var(--text-secondary);display:flex;align-items:flex-start;gap:.5rem}
+        .stage-section li .ck{color:var(--success);font-weight:700;flex-shrink:0}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        @media(max-width:768px){.navbar-content{flex-direction:column;gap:1rem}.stages-timeline{flex-direction:column;gap:1.5rem}.stages-timeline::before{display:none}.modal{width:95%}}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-brand"><div class="icon">🎓</div><h1>新人培育体系</h1></a>
+            <div class="navbar-nav">
+                <button class="nav-btn active" data-page="dashboard">📊 总览</button>
+                <button class="nav-btn" data-page="trainees">👥 新人档案</button>
+                <button class="nav-btn" data-page="stages">📋 培训阶段</button>
+                <button class="nav-btn" data-page="resources">📚 资源库</button>
+                <button class="nav-btn" data-page="mentors">👨‍🏫 导师管理</button>
+            </div>
+            <a href="/" class="nav-btn-home">🏠 返回主页</a>
+        </div>
+    </nav>
+    <div class="main-container">
+        <div id="page-dashboard" class="page-content active">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-icon primary">👥</div><div class="stat-content"><h3 id="stat-total">0</h3><p>在培新人</p></div></div>
+                <div class="stat-card"><div class="stat-icon success">✅</div><div class="stat-content"><h3 id="stat-completed">0</h3><p>已结业</p></div></div>
+                <div class="stat-card"><div class="stat-icon warning">📚</div><div class="stat-content"><h3 id="stat-resources">0</h3><p>培训资源</p></div></div>
+                <div class="stat-card"><div class="stat-icon info">👨‍🏫</div><div class="stat-content"><h3 id="stat-mentors">0</h3><p>导师人数</p></div></div>
+            </div>
+            <div class="card"><div class="card-header"><h2>📈 培训进度总览</h2></div><div class="card-body"><div class="table-container"><table><thead><tr><th>新人</th><th>部门</th><th>当前阶段</th><th>进度</th><th>导师</th><th>入职日期</th><th>操作</th></tr></thead><tbody id="dashboard-trainees"></tbody></table></div></div></div>
+        </div>
+        <div id="page-trainees" class="page-content">
+            <div class="card"><div class="card-header"><h2>👥 新人档案管理</h2><div style="display:flex;gap:1rem;flex-wrap:wrap"><div class="search-box"><input type="text" id="search-trainee" placeholder="搜索新人..."></div><button class="btn btn-primary" onclick="openTraineeModal()">➕ 添加新人</button></div></div><div class="card-body"><div class="table-container"><table><thead><tr><th>姓名</th><th>工号</th><th>部门</th><th>职位</th><th>入职日期</th><th>阶段</th><th>导师</th><th>状态</th><th>操作</th></tr></thead><tbody id="trainees-table"></tbody></table></div></div></div>
+        </div>
+        <div id="page-stages" class="page-content">
+            <div class="card"><div class="card-header"><h2>📋 培训阶段路线图</h2></div><div class="card-body"><div class="stages-timeline" id="stages-timeline"></div></div></div>
+            <div id="stage-details"></div>
+        </div>
+        <div id="page-resources" class="page-content">
+            <div class="card"><div class="card-header"><h2>📚 培训资源库</h2><div style="display:flex;gap:1rem;flex-wrap:wrap"><select class="form-control" id="resource-filter" style="width:auto"><option value="all">全部类型</option><option value="doc">📄 文档</option><option value="video">🎬 视频</option><option value="link">🔗 链接</option></select><select class="form-control" id="resource-stage-filter" style="width:auto"><option value="all">全部阶段</option></select><button class="btn btn-primary" onclick="openResourceModal()">➕ 添加资源</button></div></div><div class="card-body"><div class="resource-grid" id="resources-grid"></div></div></div>
+        </div>
+        <div id="page-mentors" class="page-content">
+            <div class="card"><div class="card-header"><h2>👨‍🏫 导师管理</h2><button class="btn btn-primary" onclick="openMentorModal()">➕ 添加导师</button></div><div class="card-body"><div class="table-container"><table><thead><tr><th>姓名</th><th>工号</th><th>部门</th><th>职位</th><th>专长</th><th>带教</th><th>评分</th><th>操作</th></tr></thead><tbody id="mentors-table"></tbody></table></div></div></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="trainee-modal"><div class="modal"><div class="modal-header"><h3 id="trainee-modal-title">添加新人</h3><button class="modal-close" onclick="closeModal('trainee-modal')">×</button></div><div class="modal-body"><form id="trainee-form"><input type="hidden" id="trainee-id"><div class="form-group"><label>姓名 *</label><input type="text" class="form-control" id="trainee-name" required></div><div class="form-group"><label>工号 *</label><input type="text" class="form-control" id="trainee-empId" required></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem"><div class="form-group"><label>部门 *</label><input type="text" class="form-control" id="trainee-dept" required></div><div class="form-group"><label>职位 *</label><input type="text" class="form-control" id="trainee-position" required></div></div><div class="form-group"><label>入职日期 *</label><input type="date" class="form-control" id="trainee-joinDate" required></div><div class="form-group"><label>分配导师</label><select class="form-control" id="trainee-mentor"><option value="">-- 请选择 --</option></select></div><div class="form-group"><label>备注</label><textarea class="form-control" id="trainee-notes" rows="3"></textarea></div></form></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('trainee-modal')">取消</button><button class="btn btn-primary" onclick="saveTrainee()">保存</button></div></div></div>
+    <div class="modal-overlay" id="mentor-modal"><div class="modal"><div class="modal-header"><h3 id="mentor-modal-title">添加导师</h3><button class="modal-close" onclick="closeModal('mentor-modal')">×</button></div><div class="modal-body"><form id="mentor-form"><input type="hidden" id="mentor-id"><div class="form-group"><label>姓名 *</label><input type="text" class="form-control" id="mentor-name" required></div><div class="form-group"><label>工号 *</label><input type="text" class="form-control" id="mentor-empId" required></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem"><div class="form-group"><label>部门 *</label><input type="text" class="form-control" id="mentor-dept" required></div><div class="form-group"><label>职位 *</label><input type="text" class="form-control" id="mentor-position" required></div></div><div class="form-group"><label>专长领域</label><input type="text" class="form-control" id="mentor-expertise" placeholder="多个领域用逗号分隔"></div><div class="form-group"><label>简介</label><textarea class="form-control" id="mentor-bio" rows="3"></textarea></div></form></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('mentor-modal')">取消</button><button class="btn btn-primary" onclick="saveMentor()">保存</button></div></div></div>
+    <div class="modal-overlay" id="resource-modal"><div class="modal"><div class="modal-header"><h3 id="resource-modal-title">添加资源</h3><button class="modal-close" onclick="closeModal('resource-modal')">×</button></div><div class="modal-body"><form id="resource-form"><input type="hidden" id="resource-id"><div class="form-group"><label>资源名称 *</label><input type="text" class="form-control" id="resource-name" required></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem"><div class="form-group"><label>类型 *</label><select class="form-control" id="resource-type"><option value="doc">📄 文档</option><option value="video">🎬 视频</option><option value="link">🔗 链接</option></select></div><div class="form-group"><label>所属阶段</label><select class="form-control" id="resource-stage"><option value="all">通用资源</option></select></div></div><div class="form-group"><label>资源链接 *</label><input type="text" class="form-control" id="resource-url" required placeholder="URL或文件路径"></div><div class="form-group"><label>描述</label><textarea class="form-control" id="resource-desc" rows="3"></textarea></div></form></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('resource-modal')">取消</button><button class="btn btn-primary" onclick="saveResource()">保存</button></div></div></div>
+    <div class="modal-overlay" id="detail-modal"><div class="modal" style="max-width:800px"><div class="modal-header"><h3>👤 新人培训详情</h3><button class="modal-close" onclick="closeModal('detail-modal')">×</button></div><div class="modal-body" id="detail-content"></div><div class="modal-footer"><button class="btn btn-danger btn-sm" id="btn-revert" onclick="revertStage()">⬅ 退回上阶段</button><button class="btn btn-secondary" onclick="closeModal('detail-modal')">关闭</button><button class="btn btn-success btn-sm" id="btn-advance" onclick="advanceStage()">➡ 推进下阶段</button></div></div></div>
+<script>
+var STAGES=[
+{id:'onboarding',name:'入职报到',icon:'👋',duration:'1周',desc:'完成入职手续，融入公司环境',
+learn:['公司文化与价值观','组织架构与部门职责','办公环境与设施使用','行政流程（考勤、报销等）','IT系统账号与权限'],
+assess:['完成全部入职手续','通过环境熟悉度确认','独立完成日常行政操作']},
+{id:'basic',name:'基础培训',icon:'📖',duration:'2周',desc:'学习行业知识与公司业务基础',
+learn:['行业基础知识','公司产品/服务体系','业务流程与操作规范','客户服务标准','合规与风控要求'],
+assess:['基础知识测试≥80分','能独立讲解核心产品','通过合规知识考核']},
+{id:'skill',name:'技能培训',icon:'🔧',duration:'2-4周',desc:'岗位专业技能专项提升',
+learn:['岗位核心技能训练','业务工具与系统操作','案例分析与经验分享','跨部门协作流程','问题处理与应急响应'],
+assess:['技能实操考核通过','独立完成标准业务流程','通过导师综合评估']},
+{id:'practice',name:'实战演练',icon:'🎯',duration:'2-4周',desc:'在导师指导下进行真实业务实操',
+learn:['真实业务场景实操','客户沟通与关系维护','项目协作与交付','复盘总结与改进','独立问题分析与解决'],
+assess:['独立完成业务任务','客户/协作方满意度达标','导师阶段性评估合格']},
+{id:'independent',name:'独立上岗',icon:'🚀',duration:'持续跟踪',desc:'独立承担岗位职责，定期回访跟进',
+learn:['独立岗位作业','主动学习与自我提升','知识沉淀与经验分享','团队协作与文化建设'],
+assess:['连续4周独立达标','季度绩效评估合格','360度反馈良好']}
+];
+
+function D(k,d){try{return JSON.parse(localStorage.getItem('ts_'+k))||d}catch(e){return d}}
+function S(k,v){localStorage.setItem('ts_'+k,JSON.stringify(v))}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5)}
+function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
+
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+
+// nav
+document.querySelectorAll('.nav-btn[data-page]').forEach(function(b){
+b.addEventListener('click',function(){
+document.querySelectorAll('.nav-btn[data-page]').forEach(function(x){x.classList.remove('active')});
+b.classList.add('active');
+document.querySelectorAll('.page-content').forEach(function(x){x.classList.remove('active')});
+document.getElementById('page-'+b.dataset.page).classList.add('active');
+refresh();
+});
+});
+
+function refresh(){renderStats();renderDashboard();renderTrainees();renderStages();renderResources();renderMentors();updateFilters()}
+
+// stats
+function renderStats(){
+var t=D('trainees',[]),r=D('resources',[]),m=D('mentors',[]);
+var a=t.filter(function(x){return x.si<STAGES.length-1}).length;
+var c=t.filter(function(x){return x.si>=STAGES.length-1}).length;
+document.getElementById('stat-total').textContent=a;
+document.getElementById('stat-completed').textContent=c;
+document.getElementById('stat-resources').textContent=r.length;
+document.getElementById('stat-mentors').textContent=m.length;
+}
+
+// dashboard
+function renderDashboard(){
+var trainees=D('trainees',[]),mentors=D('mentors',[]),tb=document.getElementById('dashboard-trainees');
+if(!trainees.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="icon">📋</div><p>暂无新人档案</p></div></td></tr>';return}
+tb.innerHTML=trainees.map(function(t){
+var s=STAGES[t.si||0],pct=Math.round(((t.si||0)/(STAGES.length-1))*100);
+var mn=mentors.find(function(m){return m.id===t.mid});
+var badge=t.si>=STAGES.length-1?'<span class="badge badge-success">已结业</span>':'<span class="badge badge-primary">培训中</span>';
+return'<tr><td><strong>'+esc(t.name)+'</strong></td><td>'+esc(t.dept)+'</td><td><span class="badge badge-info">'+s.icon+' '+s.name+'</span></td><td><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div><small>'+pct+'%</small></td><td>'+(mn?esc(mn.name):'<span style="color:var(--text-secondary)">未分配</span>')+'</td><td>'+(t.jd||'-')+'</td><td>'+badge+' <button class="btn btn-sm btn-secondary" onclick="viewDetail(\''+t.id+'\')">查看</button></td></tr>'
+}).join('');
+}
+
+// trainees
+function renderTrainees(){
+var trainees=D('trainees',[]),mentors=D('mentors,[]');
+var q=(document.getElementById('search-trainee').value||'').toLowerCase();
+var f=trainees.filter(function(t){return!q||t.name.toLowerCase().indexOf(q)>-1||t.eid.indexOf(q)>-1||t.dept.toLowerCase().indexOf(q)>-1});
+var tb=document.getElementById('trainees-table');
+if(!f.length){tb.innerHTML='<tr><td colspan="9"><div class="empty-state"><div class="icon">👥</div><p>暂无数据</p></div></td></tr>';return}
+tb.innerHTML=f.map(function(t){
+var s=STAGES[t.si||0],mn=mentors.find(function(m){return m.id===t.mid});
+var badge=t.si>=STAGES.length-1?'<span class="badge badge-success">已结业</span>':'<span class="badge badge-primary">培训中</span>';
+return'<tr><td><strong>'+esc(t.name)+'</strong></td><td>'+esc(t.eid)+'</td><td>'+esc(t.dept)+'</td><td>'+esc(t.pos)+'</td><td>'+(t.jd||'-')+'</td><td><span class="badge badge-info">'+s.icon+' '+s.name+'</span></td><td>'+(mn?esc(mn.name):'-')+'</td><td>'+badge+'</td><td class="action-btns"><button class="btn btn-sm btn-primary" onclick="viewDetail(\''+t.id+'\')">查看</button><button class="btn btn-sm btn-secondary" onclick="editTrainee(\''+t.id+'\')">编辑</button><button class="btn btn-sm btn-danger" onclick="delTrainee(\''+t.id+'\')">删除</button></td></tr>'
+}).join('');
+}
+document.addEventListener('DOMContentLoaded',function(){
+var el=document.getElementById('search-trainee');
+if(el)el.addEventListener('input',renderTrainees);
+});
+
+function openTraineeModal(t){
+document.getElementById('trainee-modal-title').textContent=t?'编辑新人':'添加新人';
+document.getElementById('trainee-id').value=t?t.id:'';
+document.getElementById('trainee-name').value=t?t.name:'';
+document.getElementById('trainee-empId').value=t?t.eid:'';
+document.getElementById('trainee-dept').value=t?t.dept:'';
+document.getElementById('trainee-position').value=t?t.pos:'';
+document.getElementById('trainee-joinDate').value=t?t.jd:new Date().toISOString().split('T')[0];
+document.getElementById('trainee-notes').value=t?(t.notes||''):'';
+var sel=document.getElementById('trainee-mentor');
+sel.innerHTML='<option value="">-- 请选择 --</option>';
+D('mentors',[]).forEach(function(m){
+sel.innerHTML+='<option value="'+m.id+'" '+(t&&t.mid===m.id?'selected':'')+'>'+esc(m.name)+' ('+esc(m.pos)+')</option>';
+});
+document.getElementById('trainee-modal').classList.add('active');
+}
+
+function saveTrainee(){
+var id=document.getElementById('trainee-id').value;
+var name=document.getElementById('trainee-name').value.trim();
+var eid=document.getElementById('trainee-empId').value.trim();
+var dept=document.getElementById('trainee-dept').value.trim();
+var pos=document.getElementById('trainee-position').value.trim();
+var jd=document.getElementById('trainee-joinDate').value;
+var mid=document.getElementById('trainee-mentor').value;
+var notes=document.getElementById('trainee-notes').value.trim();
+if(!name||!eid||!dept||!pos||!jd){alert('请填写必填项');return}
+var ts=D('trainees',[]);
+if(id){ts=ts.map(function(t){return t.id===id?{id:t.id,name:name,eid:eid,dept:dept,pos:pos,jd:jd,mid:mid,notes:notes,si:t.si,log:t.log,ca:t.ca}:t})}
+else{ts.push({id:uid(),name:name,eid:eid,dept:dept,pos:pos,jd:jd,mid:mid,notes:notes,si:0,log:[{s:0,d:new Date().toISOString().split('T')[0],a:'入职'}],ca:new Date().toISOString()})}
+S('trainees',ts);closeModal('trainee-modal');refresh();
+}
+
+function editTrainee(id){var t=D('trainees',[]).find(function(x){return x.id===id});if(t)openTraineeModal(t)}
+function delTrainee(id){if(!confirm('确认删除？'))return;S('trainees',D('trainees',[]).filter(function(t){return t.id!==id}));refresh()}
+
+// detail view
+var currentDetailId=null;
+function viewDetail(id){
+currentDetailId=id;
+var t=D('trainees',[]).find(function(x){return x.id===id});
+if(!t)return;
+var mentors=D('mentors',[]),mn=mentors.find(function(m){return m.id===t.mid});
+var cs=STAGES[t.si||0],pct=Math.round(((t.si||0)/(STAGES.length-1))*100);
+var h='<div style="display:flex;gap:1.5rem;margin-bottom:1.5rem;align-items:center"><div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;flex-shrink:0">'+t.name.charAt(0)+'</div><div><h2 style="margin-bottom:.25rem">'+esc(t.name)+' <span class="badge '+(t.si>=STAGES.length-1?'badge-success':'badge-primary')+'">'+(t.si>=STAGES.length-1?'已结业':'培训中')+'</span></h2><p style="color:var(--text-secondary)">'+esc(t.pos)+' · '+esc(t.dept)+'</p></div></div>';
+h+='<div class="detail-grid"><div class="detail-item"><label>工号</label><span>'+esc(t.eid)+'</span></div><div class="detail-item"><label>入职日期</label><span>'+(t.jd||'-')+'</span></div><div class="detail-item"><label>导师</label><span>'+(mn?esc(mn.name)+' ('+esc(mn.pos)+')':'未分配')+'</span></div><div class="detail-item"><label>当前阶段</label><span>'+cs.icon+' '+cs.name+'（'+cs.duration+'）</span></div><div class="detail-item"><label>进度</label><span><div class="progress-bar" style="margin-top:4px"><div class="progress-fill" style="width:'+pct+'%"></div></div><small>'+pct+'%</small></span></div><div class="detail-item"><label>阶段进展</label><span>'+(t.si+1)+' / '+STAGES.length+'</span></div></div>';
+
+// stage progress
+h+='<div style="margin-top:1.5rem"><h4 style="margin-bottom:1rem">📋 阶段进度</h4>';
+h+='<div style="display:flex;gap:0;position:relative;margin-bottom:1rem">';
+for(var i=0;i<STAGES.length;i++){
+var cls=i<t.si?'completed':i===t.si?'active':'';
+var col=i<t.si?'var(--success)':i===t.si?'var(--primary)':'var(--border)';
+h+='<div style="flex:1;text-align:center;padding:.5rem;position:relative">';
+if(i<STAGES.length-1)h+='<div style="position:absolute;top:50%;right:0;width:50%;height:3px;background:'+col+';z-index:0;transform:translateY(-50%)"></div>';
+if(i>0){var pcol=i-1<t.si?'var(--success)':'var(--border)';h+='<div style="position:absolute;top:50%;left:0;width:50%;height:3px;background:'+pcol+';z-index:0;transform:translateY(-50%)"></div>'}
+h+='<div style="width:36px;height:36px;border-radius:50%;background:'+(i<=t.si?(i<t.si?'var(--success)':'linear-gradient(135deg,var(--primary),var(--secondary))'):'var(--bg-card)')+';border:3px solid '+(i<=t.si?(i<t.si?'var(--success)':'var(--primary)'):'var(--border)')+';display:inline-flex;align-items:center;justify-content:center;font-size:1rem;color:'+(i<=t.si?'#fff':'var(--text-secondary)')+';position:relative;z-index:1">'+(i<t.si?'✓':STAGES[i].icon)+'</div>';
+h+='<div style="font-size:.75rem;margin-top:.5rem;color:'+(i===t.si?'var(--primary)':i<t.si?'var(--success)':'var(--text-secondary)')+'">'+STAGES[i].name+'</div></div>';
+}
+h+='</div>';
+
+// current stage info
+h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem"><div class="stage-section"><h4>📖 学习内容</h4><ul>'+cs.learn.map(function(x){return'<li><span class="ck">✓</span>'+esc(x)+'</li>'}).join('')+'</ul></div><div class="stage-section"><h4>🎯 考核标准</h4><ul>'+cs.assess.map(function(x){return'<li><span class="ck">✓</span>'+esc(x)+'</li>'}).join('')+'</ul></div></div>';
+
+// stage log
+if(t.log&&t.log.length){
+h+='<div class="stage-section" style="margin-top:1rem"><h4>📝 阶段记录</h4><table><thead><tr><th>阶段</th><th>日期</th><th>操作</th></tr></thead><tbody>';
+t.log.forEach(function(l){h+='<tr><td>'+STAGES[l.s].icon+' '+STAGES[l.s].name+'</td><td>'+l.d+'</td><td>'+esc(l.a)+'</td></tr>'});
+h+='</tbody></table></div>';}
+
+h+='</div>';
+document.getElementById('detail-content').innerHTML=h;
+document.getElementById('btn-advance').style.display=t.si>=STAGES.length-1?'none':'inline-flex';
+document.getElementById('btn-revert').style.display=t.si<=0?'none':'inline-flex';
+document.getElementById('detail-modal').classList.add('active');
+}
+
+function advanceStage(){
+if(!currentDetailId)return;
+var ts=D('trainees',[]);
+var t=ts.find(function(x){return x.id===currentDetailId});
+if(!t||t.si>=STAGES.length-1)return;
+t.si++;if(!t.log)t.log=[];
+t.log.push({s:t.si,d:new Date().toISOString().split('T')[0],a:'推进到 '+STAGES[t.si].name});
+S('trainees',ts);
+if(t.si>=STAGES.length-1)viewDetail(currentDetailId);
+else viewDetail(currentDetailId);
+refresh();
+}
+
+function revertStage(){
+if(!currentDetailId)return;
+var ts=D('trainees',[]);
+var t=ts.find(function(x){return x.id===currentDetailId});
+if(!t||t.si<=0)return;
+t.si--;if(!t.log)t.log=[];
+t.log.push({s:t.si,d:new Date().toISOString().split('T')[0],a:'退回到 '+STAGES[t.si].name});
+S('trainees',ts);viewDetail(currentDetailId);refresh();
+}
+
+// stages
+function renderStages(){
+var tl=document.getElementById('stages-timeline');
+tl.innerHTML=STAGES.map(function(s,i){
+return'<div class="stage-item active" onclick="showStageDetail('+i+')"><div class="stage-circle">'+s.icon+'</div><div class="stage-label">'+s.name+'</div><div style="font-size:.75rem;color:var(--text-secondary);margin-top:

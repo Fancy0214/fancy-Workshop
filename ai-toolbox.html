@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧰 AI 工具箱 — 精选 AI 工具推荐</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#2B6CB0;--primary-light:#3B82C4;--primary-dark:#1E5A9E;
+  --primary-bg:#EBF4FF;--primary-50:#F0F7FF;
+  --accent:#F59E0B;--accent-light:#FBBF24;
+  --star-filled:#F59E0B;--star-empty:#D1D5DB;
+  --bg:#F7F9FC;--white:#FFFFFF;--border:#E2E8F0;
+  --text-primary:#1A202C;--text-secondary:#4A5568;--text-muted:#718096;
+  --shadow-sm:0 1px 3px rgba(43,108,176,0.08);--shadow:0 4px 16px rgba(43,108,176,0.1);
+  --shadow-lg:0 10px 40px rgba(43,108,176,0.12);--shadow-hover:0 12px 32px rgba(43,108,176,0.18);
+  --radius:16px;--radius-sm:10px;--radius-xs:6px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text-primary);line-height:1.6;min-height:100vh}
+
+/* ── Header ── */
+.header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 60%,#1a4f8a 100%);color:#fff;padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(43,108,176,0.3)}
+.header-inner{max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.header-left{display:flex;align-items:center;gap:14px}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.85);text-decoration:none;font-size:14px;font-weight:500;padding:8px 16px;border-radius:var(--radius-xs);background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);transition:var(--transition);white-space:nowrap}
+.back-link:hover{background:rgba(255,255,255,0.2);color:#fff;transform:translateX(-2px)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:42px;height:42px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;backdrop-filter:blur(10px)}
+.logo-text h1{font-size:20px;font-weight:700;letter-spacing:-0.3px}
+.logo-text p{font-size:12px;opacity:0.8;font-weight:400}
+.fav-count{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);padding:6px 14px;border-radius:var(--radius-xs);font-size:13px;font-weight:500;color:#fff;cursor:pointer;transition:var(--transition);white-space:nowrap}
+.fav-count:hover{background:rgba(255,255,255,0.25)}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(180deg,var(--primary-bg) 0%,var(--bg) 100%);padding:48px 24px 32px;text-align:center}
+.hero h2{font-size:clamp(26px,4vw,38px);font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero p{color:var(--text-secondary);font-size:clamp(14px,2vw,17px);max-width:600px;margin:0 auto 32px}
+.stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.stat-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-secondary)}
+.stat-num{font-size:24px;font-weight:700;color:var(--primary)}
+
+/* ── Controls ── */
+.controls{max-width:1280px;margin:0 auto;padding:0 24px 24px}
+.search-box{position:relative;max-width:520px;margin:0 auto 20px}
+.search-box input{width:100%;padding:14px 20px 14px 48px;border:2px solid var(--border);border-radius:50px;font-size:15px;font-family:var(--font);background:var(--white);color:var(--text-primary);outline:none;transition:var(--transition);box-shadow:var(--shadow-sm)}
+.search-box input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(43,108,176,0.1)}
+.search-box input::placeholder{color:var(--text-muted)}
+.search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--text-muted)}
+.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;border:none;background:var(--border);color:var(--text-muted);cursor:pointer;font-size:14px;display:none;align-items:center;justify-content:center;transition:var(--transition)}
+.search-clear.show{display:flex}
+.search-clear:hover{background:#CBD5E0;color:var(--text-primary)}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.filter-btn{padding:8px 18px;border:2px solid var(--border);border-radius:50px;background:var(--white);color:var(--text-secondary);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;transition:var(--transition);white-space:nowrap}
+.filter-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-50)}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 10px rgba(43,108,176,0.3)}
+.filter-btn .count{display:inline-block;min-width:18px;height:18px;line-height:18px;text-align:center;font-size:11px;font-weight:600;border-radius:50px;margin-left:4px;padding:0 5px}
+.filter-btn.active .count{background:rgba(255,255,255,0.25)}
+
+/* ── Grid ── */
+.grid-wrap{max-width:1280px;margin:0 auto;padding:0 24px 60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.empty-state{text-align:center;padding:80px 20px;color:var(--text-muted);grid-column:1/-1}
+.empty-state .icon{font-size:56px;margin-bottom:16px;display:block}
+.empty-state h3{font-size:20px;color:var(--text-secondary);margin-bottom:8px}
+
+/* ── Card ── */
+.card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:var(--transition);display:flex;flex-direction:column;position:relative}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(43,108,176,0.2)}
+.card-accent{height:4px;background:linear-gradient(90deg,var(--primary),var(--primary-light))}
+.card-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.card-info{flex:1;min-width:0}
+.card-name{font-size:18px;font-weight:700;color:var(--text-primary);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card-name .emoji{font-size:24px;flex-shrink:0}
+.card-cat{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.cat-text{background:#EBF5FF;color:#2B6CB0}
+.cat-data{background:#F0FFF4;color:#276749}
+.cat-image{background:#FFF5F5;color:#C53030}
+.cat-meeting{background:#FFFFF0;color:#B7791F}
+.cat-code{background:#F5F0FF;color:#6B46C1}
+.cat-all{background:#EBF4FF;color:#2B6CB0}
+.fav-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:var(--transition);flex-shrink:0;color:var(--star-empty)}
+.fav-btn:hover{border-color:#F59E0B;transform:scale(1.1)}
+.fav-btn.active{background:#FEF3C7;border-color:#F59E0B;color:#F59E0B}
+
+.card-desc{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px}
+
+.features{margin-bottom:14px;flex:1}
+.features h4{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.features ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.features li{font-size:12px;padding:4px 10px;background:var(--bg);border-radius:50px;color:var(--text-secondary);font-weight:500;border:1px solid var(--border)}
+
+.card-scenes{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:flex;align-items:flex-start;gap:6px}
+.card-scenes .label{font-weight:600;color:var(--text-muted);flex-shrink:0;font-size:12px}
+
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--border);margin-top:auto}
+.price-tag{font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:4px}
+.price-tag .free{color:#276749;font-weight:600}
+.price-tag .paid{color:var(--primary);font-weight:600}
+.price-tag .freemium{color:#B7791F;font-weight:600}
+.stars{display:flex;gap:2px;font-size:14px}
+.stars .filled{color:var(--star-filled)}
+.stars .empty{color:var(--star-empty)}
+.stars-label{font-size:12px;color:var(--text-muted);margin-left:6px;font-weight:500}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text-primary);color:#fff;padding:12px 24px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;z-index:999;transition:transform 0.3s ease;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── Scroll-to-top ── */
+.scroll-top{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);opacity:0;visibility:hidden;transition:var(--transition);z-index:90}
+.scroll-top.show{opacity:1;visibility:visible}
+.scroll-top:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:32px 24px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);background:var(--white)}
+.footer a{color:var(--primary);text-decoration:none;font-weight:500}
+.footer a:hover{text-decoration:underline}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .header-inner{padding:12px 16px}
+  .logo-text h1{font-size:16px}
+  .logo-text p{display:none}
+  .back-link span{display:none}
+  .back-link{padding:8px 10px}
+  .hero{padding:32px 16px 24px}
+  .hero h2{font-size:22px}
+  .stats{gap:20px}
+  .stat-num{font-size:20px}
+  .controls{padding:0 16px 16px}
+  .search-box input{padding:12px 16px 12px 42px;font-size:14px}
+  .grid-wrap{padding:0 16px 40px}
+  .grid{grid-template-columns:1fr;gap:14px}
+  .filter-btn{padding:6px 14px;font-size:12px}
+  .card-body{padding:16px}
+}
+@media(max-width:480px){
+  .fav-count span{display:none}
+  .fav-count{padding:6px 8px}
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeInUp 0.4s ease forwards;opacity:0}
+.card:nth-child(1){animation-delay:0.02s}
+.card:nth-child(2){animation-delay:0.04s}
+.card:nth-child(3){animation-delay:0.06s}
+.card:nth-child(4){animation-delay:0.08s}
+.card:nth-child(5){animation-delay:0.10s}
+.card:nth-child(6){animation-delay:0.12s}
+.card:nth-child(7){animation-delay:0.14s}
+.card:nth-child(8){animation-delay:0.16s}
+.card:nth-child(9){animation-delay:0.18s}
+.card:nth-child(10){animation-delay:0.20s}
+.card:nth-child(11){animation-delay:0.22s}
+.card:nth-child(12){animation-delay:0.24s}
+.card:nth-child(13){animation-delay:0.26s}
+.card:nth-child(14){animation-delay:0.28s}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <a href="../fancy-workshop.html" class="back-link">← <span>返回主页</span></a>
+      <div class="logo">
+        <div class="logo-icon">🧰</div>
+        <div class="logo-text">
+          <h1>AI 工具箱</h1>
+          <p>精选 AI 工具推荐与速查</p>
+        </div>
+      </div>
+    </div>
+    <button class="fav-count" id="favToggle" onclick="toggleFavFilter()">
+      ⭐ <span id="favText">收藏夹</span>
+      <strong id="favBadge" style="margin-left:2px">0</strong>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <h2>🚀 探索最实用的 AI 工具</h2>
+  <p>精心筛选各类 AI 工具，助力你的工作与创作效率翻倍。按需筛选、一键收藏，找到最适合你的 AI 伙伴。</p>
+  <div class="stats">
+    <div class="stat-item"><span class="stat-num" id="totalTools">0</span> 精选工具</div>
+    <div class="stat-item"><span class="stat-num" id="totalCats">0</span> 工具分类</div>
+    <div class="stat-item"><span class="stat-num">⭐ 4.6</span> 平均评分</div>
+  </div>
+</section>
+
+<!-- Controls -->
+<section class="controls">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="搜索工具名称、分类或功能…" oninput="handleSearch()">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+  </div>
+  <div class="filters" id="filterBar"></div>
+</section>
+
+<!-- Grid -->
+<div class="grid-wrap">
+  <div class="grid" id="toolGrid"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Scroll to top -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>🧰 AI 工具箱 · 由 OpenClaw 整理推荐 · 共收录 <span id="footerCount">0</span> 款工具</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+const TOOLS = [
+  {
+    id:"chatgpt", name:"ChatGPT", emoji:"💬", category:"文案生成",
+    desc:"由 OpenAI 推出的通用 AI 对话助手，支持文本生成、代码编写、数据分析、图像理解等多模态交互，是目前全球用户量最大的 AI 应用。",
+    features:["多轮智能对话","GPT-4o 多模态","联网搜索","文件分析","DALL·E 绘图"],
+    scenes:"文案创作、知识问答、学习辅助、编程调试",
+    price:"freemium", priceLabel:"免费 + Pro $20/月",
+    rating:5
+  },
+  {
+    id:"claude", name:"Claude", emoji:"🤖", category:"文案生成",
+    desc:"Anthropic 推出的 AI 助手，以长文本理解、安全性和准确性著称。擅长分析长文档、撰写报告、代码审查等复杂任务，上下文窗口高达 200K。",
+    features:["超长上下文 (200K)","精细文案写作","代码审查与生成","多文件分析","Artifacts 展示"],
+    scenes:"长文档分析、学术论文、报告撰写、技术文档",
+    price:"freemium", priceLabel:"免费 + Pro $20/月",
+    rating:5
+  },
+  {
+    id:"midjourney", name:"Midjourney", emoji:"🎨", category:"图像设计",
+    desc:"领先的 AI 图像生成工具，通过文字描述即可创建高质量艺术作品。风格多样，从写实摄影到抽象艺术，广泛用于设计、营销和创意项目。",
+    features:["文字生成图像","多风格输出","高清放大","图片混合","局部重绘"],
+    scenes:"品牌视觉、社交媒体素材、概念设计、插画创作",
+    price:"paid", priceLabel:"基础 $10/月起",
+    rating:5
+  },
+  {
+    id:"notion-ai", name:"Notion AI", emoji:"📝", category:"会议效率",
+    desc:"深度集成在 Notion 中的 AI 写作与组织助手，可自动总结会议纪要、生成大纲、翻译内容、提取关键信息，无缝融入知识管理工作流。",
+    features:["会议纪要摘要","智能写作助手","内容自动整理","多语言翻译","表格数据问答"],
+    scenes:"知识管理、团队协作、会议记录整理、项目文档",
+    price:"freemium", priceLabel:"附加功能 $10/月",
+    rating:4
+  },
+  {
+    id:"feishu", name:"飞书智能伙伴", emoji:"🐧", category:"会议效率",
+    desc:"飞书内置的 AI 智能助手，提供智能摘要、实时翻译、自动跟进待办等功能，深度整合文档、会议、通讯录，专为中文办公场景优化。",
+    features:["会议实时记录","智能文档问答","飞书多维表格","自动待办生成","知识库检索"],
+    scenes:"企业协作、会议纪要、文档管理、任务追踪",
+    price:"freemium", priceLabel:"基础免费，企业版按需",
+    rating:4
+  },
+  {
+    id:"tongyi", name:"通义千问", emoji:"🌐", category:"文案生成",
+    desc:"阿里巴巴推出的通用大模型，支持文本、图像、音频多模态。中文理解能力突出，提供代码助手、文档分析、图像生成等丰富功能，生态接入广泛。",
+    features:["中文深度优化","通义万相绘图","Qwen-Coder","文档智能分析","API 生态丰富"],
+    scenes:"中文写作、企业应用开发、图像创作、数据分析",
+    price:"free", priceLabel:"免费使用",
+    rating:4
+  },
+  {
+    id:"wenxin", name:"文心一言", emoji:"📖", category:"文案生成",
+    desc:"百度推出的大模型对话产品，依托文心大模型，擅长中文创作、知识问答和商业分析。与百度搜索、文库等产品深度整合，企业版功能强大。",
+    features:["中文内容创作","商业数据洞察","文心一格绘图","企业知识库","插件扩展生态"],
+    scenes:"营销文案、企业分析、内容创作、知识问答",
+    price:"freemium", priceLabel:"基础免费，高级付费",
+    rating:4
+  },
+  {
+    id:"kimi", name:"Kimi", emoji:"🌙", category:"数据分析",
+    desc:"月之暗面推出的 AI 助手，以超长上下文和文件处理能力著称。支持 200 万字长文本处理，擅长阅读长文档、研报分析和信息整理。",
+    features:["200万字超长上下文","多文件深度阅读","联网搜索","精准引用溯源","研报分析"],
+    scenes:"研报阅读、长文分析、学术研究、信息整理",
+    price:"free", priceLabel:"免费使用",
+    rating:5
+  },
+  {
+    id:"doubao", name:"豆包", emoji:"🫘", category:"文案生成",
+    desc:"字节跳动推出的 AI 智能助手，集成在抖音、番茄小说等生态中。擅长对话聊天、文本创作、翻译等，提供便捷的语音交互和个性化体验。",
+    features:["多端便捷使用","语音实时对话","文本智能创作","角色扮演","个性化推荐"],
+    scenes:"日常聊天、内容创作、学习辅助、娱乐互动",
+    price:"free", priceLabel:"免费使用",
+    rating:4
+  },
+  {
+    id:"coze", name:"Coze", emoji:"⚡", category:"编程辅助",
+    desc:"字节跳动推出的 AI Bot 开发平台，支持零代码/低代码创建自定义 AI 机器人。可集成插件、知识库和工作流，一键发布到多平台。",
+    features:["零代码 Bot 创建","插件市场","知识库接入","工作流编排","多平台一键发布"],
+    scenes:"AI 应用开发、企业自动化、客服机器人、个人助手",
+    price:"free", priceLabel:"免费使用",
+    rating:5
+  },
+  {
+    id:"canva-ai", name:"Canva AI", emoji:"🖼️", category:"图像设计",
+    desc:"Canva 推出的 AI 设计工具套件，包含 AI 图片生成、魔法擦除、智能排版等功能。让非设计师也能快速创建专业级视觉内容。",
+    features:["Magic Design 生成","AI 背景替换","魔法擦除工具","智能排版建议","品牌套件"],
+    scenes:"社交媒体图片、演示文稿、海报设计、品牌素材",
+    price:"freemium", priceLabel:"免费 + Pro $13/月",
+    rating:4
+  },
+  {
+    id:"gamma", name:"Gamma", emoji:"📊", category:"会议效率",
+    desc:"AI 驱动的演示文稿生成工具，输入主题即可自动创建精美 PPT。支持多种模板、实时协作编辑，可导出为 PDF 或网页，大幅提升汇报效率。",
+    features:["一键生成 PPT","AI 智能排版","多种精美模板","实时协作编辑","网页/PDF 导出"],
+    scenes:"商业汇报、项目提案、培训课件、营销展示",
+    price:"freemium", priceLabel:"免费 + Plus $10/月",
+    rating:4
+  },
+  {
+    id:"cursor", name:"Cursor", emoji:"💻", category:"编程辅助",
+    desc:"基于 VS Code 的 AI 编程编辑器，深度集成大语言模型。支持代码自动补全、智能重构、自然语言编程和跨文件代码理解，极大提升开发效率。",
+    features:["AI 代码补全","自然语言编程","跨文件理解","智能代码重构","内置终端调试"],
+    scenes:"软件开发、代码重构、调试排错、快速原型",
+    price:"freemium", priceLabel:"免费 + Pro $20/月",
+    rating:5
+  },
+  {
+    id:"stable-diffusion", name:"Stable Diffusion", emoji:"🎭", category:"图像设计",
+    desc:"开源 AI 图像生成模型，可本地部署运行。高度可定制，支持 LoRA 模型微调、ControlNet 精细控制，拥有活跃的社区和丰富的模型生态。",
+    features:["完全开源免费","本地部署运行","LoRA/ControlNet","ComfyUI 工作流","海量社区模型"],
+    scenes:"艺术创作、角色设计、游戏素材、模型训练",
+    price:"free", priceLabel:"免费开源",
+    rating:4
+  }
+];
+
+const CATEGORIES = [
+  { key:"all", label:"全部", icon:"🔍" },
+  { key:"文案生成", label:"文案生成", icon:"✍️" },
+  { key:"数据分析", label:"数据分析", icon:"📈" },
+  { key:"图像设计", label:"图像设计", icon:"🎨" },
+  { key:"会议效率", label:"会议效率", icon:"📋" },
+  { key:"编程辅助", label:"编程辅助", icon:"💻" }
+];
+
+const CAT_CLASS = {
+  "文案生成":"cat-text", "数据分析":"cat-data", "图像设计":"cat-image",
+  "会议效率":"cat-meeting", "编程辅助":"cat-code"
+};
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let currentFilter = "all";
+let searchQuery = "";
+let favorites = JSON.parse(localStorage.getItem("ai-toolbox-favs") || "[]");
+let showFavOnly = false;
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function init() {
+  renderFilters();
+  renderGrid();
+  updateStats();
+  updateFavBadge();
+  setupScrollListener();
+}
+
+function renderFilters() {
+  const bar = document.getElementById("filterBar");
+  bar.innerHTML = CATEGORIES.map(cat => {
+    const count = cat.key === "all" ? TOOLS.length : TOOLS.filter(t => t.category === cat.key).length;
+    return `<button class="filter-btn${currentFilter===cat.key?' active':''}" onclick="setFilter('${cat.key}')">
+      ${cat.icon} ${cat.label} <span class="count">${count}</span>
+    </button>`;
+  }).join("");
+}
+
+function renderGrid() {
+  const grid = document.getElementById("toolGrid");
+  let list = [...TOOLS];
+
+  // Filter
+  if (showFavOnly) {
+    list = list.filter(t => favorites.includes(t.id));
+  } else if (currentFilter !== "all") {
+    list = list.filter(t => t.category === currentFilter);
+  }
+
+  // Search
+  if (searchQuery.trim()) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(t =>
+      t.name.toLowerCase().includes(q) ||
+      t.category.includes(q) ||
+      t.desc.includes(q) ||
+      t.features.some(f => f.toLowerCase().includes(q)) ||
+      t.scenes.includes(q)
+    );
+  }
+
+  if (list.length === 0) {
+    grid.innerHTML = `<div class="empty-state">
+      <span class="icon">${showFavOnly ? '⭐' : '🔍'}</span>
+      <h3>${showFavOnly ? '还没有收藏的工具' : '没有找到匹配的工具'}</h3>
+      <p>${showFavOnly ? '点击工具卡片上的 ⭐ 按钮收藏喜欢的工具' : '试试其他关键词或切换分类'}</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(tool => {
+    const isFav = favorites.includes(tool.id);
+    const catCls = CAT_CLASS[tool.category] || "cat-all";
+    const stars = renderStars(tool.rating);
+    const priceClass = tool.price === "free" ? "free" : tool.price === "paid" ? "paid" : "freemium";
+    const priceIcon = tool.price === "free" ? "🆓" : tool.price === "paid" ? "💰" : "🎁";
+
+    return `<div class="card">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="card-info">
+            <div class="card-name"><span class="emoji">${tool.emoji}</span>${tool.name}</div>
+            <span class="card-cat ${catCls}">${tool.category}</span>
+          </div>
+          <button class="fav-btn${isFav?' active':''}" onclick="toggleFav('${tool.id}')" title="${isFav?'取消收藏':'添加收藏'}">
+            ${isFav ? '★' : '☆'}
+          </button>
+        </div>
+        <p class="card-desc">${tool.desc}</p>
+        <div class="features">
+          <h4>🛠 核心功能</h4>
+          <ul>${tool.features.map(f => `<li>${f}</li>`).join("")}</ul>
+        </div>
+        <div class="card-scenes">
+          <span class="label">🎯 场景</span>
+          <span>${tool.scenes}</span>
+        </div>
+        <div class="card-footer">
+          <span class="price-tag">${priceIcon} <span class="${priceClass}">${tool.priceLabel}</span></span>
+          <div style="display:flex;align-items:center">
+            <div class="stars">${stars}</div>
+            <span class="stars-label">${tool.rating}.0</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderStars(n) {
+  let s = "";
+  for (let i = 1; i <= 5; i++) {
+    s += `<span class="${i <= n ? 'filled' : 'empty'}">★</span>`;
+  }
+  return s;
+}
+
+// ═══════════════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════════════
+function setFilter(cat) {
+  currentFilter = cat;
+  showFavOnly = false;
+  document.getElementById("favToggle").classList.remove("active");
+  renderFilters();
+  renderGrid();
+}
+
+function handleSearch() {
+  searchQuery = document.getElementById("searchInput").value;
+  document.getElementById("searchClear").classList.toggle("show", searchQuery.length > 0);
+  renderGrid();
+}
+
+function clearSearch() {
+  document.getElementById("searchInput").value = "";
+  searchQuery = "";
+  document.getElementById("searchClear").classList.remove("show");
+  renderGrid();
+}
+
+function toggleFav(id) {
+  const idx = favorites.indexOf(id);
+  if (idx === -1) {
+    favorites.push(id);
+    showToast("⭐ 已收藏");
+  } else {
+    favorites.splice(idx, 1);
+    showToast("取消收藏");
+  }
+  localStorage.setItem("ai-toolbox-favs", JSON.stringify(favorites));
+  updateFavBadge();
+  renderGrid();
+}
+
+function toggleFavFilter() {
+  showFavOnly = !showFavOnly;
+  document.getElementById("favToggle").classList.toggle("active", showFavOnly);
+  if (showFavOnly) {
+    currentFilter = "all";
+    renderFilters();
+  }
+  renderGrid();
+}
+
+function updateFavBadge() {
+  document.getElementById("favBadge").textContent = favorites.length;
+  document.getElementById("favText").textContent = showFavOnly ? "显示全部" : "收藏夹";
+}
+
+function updateStats() {
+  document.getElementById("totalTools").textContent = TOOLS.length;
+  const cats = [...new Set(TOOLS.map(t => t.category))];
+  document.getElementById("totalCats").textContent = cats.length;
+  document.getElementById("footerCount").textContent = TOOLS.length;
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+function setupScrollListener() {
+  const btn = document.getElementById("scrollTop");
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("show", window.scrollY > 400);
+  });
+}
+
+// Init
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绩效面谈工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#EBF4FF 0%,#BEE3F8 100%);min-height:100vh;padding:20px;color:#2D3748}
+        .container{max-width:1200px;margin:0 auto}
+        .header{background:#fff;padding:20px 30px;border-radius:16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(43,108,176,.1)}
+        .back-link{display:flex;align-items:center;gap:8px;color:#2B6CB0;text-decoration:none;font-weight:500;transition:all .3s}
+        .back-link:hover{color:#1A4B8C;transform:translateX(-3px)}
+        .page-title{font-size:24px;font-weight:700;color:#1A365D;display:flex;align-items:center;gap:12px}
+        .header-actions{display:flex;gap:10px}
+        .btn{padding:10px 20px;border-radius:10px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;transition:all .3s;display:inline-flex;align-items:center;gap:8px;font-size:14px}
+        .btn-primary{background:linear-gradient(135deg,#2B6CB0,#3182CE);color:#fff}
+        .btn-primary:hover{background:linear-gradient(135deg,#1A4B8C,#2B6CB0);transform:translateY(-2px);box-shadow:0 4px 12px rgba(43,108,176,.3)}
+        .btn-secondary{background:#EDF2F7;color:#4A5568}
+        .btn-secondary:hover{background:#E2E8F0}
+        .btn-success{background:linear-gradient(135deg,#38A169,#48BB78);color:#fff}
+        .btn-success:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(56,161,105,.3)}
+        .btn-danger{background:linear-gradient(135deg,#E53E3E,#FC8181);color:#fff}
+        .btn-danger:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(229,62,62,.3)}
+        .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+        .steps-indicator{background:#fff;padding:25px 30px;border-radius:16px;margin-bottom:20px;box-shadow:0 4px 20px rgba(43,108,176,.1)}
+        .steps{display:flex;justify-content:space-between;position:relative}
+        .steps::before{content:'';position:absolute;top:20px;left:40px;right:40px;height:3px;background:#E2E8F0;z-index:0}
+        .step{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;cursor:pointer;transition:all .3s}
+        .step-circle{width:40px;height:40px;border-radius:50%;background:#E2E8F0;display:flex;align-items:center;justify-content:center;font-weight:600;color:#718096;margin-bottom:10px;transition:all .3s;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+        .step.active .step-circle{background:linear-gradient(135deg,#2B6CB0,#3182CE);color:#fff;transform:scale(1.1);box-shadow:0 4px 15px rgba(43,108,176,.4)}
+        .step.completed .step-circle{background:linear-gradient(135deg,#38A169,#48BB78);color:#fff}
+        .step-label{font-size:12px;font-weight:500;color:#718096;text-align:center;transition:all .3s}
+        .step.active .step-label,.step.completed .step-label{color:#2D3748;font-weight:600}
+        .main-content{display:grid;grid-template-columns:1fr 380px;gap:20px}
+        .content-card{background:#fff;padding:30px;border-radius:16px;box-shadow:0 4px 20px rgba(43,108,176,.1)}
+        .step-content{display:none}
+        .step-content.active{display:block;animation:fadeIn .3s ease}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .section-title{font-size:20px;font-weight:700;color:#1A365D;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #E2E8F0;display:flex;align-items:center;gap:10px}
+        .section-title i{color:#2B6CB0}
+        .template-box{background:linear-gradient(135deg,#EBF8FF,#BEE3F8);border-left:4px solid #2B6CB0;padding:20px;border-radius:0 12px 12px 0;margin-bottom:20px}
+        .template-box h4{color:#1A4B8C;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:15px}
+        .template-box ul{margin-left:20px;color:#2D3748;line-height:1.8}
+        .template-box li{margin-bottom:8px}
+        .tips-box{background:linear-gradient(135deg,#FEF5E7,#FED7AA);border-left:4px solid #DD6B20;padding:20px;border-radius:0 12px 12px 0;margin-bottom:20px}
+        .tips-box h4{color:#C05621;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:15px}
+        .tips-box ul{margin-left:20px;color:#744210;line-height:1.8}
+        .form-group{margin-bottom:20px}
+        .form-group label{display:block;font-weight:600;color:#4A5568;margin-bottom:8px;font-size:14px}
+        .form-control{width:100%;padding:12px 15px;border:2px solid #E2E8F0;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;transition:all .3s}
+        .form-control:focus{outline:none;border-color:#2B6CB0;box-shadow:0 0 0 3px rgba(43,108,176,.1)}
+        textarea.form-control{min-height:120px;resize:vertical}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .rating-group{display:flex;gap:10px;margin-top:10px}
+        .rating-option{flex:1;padding:15px 8px;border:2px solid #E2E8F0;border-radius:10px;text-align:center;cursor:pointer;transition:all .3s}
+        .rating-option:hover{border-color:#2B6CB0;background:#EBF8FF}
+        .rating-option.selected{border-color:#2B6CB0;background:linear-gradient(135deg,#2B6CB0,#3182CE);color:#fff}
+        .rating-option .score{font-size:24px;font-weight:700}
+        .rating-option .label{font-size:11px;margin-top:5px}
+        .smart-section{background:#F7FAFC;padding:20px;border-radius:12px;margin-bottom:15px}
+        .smart-header{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+        .smart-letter{display:inline-flex;width:28px;height:28px;align-items:center;justify-content:center;background:#2B6CB0;color:#fff;border-radius:50%;font-weight:700;margin-right:5px;flex-shrink:0}
+        .sidebar-card{position:sticky;top:20px}
+        .history-item{background:#F7FAFC;padding:15px;border-radius:10px;margin-bottom:10px;border-left:3px solid #2B6CB0;transition:all .3s;cursor:pointer}
+        .history-item:hover{background:#EDF2F7;transform:translateX(3px)}
+        .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .history-name{font-weight:600;color:#2D3748}
+        .history-date{font-size:12px;color:#718096}
+        .history-stage{font-size:12px;background:#EBF8FF;color:#2B6CB0;padding:3px 10px;border-radius:10px;display:inline-block}
+        .history-score{margin-top:8px;font-size:13px;color:#4A5568}
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+        .modal.active{display:flex}
+        .modal-content{background:#fff;padding:30px;border-radius:16px;max-width:700px;width:100%;max-height:85vh;overflow-y:auto;animation:slideIn .3s ease}
+        @keyframes slideIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #E2E8F0}
+        .modal-title{font-size:20px;font-weight:700;color:#1A365D}
+        .modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:#718096;transition:all .3s}
+        .modal-close:hover{color:#E53E3E}
+        .search-box{position:relative;margin-bottom:20px}
+        .search-box input{width:100%;padding:12px 15px 12px 45px;border:2px solid #E2E8F0;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px}
+        .search-box input:focus{outline:none;border-color:#2B6CB0}
+        .search-box i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#718096}
+        .progress-bar{background:#E2E8F0;height:8px;border-radius:4px;overflow:hidden;margin-top:15px}
+        .progress-fill{height:100%;background:linear-gradient(90deg,#38A169,#48BB78);border-radius:4px;transition:width .3s ease}
+        .nav-buttons{display:flex;justify-content:space-between;margin-top:30px;padding-top:20px;border-top:2px solid #E2E8F0}
+        .empty-state{text-align:center;padding:40px 20px;color:#718096}
+        .empty-state i{font-size:48px;margin-bottom:15px;color:#CBD5E0}
+        .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500}
+        .tag-blue{background:#EBF8FF;color:#2B6CB0}
+        .tag-green{background:#F0FFF4;color:#38A169}
+        .tag-orange{background:#FEF5E7;color:#DD6B20}
+        .detail-row{display:flex;gap:15px;padding:10px 0;border-bottom:1px solid #EDF2F7}
+        .detail-label{font-weight:600;color:#4A5568;min-width:100px;flex-shrink:0}
+        .detail-value{color:#2D3748;flex:1}
+        .filter-bar{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+        .toast{position:fixed;top:20px;right:20px;padding:15px 25px;background:#38A169;color:#fff;border-radius:10px;font-weight:500;z-index:2000;animation:toastIn .3s ease;display:none;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+        .toast.error{background:#E53E3E}
+        @keyframes toastIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+        @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar-card{position:static}}
+        @media(max-width:768px){body{padding:10px}.header{flex-direction:column;gap:15px;text-align:center}.steps{flex-wrap:wrap;gap:20px;justify-content:center}.steps::before{display:none}.form-row{grid-template-columns:1fr}.rating-group{flex-wrap:wrap}.rating-option{min-width:calc(33.333% - 10px)}}
+        @media(max-width:480px){.page-title{font-size:18px}.section-title{font-size:16px}.content-card{padding:20px}.header-actions{flex-direction:column;width:100%}.btn{width:100%;justify-content:center}}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <a href="../fancy-workshop.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回主页</a>
+        <div class="page-title"><i class="fas fa-comments" style="color:#2B6CB0"></i> 绩效面谈工具</div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="showHistory()"><i class="fas fa-history"></i> 历史记录</button>
+            <button class="btn btn-success" onclick="startNew()"><i class="fas fa-plus"></i> 新建面谈</button>
+        </div>
+    </div>
+
+    <div class="steps-indicator">
+        <div class="steps">
+            <div class="step active" onclick="goToStep(0)"><div class="step-circle">1</div><span class="step-label">准备</span></div>
+            <div class="step" onclick="goToStep(1)"><div class="step-circle">2</div><span class="step-label">开场</span></div>
+            <div class="step" onclick="goToStep(2)"><div class="step-circle">3</div><span class="step-label">回顾</span></div>
+            <div class="step" onclick="goToStep(3)"><div class="step-circle">4</div><span class="step-label">反馈</span></div>
+            <div class="step" onclick="goToStep(4)"><div class="step-circle">5</div><span class="step-label">目标</span></div>
+            <div class="step" onclick="goToStep(5)"><div class="step-circle">6</div><span class="step-label">结束</span></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16.67%"></div></div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-card">
+            <!-- Step 0: 准备 -->
+            <div class="step-content active" id="step-0">
+                <h3 class="section-title"><i class="fas fa-clipboard-list"></i> 准备阶段</h3>
+                <div class="template-box">
+                    <h4><i class="fas fa-lightbulb"></i> 准备清单</h4>
+                    <ul>
+                        <li>收集员工绩效数据和考核结果</li>
+                        <li>查看员工工作日志和项目成果</li>
+                        <li>了解员工能力模型和发展方向</li>
+                        <li>准备面谈提纲和关键问题</li>
+                        <li>预订私密、舒适的面谈场所</li>
+                    </ul>
+                </div>
+                <div class="tips-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> 注意事项</h4>
+                    <ul>
+                        <li>避免在忙碌或嘈杂的环境中进行</li>
+                        <li>预留充足时间，避免中途被打断</li>
+                        <li>保持开放心态，倾听员工想法</li>
+                        <li>准备好具体案例而非空泛评价</li>
+                    </ul>
+                </div>
+                <div class="form-group"><label>被面谈人姓名</label><input type="text" class="form-control" id="employeeName" placeholder="请输入员工姓名"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>部门</label><input type="text" class="form-control" id="department" placeholder="所在部门"></div>
+                    <div class="form-group"><label>职位</label><input type="text" class="form-control" id="position" placeholder="员工职位"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>面谈日期</label><input type="date" class="form-control" id="reviewDate"></div>
+                    <div class="form-group"><label>考核周期</label>
+                        <select class="form-control" id="reviewPeriod">
+                            <option value="monthly">月度</option>
+                            <option value="quarterly" selected>季度</option>
+                            <option value="semiannual">半年度</option>
+                            <option value="annual">年度</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group"><label>准备要点备注</label><textarea class="form-control" id="prepNotes" placeholder="记录需要特别关注的事项、数据准备情况等"></textarea></div>
+                <div class="nav-buttons"><div></div><button class="btn btn-primary" onclick="nextStep()">下一步：开场 <i class="fas fa-arrow-right"></i></button></div>
+            </div>
+
+            <!-- Step 1: 开场 -->
+            <div class="step-content" id="step-1">
+                <h3 class="section-title"><i class="fas fa-door-open"></i> 开场阶段</h3>
+                <div class="template-box">
+                    <h4><i class="fas fa-comments"></i> 开场话术模板</h4>
+                    <ul>
+                        <li><strong>破冰：</strong>"最近工作怎么样？有什么想聊聊的吗？"</li>
+                        <li><strong>说明目的：</strong>"今天的面谈主要是回顾这段时间的工作表现，讨论你的成长和发展。"</li>
+                        <li><strong>建立氛围：</strong>"这是一次双向交流，希望你能畅所欲言，有什么想法都可以表达。"</li>
+                        <li><strong>时间说明：</strong>"我们大概有45分钟时间，会讨论绩效回顾、反馈和未来目标。"</li>
+                    </ul>
+                </div>
+                <div class="tips-box">
+                    <h4><i class="fas fa-lightbulb"></i> 开场技巧</h4>
+                    <ul>
+                        <li>营造轻松氛围，可以先聊些轻松话题</li>
+                        <li>明确面谈性质，消除员工紧张感</li>
+                        <li>强调双向沟通，鼓励员工参与</li>
+                        <li>注意观察员工状态，适时调整节奏</li>
+                    </ul>
+                </div>
+                <div class="form-group"><label>开场氛围</label>
+                    <select class="form-control" id="openingAtmosphere">
+                        <option value="relaxed">轻松自然</option><option value="neutral">平和正常</option>
+                        <option value="tense">略显紧张</option><option value="anxious">较为焦虑</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>开场情况记录</label><textarea class="form-control" id="openingNotes" placeholder="记录开场交流的主要内容、员工反应等"></textarea></div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 上一步</button>
+                    <button class="btn btn-primary" onclick="nextStep()">下一步：回顾 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 2: 回顾 -->
+            <div class="step-content" id="step-2">
+                <h3 class="section-title"><i class="fas fa-chart-line"></i> 绩效回顾</h3>
+                <div class="template-box">
+                    <h4><i class="fas fa-tasks"></i> 回顾要点</h4>
+                    <ul>
+                        <li><strong>目标达成：</strong>"我们来看一下这个周期设定的目标完成情况..."</li>
+                        <li><strong>关键成果：</strong>"你觉得这段时间最值得分享的成绩是什么？"</li>
+                        <li><strong>挑战分析：</strong>"遇到了哪些困难？是如何应对的？"</li>
+                        <li><strong>数据支撑：</strong>"从数据来看，XX指标提升了XX%，能分享一下经验吗？"</li>
+                    </ul>
+                </div>
+                <div class="tips-box">
+                    <h4><i class="fas fa-balance-scale"></i> 平衡原则</h4>
+                    <ul>
+                        <li>先让员工自我评价，再给予管理者评价</li>
+                        <li>用数据和事实说话，避免主观判断</li>
+                        <li>既要看结果，也要看过程和努力</li>
+                        <li>关注成长和进步，不只看绝对成绩</li>
+                    </ul>
+                </div>
+                <div class="form-group"><label>目标完成度评价</label>
+                    <div class="rating-group">
+                        <div class="rating-option" onclick="selectRating(this,'goalRating',1)"><div class="score">1</div><div class="label">未完成</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'goalRating',2)"><div class="score">2</div><div class="label">部分完成</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'goalRating',3)"><div class="score">3</div><div class="label">基本完成</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'goalRating',4)"><div class="score">4</div><div class="label">超额完成</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'goalRating',5)"><div class="score">5</div><div class="label">卓越表现</div></div>
+                    </div>
+                </div>
+                <div class="form-group"><label>主要成就与亮点</label><textarea class="form-control" id="achievements" placeholder="记录员工在本周期的主要成就、亮点工作"></textarea></div>
+                <div class="form-group"><label>挑战与困难</label><textarea class="form-control" id="challenges" placeholder="记录遇到的挑战、困难及应对方式"></textarea></div>
+                <div class="form-group"><label>需要改进的方面</label><textarea class="form-control" id="improvements" placeholder="需要提升的能力、技能或行为"></textarea></div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 上一步</button>
+                    <button class="btn btn-primary" onclick="nextStep()">下一步：反馈 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 3: 反馈 -->
+            <div class="step-content" id="step-3">
+                <h3 class="section-title"><i class="fas fa-hand-holding-heart"></i> 绩效反馈</h3>
+                <div class="template-box">
+                    <h4><i class="fas fa-thumbs-up"></i> 正面反馈话术</h4>
+                    <ul>
+                        <li>"我观察到你在XX项目中表现出色，具体体现在..."</li>
+                        <li>"你处理XX问题的方式很有创意，这对团队很有帮助。"</li>
+                        <li>"感谢你的付出，你在XX方面的进步很明显。"</li>
+                    </ul>
+                </div>
+                <div class="template-box" style="background:linear-gradient(135deg,#FEF5E7,#FED7AA);border-left-color:#DD6B20">
+                    <h4 style="color:#C05621"><i class="fas fa-exclamation-circle"></i> 建设性反馈话术</h4>
+                    <ul style="color:#744210">
+                        <li>"关于XX方面，我有一些建议，希望可以帮助你进一步提升..."</li>
+                        <li>"在XX情况下，如果能换一种方式处理，效果可能会更好。"</li>
+                        <li>"我注意到XX方面还有改进空间，你觉得呢？"</li>
+                    </ul>
+                </div>
+                <div class="tips-box">
+                    <h4><i class="fas fa-lightbulb"></i> 反馈技巧（BID模型）</h4>
+                    <ul>
+                        <li><strong>Behavior（行为）：</strong>描述具体行为，不用评价性语言</li>
+                        <li><strong>Impact（影响）：</strong>说明行为带来的影响和后果</li>
+                        <li><strong>Desired outcome（期望）：</strong>明确期望的行为改变</li>
+                    </ul>
+                </div>
+                <div class="form-group"><label>整体绩效评分</label>
+                    <div class="rating-group">
+                        <div class="rating-option" onclick="selectRating(this,'overallRating',1)"><div class="score">1</div><div class="label">不合格</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'overallRating',2)"><div class="score">2</div><div class="label">需改进</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'overallRating',3)"><div class="score">3</div><div class="label">合格</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'overallRating',4)"><div class="score">4</div><div class="label">优秀</div></div>
+                        <div class="rating-option" onclick="selectRating(this,'overallRating',5)"><div class="score">5</div><div class="label">卓越</div></div>
+                    </div>
+                </div>
+                <div class="form-group"><label>正面反馈内容</label><textarea class="form-control" id="positiveFeedback" placeholder="记录给予员工的正面反馈"></textarea></div>
+                <div class="form-group"><label>改进建议</label><textarea class="form-control" id="constructiveFeedback" placeholder="记录建设性的改进建议"></textarea></div>
+                <div class="form-group"><label>员工反应与回应</label><textarea class="form-control" id="employeeResponse" placeholder="记录员工对反馈的反应、想法和回应"></textarea></div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 上一步</button>
+                    <button class="btn btn-primary" onclick="nextStep()">下一步：目标设定 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 4: 目标设定 -->
+            <div class="step-content" id="step-4">
+                <h3 class="section-title"><i class="fas fa-bullseye"></i> SMART目标设定</h3>
+                <div class="template-box">
+                    <h4><i class="fas fa-star"></i> SMART原则</h4>
+                    <ul>
+                        <li><span class="smart-letter">S</span><strong>具体（Specific）：</strong>目标要明确具体，而非笼统模糊</li>
+                        <li><span class="smart-letter">M</span><strong>可衡量（Measurable）：</strong>有明确的衡量标准和指标</li>
+                        <li><span class="smart-letter">A</span><strong>可达成（Achievable）：</strong>目标具有挑战性但可实现</li>
+                        <li><span class="smart-letter">R</span><strong>相关性（Relevant）：</strong>与组织目标和岗位职责相关</li>
+                        <li><span class="smart-letter">T</span><strong>有时限（Time-bound）：</strong>设定明确的截止日期</li>
+                    </ul>
+                </div>
+                <div class="tips-box">
+                    <h4><i class="fas fa-lightbulb"></i> 目标设定技巧</h4>
+                    <ul>
+                        <li>鼓励员工参与目标制定，增强认同感</li>
+                        <li>设定2-3个核心目标，避免过多分散精力</li>
+                        <li>确保目标既有挑战性又可实现</li>
+                        <li>讨论达成目标需要的支持和资源</li>
+                    </ul>
+                </div>
+                <div id="goalsContainer">
+                    <div class="smart-section" data-goal="0">
+                        <div class="smart-header"><span class="smart-letter">G1</span><strong>目标一</strong></div>
+                        <div class="form-group"><label>目标描述</label><input type="text" class="form-control goal-name" placeholder="请描述具体目标"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>衡量标准</label><input type="text" class="form-control goal-measure" placeholder="如何衡量？"></div>
+                            <div class="form-group"><label>截止日期</label><input type="date" class="form-control goal-deadline"></div>
+                        </div>
+                        <div class="form-group"><label>达成条件 / 所需支持</label><textarea class="form-control" rows="2" placeholder="达成目标需要什么条件和支持？"></textarea></div>
+                    </div>
+                    <div class="smart-section" data-goal="1">
+                        <div class="smart-header"><span class="smart-letter">G2</span><strong>目标二</strong></div>
+                        <div class="form-group"><label>目标描述</label><input type="text" class="form-control goal-name" placeholder="请描述具体目标"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>衡量标准</label><input type="text" class="form-control goal-measure" placeholder="如何衡量？"></div>
+                            <div class="form-group"><label>截止日期</label><input type="date" class="form-control goal-deadline"></div>
+                        </div>
+                        <div class="form-group"><label>达成条件 / 所需支持</label><textarea class="form-control" rows="2" placeholder="达成目标需要什么条件和支持？"></textarea></div>
+                    </div>
+                    <div class="smart-section" data-goal="2">
+                        <div class="smart-header"><span class="smart-letter">G3</span><strong>目标三</strong></div>
+                        <div class="form-group"><label>目标描述</label><input type="text" class="form-control goal-name" placeholder="请描述具体目标"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>衡量标准</label><input type="text" class="form-control goal-measure" placeholder="如何衡量？"></div>
+                            <div class="form-group"><label>截止日期</label><input type="date" class="form-control goal-deadline"></div>
+                        </div>
+                        <div class="form-group"><label>达成条件 / 所需支持</label><textarea class="form-control" rows="2" placeholder="达成目标需要什么条件和支持？"></textarea></div>
+                    </div>
+                </div>
+                <div class="form-group"><label>发展计划与支持承诺</label><textarea class="form-control" id="developmentPlan" placeholder="培训计划、导师安排、资源支持等"></textarea></div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 上一步</button>
+                    <button class="btn btn-primary" onclick="nextStep()">下一步：结束 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 5: 结束 -->
+            <div class="step-content" id="step-5">
+                <h3 class="section-title"><i class="fas fa-flag-checkered"></i> 结束阶段</h3>
+                <div class="template-box">
+                    <h4><i class="fas fa-check-circle"></i> 结束话术模板</h4>
+                    <ul>
+                        <li>"今天我们聊了很多，你对整体的安排有什么补充吗？"</li>
+                        <li>"我们来总结一下今天讨论的关键要点..."</li>
+                        <li>"接下来一个月我们会按照计划跟进进展，有问题随时沟通。"</li>
+                        <li>"感谢你今天的坦诚交流，期待你在下个周期的表现！"</li>
+                    </ul>
+                </div>
+                <div class="tips-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> 注意事项</h4>
+                    <ul>
+                        <li>确认双方对绩效评价和目标达

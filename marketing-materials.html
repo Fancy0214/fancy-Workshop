@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宣传物料制作 | Fancy's Workshop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2B6CB0;
+            --primary-light: #63B3ED;
+            --primary-lighter: #EBF8FF;
+            --accent: #38A169;
+            --accent-light: #C6F6D5;
+            --warm: #ED8936;
+            --warm-light: #FEFCBF;
+            --purple: #805AD5;
+            --purple-light: #E9D8FD;
+            --red: #E53E3E;
+            --red-light: #FED7D7;
+            --teal: #319795;
+            --teal-light: #B2F5EA;
+            --gray-50: #F7FAFC;
+            --gray-100: #EDF2F7;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E0;
+            --gray-400: #A0AEC0;
+            --gray-500: #718096;
+            --gray-600: #4A5568;
+            --gray-700: #2D3748;
+            --gray-800: #1A202C;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --radius-sm: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-700);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        nav.scrolled { box-shadow: var(--shadow-sm); }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--gray-500);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            border: 1px solid var(--gray-200);
+        }
+        .nav-back:hover {
+            color: var(--primary);
+            background: var(--primary-lighter);
+            border-color: var(--primary-light);
+        }
+
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--gray-200);
+            background: white;
+            color: var(--gray-600);
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .nav-btn:hover {
+            border-color: var(--primary-light);
+            background: var(--primary-lighter);
+            color: var(--primary);
+        }
+        .nav-btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .nav-btn.primary:hover {
+            background: #2C5282;
+        }
+
+        /* ===== Page Header ===== */
+        .page-header {
+            padding: 100px 24px 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .page-header p {
+            font-size: 15px;
+            color: var(--gray-500);
+        }
+
+        /* ===== Main Layout ===== */
+        .main-layout {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* ===== Panel ===== */
+        .panel {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .panel:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .panel-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+        .panel-header .icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .icon.blue { background: var(--primary-lighter); }
+        .icon.green { background: var(--accent-light); }
+        .icon.orange { background: var(--warm-light); }
+        .icon.purple { background: var(--purple-light); }
+        .icon.red { background: var(--red-light); }
+        .icon.teal { background: var(--teal-light); }
+
+        .panel-body { padding: 20px 24px; }
+
+        /* ===== Template Selector ===== */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .template-card {
+            position: relative;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--gray-200);
+            transition: all 0.25s ease;
+            background: white;
+        }
+        .template-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .template-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(43,108,176,0.15);
+        }
+        .template-card.active::after {
+            content: '✓';
+            position: absolute;
+            top: 8px; right: 8px;
+            width: 22px; height: 22px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+        }
+
+        .template-preview {
+            height: 90px;
+            position: relative;
+            overflow: hidden;
+        }
+        .template-card:nth-child(1) .template-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .template-card:nth-child(2) .template-preview {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .template-card:nth-child(3) .template-preview {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .template-card:nth-child(4) .template-preview {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .template-card:nth-child(5) .template-preview {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .template-card:nth-child(6) .template-preview {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+        }
+
+        .template-preview-text {
+            position: absolute;
+            bottom: 8px; left: 10px;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .template-info {
+            padding: 10px 12px;
+        }
+        .template-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+        }
+        .template-info p {
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+
+        /* ===== Form ===== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+        }
+        .form-group label .required {
+            color: var(--red);
+            margin-left: 2px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--gray-700);
+            background: white;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(99,179,237,0.15);
+        }
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--gray-300);
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 70px;
+            line-height: 1.5;
+        }
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23A0AEC0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        .form-hint {
+            font-size: 11px;
+            color: var(--gray-400);
+            margin-top: 4px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .selling-points {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .selling-point-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .selling-point-row input {
+            flex: 1;
+        }
+        .selling-point-row .num {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--primary-lighter);
+            color: var(--primary);
+            font-size: 12px; font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .btn-remove-point {
+            background: none; border: none; cursor: pointer;
+            color: var(--gray-300); font-size: 18px;
+            padding: 4px; transition: color 0.2s;
+            line-height: 1;
+        }
+        .btn-remove-point:hover { color: var(--red); }
+
+        .btn-add-point {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px; font-weight: 500;
+            cursor: pointer;
+            border: 1px dashed var(--gray-300);
+            background: transparent;
+            color: var(--gray-400);
+            transition: all 0.2s;
+            font-family: inherit;
+            width: fit-content;
+        }
+        .btn-add-point:hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+            background: var(--primary-lighter);
+        }
+
+        /* ===== Color Theme ===== */
+        .color-theme-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .color-swatch {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .color-swatch:hover { transform: scale(1.1); }
+        .color-swatch.active {
+            border-color: var(--gray-800);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--gray-800);
+        }
+
+        /* ===== Right Column ===== */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ===== Preview ===== */
+        .preview-container {
+            position: relative;
+        }
+        .preview-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .poster-preview-wrapper {
+            position: relative;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--shadow-lg);
+        }
+        .poster-preview-wrapper.exporting {
+            position: fixed;
+            top: -9999px;
+            left: -9999px;
+            width: 800px !important;
+            z-index: -1;
+        }
+
+        /* ===== Poster Canvas ===== */
+        .poster {
+            width: 100%;
+            aspect-ratio: 3/4;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Theme Variants */
+        .poster.theme-blue {
+            background: linear-gradient(160deg, #1e3a5f 0%, #2B6CB0 40%, #4299E1 100%);
+        }
+        .poster.theme-purple {
+            background: linear-gradient(160deg, #44337a 0%, #805AD5 40%, #B794F4 100%);
+        }
+        .poster.theme-red {
+            background: linear-gradient(160deg, #742a2a 0%, #E53E3E 40%, #FC8181 100%);
+        }
+        .poster.theme-green {
+            background: linear-gradient(160deg, #22543d 0%, #38A169 40%, #68D391 100%);
+        }
+        .poster.theme-orange {
+            background: linear-gradient(160deg, #7b341e 0%, #ED8936 40%, #FBD38D 100%);
+        }
+        .poster.theme-teal {
+            background: linear-gradient(160deg, #234e52 0%, #319795 40%, #4FD1C5 100%);
+        }
+        .poster.theme-pink {
+            background: linear-gradient(160deg, #702459 0%, #D53F8C 40%, #F687B3 100%);
+        }
+
+        .poster-bg-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.08;
+            background-image:
+                radial-gradient(circle at 20% 30%, white 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, white 1px, transparent 1px),
+                radial-gradient(circle at 60% 20%, white 0.5px, transparent 0.5px);
+            background-size: 60px 60px, 80px 80px, 40px 40px;
+        }
+
+        .poster-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 36px 30px;
+            color: white;
+        }
+
+        .poster-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            width: fit-content;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .poster-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .poster-subtitle {
+            font-size: 15px;
+            opacity: 0.9;
+            margin-bottom: 28px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .poster-points {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .poster-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .poster-point-icon {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .poster-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .poster-contact {
+            font-size: 13px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .poster-contact svg {
+            width: 14px; height: 14px;
+            opacity: 0.8;
+        }
+        .poster-qr-placeholder {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 70px; height: 70px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .poster-qr-placeholder svg {
+            width: 32px; height: 32px;
+            color: var(--gray-600);
+        }
+        .poster-qr-placeholder span {
+            font-size: 8px;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        /* ===== Copywriting Section ===== */
+        .copy-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: var(--gray-100);
+            border-radius: 10px;
+            padding: 4px;
+        }
+        .copy-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--gray-500);
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .copy-tab:hover { color: var(--gray-700); }
+        .copy-tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .copy-output {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            min-height: 120px;
+            position: relative;
+        }
+        .copy-output-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--gray-700);
+            white-space: pre-wrap;
+        }
+        .copy-output-text .emoji-bullet {
+            margin-right: 4px;
+        }
+        .copy-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        /* ===== History Section ===== */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .history-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: var(--gray-200);
+            border-radius: 3px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-100);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .history-item:hover {
+            background: white;
+            border-color: var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .history-thumb {
+            width: 52px; height: 68px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .history-thumb .poster {
+            width: 100%;
+            height: 100%;
+        }
+        .history-thumb .poster-content {
+            padding: 6px 5px;
+        }
+        .history-thumb .poster-title {
+            font-size: 6px;
+            margin-bottom: 2px;
+        }
+        .history-thumb .poster-badge {
+            font-size: 4px;
+            padding: 1px 4px;
+            margin-bottom: 4px;
+        }
+        .history-thumb .poster-points {
+            display: none;
+        }
+        .history-thumb .poster-subtitle,
+        .history-thumb .poster-footer,
+        .history-thumb .poster-qr-placeholder {
+            display: none;
+        }
+        .history-thumb .poster-bg-pattern {
+            display: none;
+        }
+
+        .history-meta {
+            flex: 1;
+            min-width: 0;
+        }
+        .history-meta h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .history-meta p {
+            font-size: 12px;
+            color: var(--gray-400);
+        }
+        .history-delete {
+            background: none; border: none; cursor: pointer;
+            color: var(--gray-300); font-size: 18px;
+            padding: 4px; transition: color 0.2s;
+            line-height: 1;
+        }
+        .history-delete:hover { color: var(--red); }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-400);
+        }
+        .empty-state .emoji {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* ===== Buttons ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover { background: #2C5282; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .btn-secondary {
+            background: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-200);
+        }
+        .btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-300); }
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-accent:hover { background: #2F855A; }
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 13px;
+        }
+
+        /* ===== Toast ===== */
+        .toast-container {
+            position: fixed;
+            top: 80px; right: 24px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
+            border-left: 4px solid var(--accent);
+        }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(40px); } }
+
+        /* ===== Loading Overlay ===== */
+        .loading-overlay {
+            position: fixed; inset: 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(4px);
+            z-index: 150;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .loading-overlay.active { display: flex; }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text {
+            font-size: 14px; color: var(--gray-500); font-weight: 500;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .template-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .nav-actions { display: none; }
+        }
+        @media (max-width: 600px) {
+            .template-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .poster-content {
+                padding: 24px 20px;
+            }
+            .poster-title {
+                font-size: 22px;
+            }
+        }
+
+        /* ===== Fade-in ===== */
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Steps Indicator ===== */
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-400);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .step:hover { color: var(--gray-600); }
+        .step.active { color: var(--primary); background: var(--primary-lighter); }
+        .step.completed { color: var(--accent); }
+        .step-num {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700;
+        }
+        .step.active .step-num { background: var(--primary); color: white; border-color: var(--primary); }
+        .step.completed .step-num { background: var(--accent); color: white; border-color: var(--accent); }
+        .step-arrow {
+            color: var(--gray-300);
+            font-size: 12px;
+            margin: 0 4px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loadingText">正在生成图片...</div>
+</div>
+
+<!-- Navigation -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <a href="../fancy-workshop.html" class="nav-back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                返回主页
+            </a>
+            <a href="../fancy-workshop.html" class="nav-logo">
+                <span>✨ Fancy's Workshop</span>
+            </a>
+        </div>
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="resetAll()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M1 4v6h6M23 20v-6h-6"/>
+                    <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/>
+                </svg>
+                重置
+            </button>
+            <button class="nav-btn primary" onclick="exportPoster()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                导出图片
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+    <h1>📣 宣传物料制作</h1>
+    <p>快速设计留学宣传海报，AI 辅助生成分享文案，一键导出高质量图片</p>
+</div>
+
+<!-- Main Layout -->
+<div class="main-layout">
+
+    <!-- ===== Left: Form Panel ===== -->
+    <div class="left-column">
+
+        <!-- Step 1: Template Selection -->
+        <div class="panel fade-in" style="margin-bottom: 24px;">
+            <div class="panel-header">
+                <div class="icon blue">🎨</div>
+                <h2>选择模板</h2>
+            </div>
+            <div class="panel-body">
+                <div class="template-grid" id="templateGrid">
+                    <div class="template-card active" data-template="study-abroad" onclick="selectTemplate(this)">
+                        <div class="template-preview">
+                            <div class="poster-bg-pattern" style="opacity:0.12"></div>
+                            <div class="template-preview-text">🎓 留学宣传</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>留学宣传</h4>
+                            <p>院校推荐/升学规划</p>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="event" onclick="selectTemplate(this)">
+                        <div class="template-preview">
+                            <div class="poster-bg-pattern" style="opacity:0.12"></div>
+                            <div class="template-preview-text">🎉 活动推广</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>活动推广</h4>
+                            <p>讲座/展会/线上活动</p>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="case" onclick="selectTemplate(this)">
+                        <div class="template-preview">
+                            <div class="poster-bg-pattern" style="opacity:0.12"></div>
+                            <div class="template-preview-text">⭐ 案例分享</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>案例分享</h4>
+                            <p>成功案例/录取捷报</p>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="service" onclick="selectTemplate(this)">
+                        <div class="template-preview">
+                            <div class="poster-bg-pattern" style="opacity:0.12"></div>
+                            <div class="template-preview-text">💼 服务介绍</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>服务介绍</h4>
+                            <p>产品优势/服务对比</p>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="data" onclick="selectTemplate(this)">
+                        <div class="template-preview">
+                            <div class="poster-bg-pattern" style="opacity:0.12"></div>
+                            <div class="template-preview-text">📊 数据报告</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>数据报告</h4>
+                            <p>行业数据/趋势分析</p>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="brand" onclick="selectTemplate(this)">
+                        <div class="template-preview">
+                            <div class="poster-bg-pattern" style="opacity:0.12"></div>
+                            <div class="template-preview-text">🏛️ 品牌宣传</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>品牌宣传</h4>
+                            <p>公司介绍/品牌故事</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Theme -->
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>配色方案</label>
+                    <div class="color-theme-row">
+                        <div class="color-swatch active" style="background: linear-gradient(135deg, #1e3a5f, #4299E1);" data-color="blue" onclick="selectColor(this)" title="商务蓝"></div>
+                        <div class="color-swatch" style="background: linear-gradient(135deg, #44337a, #B794F4);" data-color="purple" onclick="selectColor(this)" title="高贵紫"></div>
+                        <div class="color-swatch" style="background: linear-gradient(135deg, #742a2a, #FC8181);" data-color="red" onclick="selectColor(this)" title="热情红"></div>
+                        <div class="color-swatch" style="background: linear-gradient(135deg, #22543d, #68D391);" data-color="green" onclick="selectColor(this)" title="活力绿"></div>
+                        <div class="color-swatch" style="background: linear-gradient(135deg, #7b341e, #FBD38D);" data-color="orange" onclick="selectColor(this)" title="温暖橙"></div>
+                        <div class="color-swatch" style="background: linear-gradient(135deg, #234e52, #4FD1C5);" data-color="teal" onclick="selectColor(this)" title="清新青"></div>
+                        <div class="color-swatch" style="background: linear-gradient(135deg, #702459, #F687B3);" data-color="pink" onclick="selectColor(this)" title="时尚粉"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Form -->
+        <div class="panel fade-in" style="animation-delay: 0.1s;">
+            <div class="panel-header">
+                <div class="icon green">📝</div>
+                <h2>填写内容</h2>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>海报标签 <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="badge" placeholder="如：2024秋季申请 · 英国G5" oninput="updatePreview()" maxlength="30">
+                    <div class="form-hint">显示在海报顶部的小标签</div>
+                </div>
+
+                <div class="form-group">
+                    <label>主标题 <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="title" placeholder="如：英国名校录取率突破98%" oninput="updatePreview()" maxlength="40">
+                </div>
+
+                <div class="form-group">
+                    <label>副标题</label>
+                    <input type="text" class="form-input" id="subtitle" placeholder="如：专业留学顾问团队，助力梦想启航" oninput="updatePreview()" maxlength="60">
+                </div>
+
+                <div class="form-group">
+                    <label>核心卖点 <span class="required">*</span></label>
+                    <div class="selling-points" id="sellingPoints">
+                        <div class="selling-point-row">
+                            <span class="num">1</span>
+                            <input type="text" class="form-input" placeholder="卖点 1" oninput="updatePreview()" maxlength="50">
+                        </div>
+                        <div class="selling-point-row">
+                            <span class="num">2</span>
+                            <input type="text" class="form-input" placeholder="卖点 2" oninput="updatePreview()" maxlength="50">
+                        </div>
+                        <div class="selling-point-row">
+                            <span class="num">3</span>
+                            <input type="text" class="form-input" placeholder="卖点 3" oninput="updatePreview()" maxlength="50">
+                        </div>
+                    </div>
+                    <button class="btn-add-point" onclick="addSellingPoint()">+ 添加卖点</button>
+                    <div class="form-hint">建议 3-5 个核心卖点，简洁有力</div>
+                </div>
+
+                <div class="form-group">
+                    <label>联系方式</label>
+                    <div class="form-row">
+                        <input type="text" class="form-input" id="contactName" placeholder="联系人姓名" oninput="updatePreview()" maxlength="20">
+                        <input type="text" class="form-input" id="contactPhone" placeholder="手机/微信" oninput="updatePreview()" maxlength="30">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>底部标语</label>
+                    <input type="text" class="form-input" id="slogan" placeholder="如：让留学更简单" oninput="updatePreview()" maxlength="30">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Right: Preview + Copywriting ===== -->
+    <div class="right-column">
+
+        <!-- Preview -->
+        <div class="panel fade-in" style="animation-delay: 0.15s;">
+            <div class="panel-header">
+                <div class="icon purple">👁️</div>
+                <h2>实时预览</h2>
+            </div>
+            <div class="panel-body preview-container">
+                <div class="preview-actions">
+                    <button class="btn btn-primary btn-sm" onclick="exportPoster()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                        导出图片
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="saveToHistory()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        保存
+                    </button>
+                </div>
+
+                <div class="poster-preview-wrapper" id="posterWrapper">
+                    <div class="poster theme-blue" id="poster">
+                        <div class="poster-bg-pattern"></div>
+                        <div class="poster-content">
+                            <div class="poster-badge" id="pBadge">
+                                <span>🎓</span>
+                                <span id="pBadgeText">留学宣传</span>
+                            </div>
+                            <h2 class="poster-title" id="pTitle">在这里输入主标题</h2>
+                            <p class="poster-subtitle" id="pSubtitle">副标题将显示在这里</p>
+                            <div class="poster-points" id="pPoints">
+                                <div class="poster-point">
+                                    <div class="poster-point-icon">✦</div>
+                                    <span>卖点一：专业团队全程陪伴</span>
+                                </div>
+                                <div class="poster-point">
+                                    <div class="poster-point-icon">✦</div>
+                                    <span>卖点二：99%录取通过率</span>
+                                </div>
+                                <div class="poster-point">
+                                    <div class="poster-point-icon">✦</div>
+                                    <span>卖点三：免费一对一定制方案</span>
+                                </div>
+                            </div>
+                            <div class="poster-footer" id="pFooter">
+                                <div class="poster-contact" id="pContact">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                                    <span id="pContactText">联系我们获取更多信息</span>
+                                </div>
+                                <div class="poster-contact" id="pSlogan" style="font-style: italic; opacity: 0.8;">
+                                    <span id="pSloganText">让留学更简单 ✨</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="poster-qr-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                                <rect x="14" y="14" width="3" height="3"/>
+                                <line x1="21" y1="14" x2="21" y2="14.01"/>
+                                <line x1="21" y1="21" x2="21" y2="21.01"/>
+                                <line x1="17" y1="18" x2="21" y2="18"/>
+                                <line x1="18" y1="21" x2="21" y2="21"/>
+                            </svg>
+                            <span>二维码</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copywriting Generator -->
+        <div class="panel fade-in" style="animation-delay: 0.2s;">
+            <div class="panel-header">
+                <div class="icon orange">✍️</div>
+                <h2>分享文案</h2>
+            </div>
+            <div class="panel-body">
+                <div class="copy-tabs">
+                    <button class="copy-tab active" onclick="switchCopyTab(this, 'moments')">朋友圈</button>
+                    <button class="copy-tab" onclick="switchCopyTab(this, 'group')">社群推广</button>
+                    <button class="copy-tab" onclick="switchCopyTab(this, 'brief')">精简版</button>
+                    <button class="copy-tab" onclick="switchCopyTab(this, 'story')">故事型</button>
+                </div>
+                <div class="copy-output">
+                    <div class="copy-output-text" id="copyOutput">
+                        填写上方表单内容，文案将自动生成 ✨
+                    </div>
+                </div>
+                <div class="copy-actions">
+                    <button class="btn btn-primary btn-sm" onclick="generateCopy()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                        生成文案
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="copyCopy()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        复制文案
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="panel fade-in" style="animation-delay: 0.25s;">
+            <div class="panel-header" style="cursor: pointer;" onclick="toggleHistory()">
+                <div class="icon red">📁</div>
+                <h2>历史记录</h2>
+                <span id="historyCount" style="margin-left: auto; font-size: 12px; color: var(--gray-400); background: var(--gray-100); padding: 2px 10px; border-radius: 10px;">0</span>
+                <svg id="historyToggle" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s;">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </div>
+            <div class="panel-body" id="historyBody" style="display: none;">
+                <div class="history-list" id="historyList">
+                    <div class="empty-state" id="emptyHistory">
+                        <div class="emoji">📭</div>
+                        <p>暂无保存记录</p>
+                    </div>
+                </div>
+                <div style="margin-top: 12px; text-align: right;" id="clearHistoryBtn" class="hidden">
+                    <button class="btn btn-secondary btn-sm" onclick="clearHistory()" style="font-size: 12px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                        </svg>
+                        清空记录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===== State =====
+    let currentTemplate = 'study-abroad';
+    let currentColor = 'blue';
+    let currentCopyType = 'moments';
+    let historyOpen = false;
+
+    const templateConfig = {
+        'study-abroad': { emoji: '🎓', label: '留学宣传', defaultTitle: '英国名校录取率突破98%', defaultSubtitle: '专业留学顾问团队，助力梦想启航', defaultBadge: '2024秋季申请 · 英国G5', defaultPoints: ['牛剑G5一站式申请服务', '前招生官助力文书精修', '98%客户满意度口碑认证'], defaultSlogan: '让留学更简单 ✨' },
+        'event': { emoji: '🎉', label: '活动推广', defaultTitle: '2024秋季留学教育展', defaultSubtitle: '与30+英国院校面对面，现场拿Offer', defaultBadge: '线下活动 · 免费报名', defaultPoints: ['30+英国名校现场招生', '资深顾问1v1免费评估', '现场签约享专属优惠'], defaultSlogan: '名额有限，先到先得 🎟️' },
+        'case': { emoji: '⭐', label: '案例分享', defaultTitle: '恭喜！牛津大学Offer到手', defaultSubtitle: '从双非到世界Top5，我们用实力说话', defaultBadge: '录取捷报 · 2024', defaultPoints: ['双非院校逆袭牛津', '全程仅用4个月', '奖学金 £20,000'], defaultSlogan: '下一个成功的你 👋' },
+        'service': { emoji: '💼', label: '服务介绍', defaultTitle: '全方位留学规划服务', defaultSubtitle: '从选校到签证，一站式解决方案', defaultBadge: '核心服务 · 值得信赖', defaultPoints: ['个性化升学方案定制', '全流程跟踪服务', '签证办理成功率99%'], defaultSlogan: '专业 · 专注 · 专一' },
+        'data': { emoji: '📊', label: '数据报告', defaultTitle: '2024英国留学白皮书', defaultSubtitle: '深度解读英国留学最新趋势与数据', defaultBadge: '行业报告 · 权威发布', defaultPoints: ['10万+申请数据分析', '覆盖50+专业方向', '独家录取趋势预测'], defaultSlogan: '数据驱动决策 📈' },
+        'brand': { emoji: '🏛️', label: '品牌宣传', defaultTitle: '深耕留学行业15年', defaultSubtitle: '用心服务每一位学生，成就每一个梦想', defaultBadge: '品牌故事', defaultPoints: ['累计服务50000+学生', '遍布全球300+合作院校', '1000+成功案例'], defaultSlogan: '值得信赖的留学伙伴 🤝' },
+    };
+
+    // ===== Template Selection =====
+    function selectTemplate(el) {
+        document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        currentTemplate = el.dataset.template;
+
+        // Fill defaults
+        const config = templateConfig[currentTemplate];
+        document.getElementById('badge').value = config.defaultBadge;
+        document.getElementById('title').value = config.defaultTitle;
+        document.getElementById('subtitle').value = config.defaultSubtitle;
+        document.getElementById('slogan').value = config.defaultSlogan;
+
+        // Reset selling points
+        const pointsContainer = document.getElementById('sellingPoints');
+        pointsContainer.innerHTML = '';
+        config.defaultPoints.forEach((p, i) => {
+            addSellingPointWithValue(p, i + 1);
+        });
+
+        updatePreview();
+        generateCopy();
+    }
+
+    // ===== Color Selection =====
+    function selectColor(el) {
+        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+        el.classList.add('active');
+        currentColor = el.dataset.color;
+
+        const poster = document.getElementById('poster');
+        poster.className = 'poster theme-' + currentColor;
+    }
+
+    // ===== Selling Points =====
+    function addSellingPoint() {
+        const container = document.getElementById('sellingPoints');
+        const count = container.children.length + 1;
+        if (count > 6) {
+            showToast('最多支持 6 个卖点');
+            return;
+        }
+        addSellingPointWithValue('', count);
+    }
+
+    function addSellingPointWithValue(value, num) {
+        const container = document.getElementById('sellingPoints');
+        const row = document.createElement('div');
+        row.className = 'selling-point-row';
+        row.innerHTML = `
+            <span class="num">${num}</span>
+            <input type="text" class="form-input" placeholder="卖点 ${num}" oninput="updatePreview()" maxlength="50" value="${escapeHtml(value)}">
+            <button class="btn-remove-point" onclick="removeSellingPoint(this)" title="删除">×</button>
+        `;
+        container.appendChild(row);
+        row.querySelector('input').focus();
+    }
+
+    function removeSellingPoint(btn) {
+        const container = document.getElementById('sellingPoints');
+        if (container.children.length <= 1) {
+            showToast('至少保留一个卖点');
+            return;
+        }
+        btn.closest('.selling-point-row').remove();
+        // Renumber
+        Array.from(container.children).forEach((row, i) => {
+            row.querySelector('.num').textContent = i + 1;
+            row.querySelector('input').placeholder = `卖点 ${i + 1}`;
+        });
+        updatePreview();
+    }
+
+    // ===== Update Preview =====
+    function updatePreview() {
+        const config = templateConfig[currentTemplate];
+
+        // Badge
+        const badge = document.getElementById('badge').value || config.label;
+        document.getElementById('pBadgeText').textContent = badge;
+        document.querySelector('#pBadge span:first-child').textContent = config.emoji;
+
+        // Title
+        const title = document.getElementById('title').value || '在这里输入主标题';
+        document.getElementById('pTitle').textContent = title;
+
+        // Subtitle
+        const subtitle = document.getElementById('subtitle').value || '副标题将显示在这里';
+        document.getElementById('pSubtitle').textContent = subtitle;
+
+        // Selling Points
+        const pointInputs = document.querySelectorAll('#sellingPoints .selling-point-row input');
+        const pointsContainer = document.getElementById('pPoints');
+        pointsContainer.innerHTML = '';
+        pointInputs.forEach((input) => {
+            const text = input.value;
+            if (text.trim()) {
+                const point = document.createElement('div');
+                point.className = 'poster-point';
+                point.innerHTML = `
+                    <div class="poster-point-icon">✦</div>
+                    <span>${escapeHtml(text)}</span>
+                `;
+                pointsContainer.appendChild(point);
+            }
+        });
+        if (pointsContainer.children.length === 0) {
+            pointsContainer.innerHTML = `
+                <div class="poster-point">
+                    <div class="poster-point-icon">✦</div>
+                    <span>填写卖点后将在此处展示</span>
+                </div>
+            `;
+        }
+
+        // Contact
+        const contactName = document.getElementById('contactName').value;
+        const contactPhone = document.getElementById('contactPhone').value;
+        const slogan = document.getElementById('slogan').value || config.defaultSlogan;
+
+        let contactText = '联系我们获取更多信息';
+        if (contactName && contactPhone) {
+            contactText = `${contactName}  ${contactPhone}`;
+        } else if (contactPhone) {
+            contactText = contactPhone;
+        } else if (contactName) {
+            contactText = contactName;
+        }
+        document.getElementById('pContactText').textContent = contactText;
+        document.getElementById('pSloganText').textContent = slogan;
+
+        // Auto generate copy
+        generateCopy();
+    }
+
+    // ===== Copywriting Generation =====
+    function switchCopyTab(tab, type) {
+        document.querySelectorAll('.copy-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentCopyType = type;
+        generateCopy();
+    }
+
+    function generateCopy() {
+        const title = document.getElementById('title').value || '';
+        const subtitle = document.getElementById('subtitle').value || '';
+        const badge = document.getElementById('badge').value || '';
+        const contactName = document.getElementById('contactName').value || '';
+        const contactPhone = document.getElementById('contactPhone').value || '';
+        const slogan = document.getElementById('slogan').value || '';
+
+        const pointInputs = document.querySelectorAll('#sellingPoints .selling-point-row input');
+        const points = Array.from(pointInputs).map(i => i.value).filter(v => v.trim());
+
+        const config = templateConfig[currentTemplate];
+        let copy = '';
+
+        if (!title) {
+            copy = '填写上方表单内容，文案将自动生成 ✨';
+        } else if (currentCopyType === 'moments') {
+            copy = generateMomentsCopy(title, subtitle, badge, points, slogan, contactName, contactPhone);
+        } else if (currentCopyType === 'group') {
+            copy = generateGroupCopy(title, subtitle, badge, points, slogan, contactName, contactPhone, config);
+        } else if (currentCopyType === 'brief') {
+            copy = generateBriefCopy(title, subtitle, badge, points, slogan, contactName, contactPhone);
+        } else if (currentCopyType === 'story') {
+            copy = generateStoryCopy(title, subtitle, badge, points, slogan, contactName, contactPhone, config);
+        }
+
+        document.getElementById('copyOutput').textContent = copy;
+    }
+
+    function generateMomentsCopy(title, subtitle, badge, points, slogan, name, phone) {
+        let c = '';
+        if (badge) c += `【${badge}】\n`;
+        c += `${title}\n`;
+        if (subtitle) c += `${subtitle}\n\n`;
+        if (points.length) {
+            c += points.map((p, i) => `${['🌟','✅','💡','🎯','🔥','⭐'][i] || '✓'} ${p}`).join('\n');
+            c += '\n';
+        }
+        if (slogan) c += `\n${slogan}`;
+        if (phone) c += `\n📩 ${phone}`;
+        return c;
+    }
+
+    function generateGroupCopy(title, subtitle, badge, points, slogan, name, phone, config) {
+        let c = '';
+        c += `${config.emoji} 各位好，分享一个好消息！\n\n`;
+        if (badge) c += `📌 ${badge}\n`;
+        c += `📢 ${title}\n`;
+        if (subtitle) c += `💬 ${subtitle}\n\n`;
+        if (points.length) {
+            c += `👇 核心亮点：\n`;
+            c += points.map((p, i) => `  ${i+1}. ${p}`).join('\n');
+            c += '\n';
+        }
+        if (slogan) c += `\n💡 ${slogan}\n`;
+        if (name || phone) c += `\n🙋 欢迎私聊咨询${name ? ' ' + name : ''}${phone ? '（' + phone + '）' : ''}`;
+        c += '\n\n👇 详情见海报';
+        return c;
+    }
+
+    function generateBriefCopy(title, subtitle, badge, points, slogan, name, phone) {
+        let c = '';
+        if (badge) c += `${badge} | `;
+        c += title;
+        if (subtitle) c += ` — ${subtitle}`;
+        if (phone) c += `\n☎️ ${phone}`;
+        return c;
+    }
+
+    function generateStoryCopy(title, subtitle, badge, points, slogan, name, phone, config) {
+        let c = '';
+        c += `最近很多朋友问我关于"${title}"的事，今天统一聊聊 👋\n\n`;
+        if (subtitle) c += `${subtitle}。\n\n`;
+        if (points.length) {
+            c += `说几个我觉得特别重要的点：\n`;
+            points.forEach((p, i) => {
+                c += `\n${['首先','其次','另外','更重要的是','最后','还有'][i] || '然后'}，${p}。`;
+            });
+            c += '\n';
+        }
+        if (slogan) c += `\n就像我们一直说的：${slogan}。\n`;
+        c += '\n如果大家有相关问题，欢迎随时找我聊聊 💬';
+        if (phone) c += `（${phone}）`;
+        return c;
+    }
+
+    function copyCopy() {
+        const text = document.getElementById('copyOutput').textContent;
+        if (text.includes('填写上方表单')) {
+            showToast('请先填写内容并生成文案');
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('✅ 文案已复制到剪贴板');
+        }).catch(() => {
+            // Fallback
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('✅ 文案已复制到剪贴板');
+        });
+    }
+
+    // ===== Export =====
+    async function exportPoster() {
+        const title = document.getElementById('title').value;
+        if (!title) {
+            showToast('请先填写标题');
+            return;
+        }
+
+        const overlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
+        overlay.classList.add('active');
+        loadingText.textContent = '正在生成高清图片...';
+
+        try {
+            const poster = document.getElementById('poster');
+            const canvas = await html2canvas(poster, {
+                scale: 3,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null,
+                width: poster.offsetWidth,
+                height: poster.offsetHeight,
+                logging: false,
+            });
+
+            const link = document.createElement('a');
+            const fileName = `${title.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '_')}_${new Date().toLocaleDateString('zh-CN')}.png`;
+            link.download = fileName;
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+
+            showToast('✅ 海报已导出');
+        } catch (err) {
+            console.error(err);
+            showToast('❌ 导出失败，请重试');
+        } finally {
+            overlay.classList.remove('active');
+        }
+    }
+
+    // ===== History =====
+    function getFormData() {
+        return {
+            template: currentTemplate,
+            color: currentColor,
+            badge: document.getElementById('badge').value,
+            title: document.getElementById('title').value,
+            subtitle: document.getElementById('subtitle').value,
+            slogan: document.getElementById('slogan').value,
+            contactName: document.getElementById('contactName').value,
+            contactPhone: document.getElementById('contactPhone').value,
+            points: Array.from(document.querySelectorAll('#sellingPoints .selling-point-row input')).map(i => i.value),
+            savedAt: new Date().toISOString(),
+        };
+    }
+
+    function loadFormData(data) {
+        currentTemplate = data.template;
+        currentColor = data.color;
+
+        // Template
+        document.querySelectorAll('.template-card').forEach(c => {
+            c.classList.toggle('active', c.dataset.template === data.template);
+        });
+
+        // Color
+        document.querySelectorAll('.color-swatch').forEach(s => {
+            s.classList.toggle('active', s.dataset.color === data.color);
+        });
+        document.getElementById('poster').className = 'poster theme-' + data.color;
+
+        // Fields
+        document.getElementById('badge').value = data.badge || '';
+        document.getElementById('title').value = data.title || '';
+        document.getElementById('subtitle').value = data.subtitle || '';
+        document.getElementById('slogan').value = data.slogan || '';
+        document.getElementById('contactName').value = data.contactName || '';
+        document.getElementById('contactPhone').value = data.contactPhone || '';
+
+        // Points
+        const container = document.getElementById('sellingPoints');
+        container.innerHTML = '';
+        (data.points || []).forEach((p, i) => {
+            addSellingPointWithValue(p, i + 1);
+        });
+
+        updatePreview();
+    }
+
+    function saveToHistory() {
+        const data = getFormData();
+        if (!data.title) {
+            showToast('请先填写标题');
+            return;
+        }
+
+        let history = JSON.parse(localStorage.getItem('marketing_history') || '[]');
+        // Limit to 20
+        history.unshift(data);
+        if (history.length > 20) history = history.slice(0, 20);
+        localStorage.setItem('marketing_history', JSON.stringify(history));
+
+        renderHistory();
+        showToast('✅ 已保存到历史记录');
+
+        if (!historyOpen) toggleHistory();
+    }
+
+    function deleteHistoryItem(index) {
+        let history = JSON.parse(localStorage.getItem('marketing_history') || '[]');
+        history.splice(index, 1);
+        localStorage.setItem('marketing_history', JSON.stringify(history));
+        renderHistory();
+        showToast('已删除');
+    }
+
+    function clearHistory() {
+        if (!confirm('确定清空所有历史记录？')) return;
+        localStorage.removeItem('marketing_history');
+        renderHistory();
+        showToast('已清空');
+    }
+
+    function loadHistoryItem(index) {
+        const history = JSON.parse(localStorage.getItem('marketing_history') || '[]');
+        if (history[index]) {
+            loadFormData(history[index]);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast('✅ 已加载历史记录');
+        }
+    }
+
+    function toggleHistory() {
+        historyOpen = !historyOpen;
+        const body = document.getElementById('historyBody');
+        const toggle = document.getElementById('historyToggle');
+        if (historyOpen) {
+            body.style.display = 'block';
+            toggle.style.transform = 'rotate(180deg)';
+        } else {
+            body.style.display = 'none';
+            toggle.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('marketing_history') || '[]');
+        const list = document.getElementById('historyList');
+        const count = document.getElementById('historyCount');
+        const empty = document.getElementById('emptyHistory');
+        const clearBtn = document.getElementById('clearHistoryBtn');
+
+        count.textContent = history.length;
+
+        if (history.length === 0) {
+            list.innerHTML = '<div class="empty-state" id="emptyHistory"><div class="emoji">📭</div><p>暂无保存记录</p></div>';
+            clearBtn.classList.add('hidden');
+            return;
+        }
+
+        clearBtn.classList.remove('hidden');
+        list.innerHTML = history.map((item, i) => {
+            const config = templateConfig[item.template] || templateConfig['study-abroad'];
+            const date = new Date(item.savedAt);
+            const dateStr = `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2,'0')}`;
+            return `
+                <div class="history-item" onclick="loadHistoryItem(${i})">
+                    <div class="history-thumb">
+                        <div class="poster theme-${item.color || 'blue'}">
+                            <div class="poster-bg-pattern"></div>
+                            <div class="poster-content">
+                                <div class="poster-badge"><span>${config.emoji}</span></div>
+                                <div class="poster-title">${escapeHtml(item.title || '未命名')}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-meta">
+                        <h4>${escapeHtml(item.title || '未命名')}</h4>
+                        <p>${config.label} · ${dateStr}</p>
+                    </div>
+                    <button class="history-delete" onclick="event.stopPropagation(); deleteHistoryItem(${i})" title="删除">×</button>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ===== Reset =====
+    function resetAll() {
+        if (!confirm('确定重置所有内容？')) return;
+        selectTemplate(document.querySelector('.template-card[data-template="study-abroad"]'));
+        selectColor(document.querySelector('.color-swatch[data-color="blue"]'));
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactPhone').value = '';
+        showToast('✅ 已重置');
+    }
+
+    // ===== Toast =====
+    function showToast(msg) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = msg;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // ===== Utility =====
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', () => {
+        // Nav scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // Load initial template defaults
+        selectTemplate(document.querySelector('.template-card.active'));
+
+        // Render history
+        renderHistory();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习资源 | B2B留学销售管理工具箱</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2B6CB0; --primary-light: #63B3ED; --primary-lighter: #EBF8FF;
+            --accent: #38A169; --accent-light: #C6F6D5;
+            --warm: #ED8936; --warm-light: #FEFCBF;
+            --purple: #805AD5; --purple-light: #E9D8FD;
+            --red: #E53E3E; --red-light: #FED7D7;
+            --teal: #319795; --teal-light: #B2F5EA;
+            --gray-50: #F7FAFC; --gray-100: #EDF2F7; --gray-200: #E2E8F0;
+            --gray-300: #CBD5E0; --gray-400: #A0AEC0; --gray-500: #718096;
+            --gray-600: #4A5568; --gray-700: #2D3748; --gray-800: #1A202C;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08); --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1); --radius: 16px; --radius-sm: 12px;
+        }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--gray-50); color: var(--gray-700); line-height: 1.6; min-height: 100vh; }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--gray-200); z-index: 100; }
+        nav.scrolled { box-shadow: var(--shadow-sm); }
+        .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .nav-logo span { background: linear-gradient(135deg, var(--primary), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; gap: 8px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--gray-500); font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--primary-lighter); }
+        .mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--gray-600); }
+        .hero { padding: 120px 24px 48px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 30% 20%, rgba(99,179,237,0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(56,161,105,0.1) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(128,90,213,0.08) 0%, transparent 70%); animation: heroFloat 20s ease-in-out infinite; }
+        @keyframes heroFloat { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(20px, -20px); } 66% { transform: translate(-10px, 10px); } }
+        .hero-content { position: relative; max-width: 700px; margin: 0 auto; }
+        .hero-icon { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--purple-light), var(--primary-lighter)); display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; box-shadow: 0 8px 24px rgba(128,90,213,0.2); }
+        .hero h1 { font-size: 36px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px; }
+        .hero p { font-size: 16px; color: var(--gray-500); line-height: 1.8; }
+        .main-content { max-width: 1400px; margin: 0 auto; padding: 0 24px 80px; }
+        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: white; border-radius: var(--radius-sm); padding: 20px; border: 1px solid var(--gray-200); text-align: center; cursor: pointer; transition: all 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .stat-card.active { border-color: var(--primary-light); background: var(--primary-lighter); }
+        .stat-number { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+        .stat-number.blue { color: var(--primary); }
+        .stat-number.green { color: var(--accent); }
+        .stat-number.orange { color: var(--warm); }
+        .stat-number.gray { color: var(--gray-500); }
+        .stat-label { font-size: 13px; color: var(--gray-500); font-weight: 500; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; align-items: center; }
+        .search-box { flex: 1; min-width: 240px; position: relative; }
+        .search-box input { width: 100%; padding: 12px 16px 12px 44px; border: 1px solid var(--gray-200); border-radius: 12px; font-size: 14px; background: white; outline: none; font-family: inherit; }
+        .search-box input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(99,179,237,0.15); }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-300); }
+        .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn { padding: 10px 16px; border: 1px solid var(--gray-200); border-radius: 10px; background: white; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; }
+        .filter-btn:hover { border-color: var(--gray-300); background: var(--gray-50); }
+        .filter-btn.active { border-color: var(--primary); background: var(--primary-lighter); color: var(--primary); }
+        .add-btn { padding: 10px 20px; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); font-size: 14px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: inherit; box-shadow: 0 4px 12px rgba(43,108,176,0.25); }
+        .add-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(43,108,176,0.3); }
+        .category-tabs { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
+        .category-tab { padding: 10px 20px; border: 1px solid var(--gray-200); border-radius: 24px; background: white; font-size: 14px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; font-family: inherit; }
+        .category-tab:hover { border-color: var(--gray-300); }
+        .category-tab.active { border-color: var(--primary); background: var(--primary); color: white; }
+        .resources-section { margin-bottom: 32px; }
+        .section-title { font-size: 18px; font-weight: 600; color: var(--gray-800); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .section-title .badge { font-size: 12px; padding: 4px 10px; border-radius: 12px; background: var(--warm-light); color: var(--warm); }
+        .resources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+        .resource-card { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.3s; position: relative; }
+        .resource-card:hover { box-shadow: var(--shadow-lg); border-color: transparent; transform: translateY(-2px); }
+        .resource-card.featured { border-color: var(--warm); background: linear-gradient(135deg, white 0%, #FFFBF0 100%); }
+        .resource-card.featured::before { content: '★ 精选'; position: absolute; top: 12px; right: 12px; background: var(--warm); color: white; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; z-index: 1; }
+        .card-header { padding: 20px 20px 12px; display: flex; align-items: flex-start; gap: 14px; }
+        .card-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+        .card-icon.book { background: var(--primary-lighter); }
+        .card-icon.course { background: var(--accent-light); }
+        .card-icon.article { background: var(--purple-light); }
+        .card-icon.video { background: var(--red-light); }
+        .card-icon.podcast { background: var(--teal-light); }
+        .card-icon.community { background: var(--warm-light); }
+        .card-title-area { flex: 1; min-width: 0; }
+        .card-title-area h3 { font-size: 16px; font-weight: 600; color: var(--gray-800); margin-bottom: 6px; line-height: 1.4; }
+        .card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+        .meta-tag { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+        .meta-tag.category { background: var(--gray-100); color: var(--gray-600); }
+        .meta-tag.difficulty-easy { background: var(--accent-light); color: var(--accent); }
+        .meta-tag.difficulty-medium { background: var(--warm-light); color: var(--warm); }
+        .meta-tag.difficulty-hard { background: var(--red-light); color: var(--red); }
+        .card-body { padding: 0 20px 16px; }
+        .card-body p { font-size: 13px; color: var(--gray-500); line-height: 1.7; margin-bottom: 12px; }
+        .card-reason { background: var(--gray-50); border-radius: 10px; padding: 12px; font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+        .card-reason strong { color: var(--primary); }
+        .card-footer { padding: 12px 20px; border-top: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .progress-selector { display: flex; gap: 6px; }
+        .progress-btn { padding: 6px 12px; border: 1px solid var(--gray-200); border-radius: 8px; background: white; font-size: 12px; font-weight: 500; color: var(--gray-500); cursor: pointer; font-family: inherit; }
+        .progress-btn.active.pending { border-color: var(--gray-400); background: var(--gray-100); color: var(--gray-600); }
+        .progress-btn.active.learning { border-color: var(--warm); background: var(--warm-light); color: var(--warm); }
+        .progress-btn.active.done { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+        .card-actions { display: flex; gap: 8px; }
+        .action-btn { width: 32px; height: 32px; border: 1px solid var(--gray-200); border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-400); }
+        .action-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+        .action-btn.delete:hover { border-color: var(--red); color: var(--red); }
+        .empty-state { text-align: center; padding: 60px 24px; background: white; border-radius: var(--radius); border: 2px dashed var(--gray-200); }
+        .empty-state-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; }
+        .empty-state h3 { font-size: 18px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; }
+        .empty-state p { font-size: 14px; color: var(--gray-400); }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; padding: 24px; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal { background: white; border-radius: var(--radius); width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s; }
+        .modal-overlay.active .modal { transform: translateY(0); }
+        .modal-header { padding: 24px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+        .modal-header h2 { font-size: 20px; font-weight: 600; color: var(--gray-800); }
+        .modal-close { width: 36px; height: 36px; border: none; border-radius: 10px; background: var(--gray-100); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); }
+        .modal-close:hover { background: var(--gray-200); }
+        .modal-body { padding: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 500; color: var(--gray-700); margin-bottom: 8px; }
+        .form-group label .required { color: var(--red); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200); border-radius: 10px; font-size: 14px; background: white; outline: none; font-family: inherit; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(99,179,237,0.15); }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; }
+        .checkbox-group input { width: 20px; height: 20px; cursor: pointer; }
+        .checkbox-group label { margin: 0; cursor: pointer; }
+        .modal-footer { padding: 20px 24px; border-top: 1px solid var(--gray-200); display: flex; gap: 12px; justify-content: flex-end; }
+        .btn { padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .btn-secondary { background: white; border: 1px solid var(--gray-200); color: var(--gray-600); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--accent)); border: none; color: white; box-shadow: 0 4px 12px rgba(43,108,176,0.25); }
+        .btn-danger { background: var(--red); border: none; color: white; }
+        footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--gray-200); background: white; }
+        footer p { font-size: 13px; color: var(--gray-400); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .resources-grid { grid-template-columns: 1fr; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .form-row { grid-template-columns: 1fr; }
+            .toolbar { flex-direction: column; }
+            .search-box { min-width: 100%; }
+            .add-btn { width: 100%; justify-content: center; }
+            .nav-links.mobile-open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: white; border-bottom: 1px solid var(--gray-200); padding: 16px; box-shadow: var(--shadow-md); }
+        }
+        .card-fade-in { opacity: 0; animation: cardFadeIn 0.4s ease forwards; }
+        @keyframes cardFadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .confirm-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1100; opacity: 0; visibility: hidden; padding: 24px; }
+        .confirm-overlay.active { opacity: 1; visibility: visible; }
+        .confirm-dialog { background: white; border-radius: var(--radius); padding: 32px; max-width: 400px; width: 100%; text-align: center; }
+        .confirm-dialog h3 { font-size: 18px; font-weight: 600; color: var(--gray-800); margin-bottom: 12px; }
+        .confirm-dialog p { font-size: 14px; color: var(--gray-500); margin-bottom: 24px; }
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="../fancy-workshop.html" class="nav-logo"><span>📚 学习资源</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="../fancy-workshop.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 返回主页</a>
+                <a href="#" class="active">全部资源</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-icon">📖</div>
+            <h1>学习资源中心</h1>
+            <p>精选推荐阅读、优质课程与专业社群<br>涵盖销售技巧、管理方法论、行业知识等核心能力方向</p>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="stats-bar">
+            <div class="stat-card active" data-filter="all"><div class="stat-number blue" id="totalCount">0</div><div class="stat-label">全部资源</div></div>
+            <div class="stat-card" data-filter="pending"><div class="stat-number gray" id="pendingCount">0</div><div class="stat-label">待学习</div></div>
+            <div class="stat-card" data-filter="learning"><div class="stat-number orange" id="learningCount">0</div><div class="stat-label">学习中</div></div>
+            <div class="stat-card" data-filter="done"><div class="stat-number green" id="doneCount">0</div><div class="stat-label">已完成</div></div>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="searchInput" placeholder="搜索资源标题、简介、推荐理由..." />
+            </div>
+            <div class="filter-group" id="filterGroup">
+                <button class="filter-btn active" data-type="all">全部类型</button>
+                <button class="filter-btn" data-type="book">📚 书籍</button>
+                <button class="filter-btn" data-type="course">🎓 课程</button>
+                <button class="filter-btn" data-type="article">📄 文章</button>
+                <button class="filter-btn" data-type="video">🎬 视频</button>
+                <button class="filter-btn" data-type="podcast">🎧 播客</button>
+                <button class="filter-btn" data-type="community">👥 社群</button>
+            </div>
+            <button class="add-btn" id="addBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 添加资源</button>
+        </div>
+
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active" data-category="all">🌐 全部</button>
+            <button class="category-tab" data-category="sales">💼 销售技巧</button>
+            <button class="category-tab" data-category="management">👥 管理方法论</button>
+            <button class="category-tab" data-category="industry">🏢 行业知识</button>
+            <button class="category-tab" data-category="growth">🌱 个人成长</button>
+            <button class="category-tab" data-category="tools">🛠️ 工具技能</button>
+        </div>
+
+        <section class="resources-section" id="featuredSection" style="display:none;">
+            <h2 class="section-title">⭐ 精选推荐 <span class="badge">置顶</span></h2>
+            <div class="resources-grid" id="featuredGrid"></div>
+        </section>
+
+        <section class="resources-section" id="allSection">
+            <h2 class="section-title">📚 全部资源</h2>
+            <div class="resources-grid" id="resourcesGrid"></div>
+            <div class="empty-state" id="emptyState" style="display:none;">
+                <div class="empty-state-icon">📭</div>
+                <h3>暂无匹配资源</h3>
+                <p>试试调整筛选条件，或点击"添加资源"录入新的学习内容</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header"><h2 id="modalTitle">添加学习资源</h2><button class="modal-close" id="modalClose"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+            <div class="modal-body">
+                <form id="resourceForm">
+                    <input type="hidden" id="resourceId" />
+                    <div class="form-group"><label>资源标题 <span class="required">*</span></label><input type="text" id="resourceTitle" placeholder="输入资源名称" required /></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>资源类型 <span class="required">*</span></label><select id="resourceType" required><option value="">选择类型</option><option value="book">📚 书籍</option><option value="course">🎓 课程</option><option value="article">📄 文章</option><option value="video">🎬 视频</option><option value="podcast">🎧 播客</option><option value="community">👥 社群</option></select></div>
+                        <div class="form-group"><label>所属分类 <span class="required">*</span></label><select id="resourceCategory" required><option value="">选择分类</option><option value="sales">💼 销售技巧</option><option value="management">👥 管理方法论</option><option value="industry">🏢 行业知识</option><option value="growth">🌱 个人成长</option><option value="tools">🛠️ 工具技能</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>来源链接</label><input type="url" id="resourceLink" placeholder="https://..." /></div>
+                        <div class="form-group"><label>难度等级</label><select id="resourceDifficulty"><option value="easy">入门级</option><option value="medium">进阶级</option><option value="hard">专家级</option></select></div>
+                    </div>
+                    <div class="form-group"><label>资源简介 <span class="required">*</span></label><textarea id="resourceIntro" placeholder="简要介绍这个资源的内容..." required></textarea></div>
+                    <div class="form-group"><label>推荐理由</label><textarea id="resourceReason" placeholder="为什么推荐这个资源？对工作有什么帮助？"></textarea></div>
+                    <div class="form-group"><div class="checkbox-group"><input type="checkbox" id="resourceFeatured" /><label for="resourceFeatured">标记为精选推荐（置顶显示）</label></div></div>
+                </form>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" id="cancelBtn">取消</button><button class="btn btn-primary" id="saveBtn">保存资源</button></div>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-dialog"><h3>确认删除</h3><p id="confirmMsg">确定要删除这个资源吗？此操作不可撤销。</p><div class="confirm-actions"><button class="btn btn-secondary" id="confirmCancel">取消</button><button class="btn btn-danger" id="confirmDelete">删除</button></div></div>
+    </div>
+
+    <footer><p>Built with ❤️ by <strong>Fancy</strong> · Powered by AI</p><p style="margin-top:4px;font-size:12px;color:var(--gray-300);">持续学习，是卓越销售管理者的底层操作系统</p></footer>
+
+    <script>
+    (() => {
+        const STORAGE_KEY = 'fancy_learning_resources';
+        const TYPE_MAP = { book: '📚', course: '🎓', article: '📄', video: '🎬', podcast: '🎧', community: '👥' };
+        const TYPE_LABEL = { book: '书籍', course: '课程', article: '文章', video: '视频', podcast: '播客', community: '社群' };
+        const CAT_LABEL = { sales: '销售技巧', management: '管理方法论', industry: '行业知识', growth: '个人成长', tools: '工具技能' };
+        const CAT_ICON = { sales: '💼', management: '👥', industry: '🏢', growth: '🌱', tools: '🛠️' };
+        const DIFF_LABEL = { easy: '入门级', medium: '进阶级', hard: '专家级' };
+
+        let resources = [];
+        let currentFilter = { type: 'all', category: 'all', progress: 'all', search: '' };
+        let editingId = null;
+        let deleteId = null;
+
+        const DEFAULT_RESOURCES = [
+            { id: 'd1', title: '《SPIN销售：顶级销售的四大核心问题》', type: 'book', category: 'sales', link: '', difficulty: 'easy', intro: 'Neil Rackham的经典销售方法论著作。通过大量实证研究提炼出SPIN四步提问法，帮助顾问式销售人员深入了解客户需求。', reason: 'B2B销售的"圣经"。我们的业务天然适合顾问式销售，SPIN方法能系统提升挖掘需求的能力。', featured: true, progress: 'pending', createdAt: Date.now() },
+            { id: 'd2', title: '《挑战者销售》(The Challenger Sale)', type: 'book', category: 'sales', link: '', difficulty: 'medium', intro: '颠覆传统"关系型销售"认知的研究著作。发现高绩效销售的核心不是建立关系，而是用独特洞察"挑战"客户的思维。', reason: '留学行业B2B销售正从"卖产品"转向"卖方案"。挑战者思维能帮助我们成为合作伙伴而非供应商。', featured: true, progress: 'pending', createdAt: Date.now() - 1000 },
+            { id: 'd3', title: '《高绩效教练》(Coaching for Performance)', type: 'book', category: 'management', link: '', difficulty: 'medium', intro: 'John Whitmore提出的GROW教练模型经典著作。强调通过提问而非告知来激发他人潜能。', reason: '作为管理者，核心价值不是自己签单，而是让团队成长。GROW模型是一对一面谈必备工具。', featured: true, progress: 'learning', createdAt: Date.now() - 2000 },
+            { id: 'd4', title: '《一分钟经理人》', type: 'book', category: 'management', link: '', difficulty: 'easy', intro: 'Ken Blanchard的经典管理学著作。提出三个高效管理秘诀：一分钟目标、一分钟表扬、一分钟修正。', reason: '薄薄一本，1小时可读完。对于刚转型管理角色的同事，是建立管理直觉的最佳入门读物。', featured: false, progress: 'done', createdAt: Date.now() - 3000 },
+            { id: 'd5', title: '《关键对话》(Crucial Conversations)', type: 'book', category: 'growth', link: '', difficulty: 'medium', intro: '聚焦高风险、高情绪、高分歧的"关键对话"场景，提供具体可操作的沟通策略。', reason: '销售中常遇到异议处理、价格谈判等高压场景，管理中也有绩效面谈、冲突调解。掌握关键对话的技巧，双线受益。', featured: false, progress: 'pending', createdAt: Date.now() - 4000 },
+            { id: 'd6', title: '得到App · 刘润《5分钟商学院》', type: 'course', category: 'management', link: 'https://www.dedao.cn', difficulty: 'easy', intro: '刘润主讲的商业通识课程，每天5分钟，涵盖商业本质、管理基础、个人精进等模块。', reason: '碎片化学习的典范。通勤时间就能听完，系统性建立商业认知框架。特别推荐"管理篇"和"商业篇"。', featured: false, progress: 'learning', createdAt: Date.now() - 5000 },
+            { id: 'd7', title: 'Coursera · 管理激励与绩效', type: 'course', category: 'management', link: 'https://www.coursera.org', difficulty: 'medium', intro: '系统讲解如何设计有效的激励机制、如何进行绩效评估和反馈。', reason: '免费旁听，内容扎实。适合想深入了解绩效管理理论的同事，建议作为团队管理的进阶学习。', featured: false, progress: 'pending', createdAt: Date.now() - 6000 },
+            { id: 'd8', title: 'B站 · 稻盛和夫经营哲学系列', type: 'video', category: 'management', link: 'https://www.bilibili.com', difficulty: 'easy', intro: 'B站上多位博主对稻盛和夫经营哲学的解读视频，涵盖"六项精进"、"阿米巴经营"等核心内容。', reason: '稻盛哲学强调"敬天爱人"、"付出不亚于任何人的努力"，对企业文化建设很有启发。', featured: false, progress: 'pending', createdAt: Date.now() - 7000 },
+            { id: 'd9', title: '播客 · 组织进化论', type: 'podcast', category: 'management', link: '', difficulty: 'easy', intro: '聚焦组织管理、团队建设、人才发展话题的深度播客，每期邀请不同领域专家对谈。', reason: '适合通勤路上听，能获取很多实用的管理视角和案例。', featured: false, progress: 'pending', createdAt: Date.now() - 8000 },
+            { id: 'd10', title: '《影响力》(Influence)', type: 'book', category: 'sales', link: '', difficulty: 'easy', intro: 'Robert Cialdini的经典著作，揭示影响力的六大原则：互惠、承诺一致、社会认同、喜好、权威、稀缺。', reason: '理解人性的底层逻辑，对销售中的说服、谈判、促单都有直接帮助。', featured: false, progress: 'pending', createdAt: Date.now() - 9000 },
+            { id: 'd11', title: '《金字塔原理》', type: 'book', category: 'tools', link: '', difficulty: 'medium', intro: '麦肯锡经典思维训练著作，教你如何清晰地思考、表达和解决问题。', reason: '无论写方案、做汇报、还是与客户沟通，清晰的结构化思维都是必备技能。', featured: false, progress: 'pending', createdAt: Date.now() - 10000 },
+            { id: 'd12', title: '英国文化协会官网', type: 'article', category: 'industry', link: 'https://www.britishcouncil.cn', difficulty: 'easy', intro: '英国文化协会官方网站，提供英国教育、留学政策、院校信息等权威资讯。', reason: '作为英国留学方向的B2B销售，必须掌握第一手政策信息。', featured: false, progress: 'pending', createdAt: Date.now() - 11000 },
+            { id: 'd13', title: '销售社群 · B2B销售精英会', type: 'community', category: 'sales', link: '', difficulty: 'easy', intro: '聚集B2B销售从业者的专业社群，定期分享实战经验、行业动态、方法论讨论。', reason: '在同行社群中可以看到不同行业的最佳实践，拓展视野。', featured: false, progress: 'pending', createdAt: Date.now() - 12000 },
+            { id: 'd14', title: '《非暴力沟通》', type: 'book', category: 'growth', link: '', difficulty: 'easy', intro: 'Marshall Rosenberg的经典著作，介绍一种基于同理心的沟通方式，帮助化解冲突、建立连接。', reason: '对于处理客户异议、团队冲突、跨部门协作都有启发。推荐管理层和一线销售共同阅读。', featured: false, progress: 'pending', createdAt: Date.now() - 13000 },
+            { id: 'd15', title: '《终身成长》', type: 'book', category: 'growth', link: '', difficulty: 'easy', intro: 'Carol Dweck关于"成长型思维"的开创性著作，揭示信念如何影响成就。', reason: '作为团队管理者，帮助成员建立成长型思维是核心职责之一。这本书提供了理论基础。', featured: false, progress: 'pending', createdAt: Date.now() - 14000 }
+        ];
+
+        function loadResources() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                resources = JSON.parse(saved);
+            } else {
+                resources = [...DEFAULT_RESOURCES];
+                saveResources();
+            }
+        }
+
+        function saveResources() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(resources));
+        }
+
+        function generateId() {
+            return 'r_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function updateStats() {
+            const total = resources.length;
+            const pending = resources.filter(r => r.progress === 'pending').length;
+            const learning = resources.filter(r => r.progress === 'learning').length;
+            const done = resources.filter(r => r.progress === 'done').length;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('learningCount').textContent = learning;
+            document.getElementById('doneCount').textContent = done;
+        }
+
+        function createCard(r, delay) {
+            const icon = TYPE_MAP[r.type] || '📄';
+            const card = document.createElement('div');
+            card.className = `resource-card${r.featured ? ' featured' : ''} card-fade-in`;
+            card.style.animationDelay = `${delay * 0.05}s`;
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="card-icon ${r.type}">${icon}</div>
+                    <div class="card-title-area">
+                        <h3>${escapeHtml(r.title)}</h3>
+                        <div class="card-meta">
+                            <span class="meta-tag category">${CAT_ICON[r.category]} ${CAT_LABEL[r.category]}</span>
+                            <span class="meta-tag difficulty-${r.difficulty}">${DIFF_LABEL[r.difficulty]}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>${escapeHtml(r.intro)}</p>
+                    ${r.reason ? `<div class="card-reason"><strong>推荐理由：</strong>${escapeHtml(r.reason)}</div>` : ''}
+                </div>
+                <div class="card-footer">
+                    <div class="progress-selector">
+                        <button class="progress-btn${r.progress === 'pending' ? ' active pending' : ''}" data-progress="pending">待学习</button>
+                        <button class="progress-btn${r.progress === 'learning' ? ' active learning' : ''}" data-progress="learning">学习中</button>
+                        <button class="progress-btn${r.progress === 'done' ? ' active done' : ''}" data-progress="done">已完成</button>
+                    </div>
+                    <div class="card-actions">
+                        ${r.link ? `<a href="${escapeHtml(r.link)}" target="_blank" class="action-btn" title="打开链接"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>` : ''}
+                        <button class="action-btn edit-btn" title="编辑"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
+                        <button class="action-btn delete delete-btn" title="删除"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                    </div>
+                </div>
+            `;
+
+            card.querySelectorAll('.progress-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    r.progress = btn.dataset.progress;
+                    saveResources();
+                    render();
+                });
+            });
+
+            card.querySelector('.edit-btn')?.addEventListener('click', () => openEditModal(r));
+            card.querySelector('.delete-btn')?.addEventListener('click', () => openDeleteConfirm(r));
+
+            return card;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function getFilteredResources() {
+            return resources.filter(r => {
+                if (currentFilter.type !== 'all' && r.type !== currentFilter.type) return false;
+                if (currentFilter.category !== 'all' && r.category !== currentFilter.category) return false;
+                if (currentFilter.progress !== 'all' && r.progress !== currentFilter.progress) return false;
+                if (currentFilter.search) {
+                    const q = currentFilter.search.toLowerCase();
+                    if (!r.title.toLowerCase().includes(q) && !r.intro.toLowerCase().includes(q) && !(r.reason || '').toLowerCase().includes(q)) return false;
+                }
+                return true;
+            });
+        }
+
+        function render() {
+            updateStats();
+            const filtered = getFilteredResources();
+            const featured = filtered.filter(r => r.featured);
+            const regular = filtered.filter(r => !r.featured);
+
+            const featuredSection = document.getElementById('featuredSection');
+            const featuredGrid = document.getElementById('featuredGrid');
+            const resourcesGrid = document.getElementById('resourcesGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (featured.length > 0) {
+                featuredSection.style.display = 'block';
+                featuredGrid.innerHTML = '';
+                featured.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)).forEach((r, i) => {
+                    featuredGrid.appendChild(createCard(r, i));
+                });
+            } else {
+                featuredSection.style.display = 'none';
+            }
+
+            resourcesGrid.innerHTML = '';
+            if (regular.length > 0) {
+                regular.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).forEach((r, i) => {
+                    resourcesGrid.appendChild(createCard(r, i));
+                });
+                emptyState.style.display = 'none';
+            } else if (featured.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = '添加学习资源';
+            document.getElementById('resourceForm').reset();
+            document.getElementById('resourceId').value = '';
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function openEditModal(r) {
+            editingId = r.id;
+            document.getElementById('modalTitle').textContent = '编辑学习资源';
+            document.getElementById('resourceId').value = r.id;
+            document.getElementById('resourceTitle').value = r.title;
+            document.getElementById('resourceType').value = r.type;
+            document.getElementById('resourceCategory').value = r.category;
+            document.getElementById('resourceLink').value = r.link || '';
+            document.getElementById('resourceDifficulty').value = r.difficulty || 'easy';
+            document.getElementById('resourceIntro').value = r.intro;
+            document.getElementById('resourceReason').value = r.reason || '';
+            document.getElementById('resourceFeatured').checked = r.featured || false;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function saveResource() {
+            const title = document.getElementById('resourceTitle').value.trim();
+            const type = document.getElementById('resourceType').value;
+            const category = document.getElementById('resourceCategory').value;
+            const link = document.getElementById('resourceLink').value.trim();
+            const difficulty = document.getElementById('resourceDifficulty').value;
+            const intro = document.getElementById('resourceIntro').value.trim();
+            const reason = document.getElementById('resourceReason').value.trim();
+            const featured = document.getElementById('resourceFeatured').checked;
+
+            if (!title || !type || !category || !intro) {
+                alert('请填写必填项');
+                return;
+            }
+
+            if (editingId) {
+                const idx = resources.findIndex(r => r.id === editingId);
+                if (idx > -1) {
+                    resources[idx] = { ...resources[idx], title, type, category, link, difficulty, intro, reason, featured };
+                }
+            } else {
+                resources.unshift({
+                    id: generateId(), title, type, category, link, difficulty, intro, reason, featured,
+                    progress: 'pending', createdAt: Date.now()
+                });
+            }
+
+            saveResources();
+            closeModal();
+            render();
+        }
+
+        function openDeleteConfirm(r) {
+            deleteId = r.id;
+            document.getElementById('confirmMsg').textContent = `确定要删除"${r.title}"吗？此操作不可撤销。`;
+            document.getElementById('confirmOverlay').classList.add('active');
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmOverlay').classList.remove('active');
+            deleteId = null;
+        }
+
+        function confirmDelete() {
+            if (deleteId) {
+                resources = resources.filter(r => r.id !== deleteId);
+                saveResources();
+                render();
+            }
+            closeConfirm();
+        }
+
+        // Event listeners
+        document.getElementById('addBtn').addEventListener('click', openAddModal);
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('cancelBtn').addEventListener('click', closeModal);
+        document.getElementById('saveBtn').addEventListener('click', saveResource);
+        document.getElementById('confirmCancel').addEventListener('click', closeConfirm);
+        document.getElementById('confirmDelete').addEventListener('click', confirmDelete);
+
+        document.getElementById('modalOverlay').addEventListener('click', e => {
+            if (e.target === document.getElementById('modalOverlay')) closeModal();
+        });
+
+        document.getElementById('confirmOverlay').addEventListener('click', e => {
+            if (e.target === document.getElementById('confirmOverlay')) closeConfirm();
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter.type = btn.dataset.type;
+                render();
+            });
+        });
+
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter.category = tab.dataset.category;
+                render();
+            });
+        });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                currentFilter.progress = card.dataset.filter;
+                render();
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', e => {
+            currentFilter.search = e.target.value;
+            render();
+        });
+
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('mobile-open');
+        });
+
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // Init
+        loadResources();
+        render();
+    })();
+    </script>
+</body>
+</html>

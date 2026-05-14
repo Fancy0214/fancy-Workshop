@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>激励政策设计 | 团队内驱力引擎</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --info: #4299e1;
+            --bg-light: #f7fafc;
+            --bg-card: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .navbar-brand .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+        .navbar-brand h1 { font-size: 1.25rem; font-weight: 600; }
+        .navbar-nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav-btn:hover { background: var(--bg-light); color: var(--text-primary); }
+        .nav-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .nav-btn-home {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-btn-home:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .stat-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .stat-info h3 { font-size: 1.5rem; font-weight: 700; }
+        .stat-info p { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* Card */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .card-header h2 { font-size: 1.1rem; font-weight: 600; }
+        .card-body { padding: 1.5rem; }
+
+        /* Page content */
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { opacity: 0.9; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-warning:hover { opacity: 0.9; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { opacity: 0.9; }
+        .btn-secondary { background: var(--bg-light); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border); }
+        .btn-sm { padding: 0.3rem 0.75rem; font-size: 0.8rem; }
+
+        /* Form */
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 0.4rem; font-size: 0.9rem; }
+        .form-control {
+            width: 100%;
+            padding: 0.6rem 0.85rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            background: white;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        select.form-control { cursor: pointer; }
+
+        /* Search */
+        .search-box { position: relative; }
+        .search-box input { padding-left: 2.5rem; }
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Table */
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background: var(--bg-light); font-weight: 600; white-space: nowrap; }
+        tr:hover { background: #f8fafc; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.25s ease;
+        }
+        @keyframes modalIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 { font-size: 1.1rem; font-weight: 600; }
+        .modal-close {
+            width: 32px; height: 32px;
+            border: none; background: var(--bg-light);
+            border-radius: 8px; cursor: pointer;
+            font-size: 1.2rem; color: var(--text-secondary);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: var(--danger); color: white; }
+        .modal-body { padding: 1.5rem; }
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-primary { background: #ebf4ff; color: var(--primary); }
+        .badge-success { background: #f0fff4; color: #276749; }
+        .badge-warning { background: #fffaf0; color: #c05621; }
+        .badge-danger { background: #fff5f5; color: #c53030; }
+        .badge-info { background: #ebf8ff; color: #2b6cb0; }
+
+        /* Template cards */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+        .template-card {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+        }
+        .template-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.15);
+            transform: translateY(-3px);
+        }
+        .template-card .tpl-icon {
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        .template-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+        .template-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+        .template-card .tpl-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+        .template-card .use-btn {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.6rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .template-card .use-btn:hover { opacity: 0.85; }
+
+        /* Wizard */
+        .wizard-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .wizard-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            right: 40px;
+            height: 3px;
+            background: var(--border);
+            z-index: 0;
+        }
+        .wizard-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            cursor: pointer;
+        }
+        .wizard-step .step-circle {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 3px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+        .wizard-step.active .step-circle {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: var(--primary);
+            color: white;
+        }
+        .wizard-step.done .step-circle {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        .wizard-step .step-label {
+            margin-top: 0.5rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 80px;
+        }
+        .wizard-step.active .step-label { color: var(--primary); font-weight: 600; }
+        .wizard-step.done .step-label { color: var(--success); }
+        .wizard-panel { display: none; }
+        .wizard-panel.active { display: block; }
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Calculator */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 900px) { .calc-grid { grid-template-columns: 1fr; } }
+        .calc-result {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .calc-result .amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+        .calc-result .label { font-size: 0.85rem; opacity: 0.9; }
+        .calc-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .calc-item {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+        .calc-item .calc-item-label { font-size: 0.75rem; opacity: 0.85; }
+        .calc-item .calc-item-value { font-size: 1.25rem; font-weight: 700; margin-top: 0.25rem; }
+
+        /* Comparison */
+        .compare-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        .compare-slot {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            min-height: 200px;
+            transition: all 0.3s;
+        }
+        .compare-slot.filled { border-style: solid; border-color: var(--primary); }
+        .compare-slot h4 { font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-secondary); }
+        .compare-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .compare-metric:last-child { border-bottom: none; }
+        .compare-highlight { background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; }
+
+        /* Evaluation */
+        .eval-radar { text-align: center; padding: 1rem; }
+        .eval-dimension {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .eval-dimension .dim-label {
+            width: 120px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .eval-bar-track {
+            flex: 1;
+            height: 24px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .eval-bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .eval-dimension .dim-score {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        /* History */
+        .history-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .history-item:last-child { border-bottom: none; }
+        .history-icon {
+            width: 42px; height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .history-info { flex: 1; }
+        .history-info h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+        .history-info p { font-size: 0.82rem; color: var(--text-secondary); }
+        .history-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+        .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .empty-state p { font-size: 0.95rem; margin-bottom: 1rem; }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 1.5rem;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 0.85rem 1.25rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+            max-width: 360px;
+            font-size: 0.9rem;
+        }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { to { opacity: 0; transform: translateX(50px); } }
+
+        /* Score stars */
+        .score-stars { color: #f6ad55; letter-spacing: 2px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar { padding: 0.75rem 1rem; }
+            .navbar-nav { gap: 0.25rem; }
+            .nav-btn { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+            .main-container { padding: 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .template-grid { grid-template-columns: 1fr; }
+            .wizard-steps { flex-wrap: wrap; gap: 0.5rem; }
+            .wizard-steps::before { display: none; }
+            .compare-area { grid-template-columns: 1fr; }
+        }
+
+        /* Progress bar in card */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .tag-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .filter-tag {
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-size: 0.82rem;
+            transition: all 0.2s;
+        }
+        .filter-tag:hover { border-color: var(--primary); }
+        .filter-tag.active { background: var(--primary); color: white; border-color: var(--primary); }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="nav-btn-home">🏠 返回主页</a>
+            <div class="navbar-brand">
+                <div class="icon">🏆</div>
+                <h1>激励政策设计中心</h1>
+            </div>
+            <div class="navbar-nav">
+                <button class="nav-btn active" onclick="showPage('dashboard')">📊 总览</button>
+                <button class="nav-btn" onclick="showPage('templates')">📚 模板库</button>
+                <button class="nav-btn" onclick="showPage('wizard')">🧭 设计向导</button>
+                <button class="nav-btn" onclick="showPage('calculator')">🧮 计算器</button>
+                <button class="nav-btn" onclick="showPage('compare')">⚖️ 政策对比</button>
+                <button class="nav-btn" onclick="showPage('evaluate')">📈 效果评估</button>
+                <button class="nav-btn" onclick="showPage('archive')">📁 存档</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <div class="main-container">
+        <!-- ========== Dashboard ========== -->
+        <div id="page-dashboard" class="page-content active">
+            <div class="stats-grid" id="dashboard-stats"></div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>📊 激励政策总览</h2>
+                    <button class="btn btn-primary" onclick="showPage('wizard')">🧭 新建政策</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>政策名称</th><th>类型</th><th>激励对象</th><th>创建日期</th><th>状态</th><th>操作</th></tr>
+                            </thead>
+                            <tbody id="dashboard-table"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="dashboard-empty" style="display:none">
+                        <div class="empty-icon">📝</div>
+                        <p>还没有创建任何激励政策</p>
+                        <button class="btn btn-primary" onclick="showPage('wizard')">🧭 开始设计第一个政策</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h2>💡 快速开始</h2></div>
+                <div class="card-body">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+                        <div class="template-card" onclick="showPage('templates')" style="border:none;box-shadow:var(--shadow)">
+                            <div class="tpl-icon" style="background:#ebf4ff">📚</div>
+                            <h3>浏览模板</h3>
+                            <p>从经典激励模板中获取灵感</p>
+                        </div>
+                        <div class="template-card" onclick="showPage('wizard')" style="border:none;box-shadow:var(--shadow)">
+                            <div class="tpl-icon" style="background:#f0fff4">🧭</div>
+                            <h3>设计向导</h3>
+                            <p>逐步引导你设计完整政策</p>
+                        </div>
+                        <div class="template-card" onclick="showPage('calculator')" style="border:none;box-shadow:var(--shadow)">
+                            <div class="tpl-icon" style="background:#fffaf0">🧮</div>
+                            <h3>奖金测算</h3>
+                            <p>快速模拟计算激励金额</p>
+                        </div>
+                        <div class="template-card" onclick="showPage('evaluate')" style="border:none;box-shadow:var(--shadow)">
+                            <div class="tpl-icon" style="background:#fff5f5">📈</div>
+                            <h3>效果评估</h3>
+                            <p>评估激励政策的综合效果</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Templates ========== -->
+        <div id="page-templates" class="page-content">
+            <div class="card">
+                <div class="card-header"><h2>📚 激励政策模板库</h2></div>
+                <div class="card-body">
+                    <div class="tag-group" id="template-filters"></div>
+                    <div class="template-grid" id="template-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Wizard ========== -->
+        <div id="page-wizard" class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 id="wizard-title">🧭 政策设计向导</h2>
+                    <div style="display:flex;gap:0.75rem">
+                        <select class="form-control" id="wizard-load-policy" style="width:auto" onchange="loadPolicyToWizard(this.value)">
+                            <option value="">加载已有政策...</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="resetWizard()">🔄 重置</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="wizard-steps" id="wizard-steps"></div>
+                    <div id="wizard-panels"></div>
+                    <div class="wizard-actions">
+                        <button class="btn btn-secondary" id="wiz-prev" onclick="wizardNav(-1)" disabled>⬅ 上一步</button>
+                        <button class="btn btn-primary" id="wiz-next" onclick="wizardNav(1)">下一步 ➡</button>
+                        <button class="btn btn-success" id="wiz-save" onclick="saveWizardPolicy()" style="display:none">💾 保存政策</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Calculator ========== -->
+        <div id="page-calculator" class="page-content">
+            <div class="card">
+                <div class="card-header"><h2>🧮 激励金额计算器</h2></div>
+                <div class="card-body">
+                    <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap">
+                        <button class="btn btn-primary calc-tab active" onclick="switchCalcTab(this,'bonus')">💰 奖金测算</button>
+                        <button class="btn btn-secondary calc-tab" onclick="switchCalcTab(this,'commission')">📈 提成模拟</button>
+                        <button class="btn btn-secondary calc-tab" onclick="switchCalcTab(this,'equity')">股权激励</button>
+                        <button class="btn btn-secondary calc-tab" onclick="switchCalcTab(this,'kpi')">🎯 KPI奖金</button>
+                    </div>
+                    <!-- Bonus Calculator -->
+                    <div id="calc-bonus" class="calc-panel">
+                        <div class="calc-grid">
+                            <div>
+                                <div class="form-group"><label>目标奖金基数（元）</label><input type="number" class="form-control" id="calc-base-bonus" value="50000" oninput="calcBonus()"></div>
+                                <div class="form-group"><label>目标达成率（%）</label><input type="number" class="form-control" id="calc-achieve-rate" value="100" min="0" max="200" oninput="calcBonus()"></div>
+                                <div class="form-group"><label>超额奖励系数</label><input type="number" class="form-control" id="calc-over-coef" value="1.5" min="0" step="0.1" oninput="calcBonus()"></div>
+                                <div class="form-group"><label>未达标惩罚系数</label><input type="number" class="form-control" id="calc-under-coef" value="0.5" min="0" step="0.1" oninput="calcBonus()"></div>
+                                <div class="form-group"><label>团队系数</label><input type="number" class="form-control" id="calc-team-coef" value="1.0" min="0" step="0.1" oninput="calcBonus()"></div>
+                                <div class="form-group"><label>最低发放比例（%）</label><input type="number" class="form-control" id="calc-min-rate" value="0" min="0" max="100" oninput="calcBonus()"></div>
+                            </div>
+                            <div>
+                                <div class="calc-result" id="bonus-result">
+                                    <div class="label">预计奖金总额</div>
+                                    <div class="amount" id="bonus-total">¥50,000</div>
+                                    <div class="label" id="bonus-note">目标100%达成</div>
+                                    <div class="calc-breakdown">
+                                        <div class="calc-item"><div class="calc-item-label">基数奖金</div><div class="calc-item-value" id="bonus-base-show">¥50,000</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">超额/扣减</div><div class="calc-item-value" id="bonus-extra-show">¥0</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">团队系数后</div><div class="calc-item-value" id="bonus-team-show">¥50,000</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">实际发放率</div><div class="calc-item-value" id="bonus-rate-show">100%</div></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top:1rem;background:var(--bg-light);border-radius:10px;padding:1rem">
+                                    <h4 style="font-size:0.9rem;margin-bottom:0.75rem">📊 达成率敏感性分析</h4>
+                                    <div id="bonus-sensitivity"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Commission Calculator -->
+                    <div id="calc-commission" class="calc-panel" style="display:none">
+                        <div class="calc-grid">
+                            <div>
+                                <div class="form-group"><label>销售目标额（元）</label><input type="number" class="form-control" id="calc-sales-target" value="1000000" oninput="calcCommission()"></div>
+                                <div class="form-group"><label>实际销售额（元）</label><input type="number" class="form-control" id="calc-sales-actual" value="1200000" oninput="calcCommission()"></div>
+                                <div class="form-group"><label>基础提成比例（%）</label><input type="number" class="form-control" id="calc-comm-rate" value="3" min="0" step="0.1" oninput="calcCommission()"></div>
+                                <div class="form-group"><label>超额提成比例（%）</label><input type="number" class="form-control" id="calc-comm-over-rate" value="5" min="0" step="0.1" oninput="calcCommission()"></div>
+                                <div class="form-group"><label>阶梯规则</label>
+                                    <select class="form-control" id="calc-comm-tier" onchange="calcCommission()">
+                                        <option value="single">单一比例</option>
+                                        <option value="tier">阶梯递增</option>
+                                        <option value="accelerate">加速递增</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="calc-result" id="commission-result">
+                                    <div class="label">预计提成收入</div>
+                                    <div class="amount" id="comm-total">¥51,000</div>
+                                    <div class="label" id="comm-note">目标达成率 120%</div>
+                                    <div class="calc-breakdown">
+                                        <div class="calc-item"><div class="calc-item-label">基础提成</div><div class="calc-item-value" id="comm-base-show">¥30,000</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">超额提成</div><div class="calc-item-value" id="comm-extra-show">¥10,000</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">阶梯加成</div><div class="calc-item-value" id="comm-tier-show">¥11,000</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">综合提成率</div><div class="calc-item-value" id="comm-rate-show">4.25%</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Equity Calculator -->
+                    <div id="calc-equity" class="calc-panel" style="display:none">
+                        <div class="calc-grid">
+                            <div>
+                                <div class="form-group"><label>授予股数（股）</label><input type="number" class="form-control" id="calc-eq-shares" value="10000" oninput="calcEquity()"></div>
+                                <div class="form-group"><label>授予价格（元/股）</label><input type="number" class="form-control" id="calc-eq-grant" value="10" oninput="calcEquity()"></div>
+                                <div class="form-group"><label>当前价格（元/股）</label><input type="number" class="form-control" id="calc-eq-current" value="25" oninput="calcEquity()"></div>
+                                <div class="form-group"><label>预计退出价格（元/股）</label><input type="number" class="form-control" id="calc-eq-exit" value="50" oninput="calcEquity()"></div>
+                                <div class="form-group"><label>已归属比例（%）</label><input type="number" class="form-control" id="calc-eq-vested" value="25" min="0" max="100" oninput="calcEquity()"></div>
+                            </div>
+                            <div>
+                                <div class="calc-result" id="equity-result">
+                                    <div class="label">当前浮动收益</div>
+                                    <div class="amount" id="eq-float">¥150,000</div>
+                                    <div class="label">预计退出收益</div>
+                                    <div class="amount" style="font-size:1.8rem" id="eq-exit-total">¥100,000</div>
+                                    <div class="calc-breakdown">
+                                        <div class="calc-item"><div class="calc-item-label">成本投入</div><div class="calc-item-value" id="eq-cost-show">¥25,000</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">已归属收益</div><div class="calc-item-value" id="eq-vested-show">¥37,500</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">未归属预期</div><div class="calc-item-value" id="eq-unvested-show">¥112,500</div></div>
+                                        <div class="calc-item"><div class="calc-item-label">收益率</div><div class="calc-item-value" id="eq-roi-show">300%</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- KPI Calculator -->
+                    <div id="calc-kpi" class="calc-panel" style="display:none">
+                        <div class="calc-grid">
+                            <div>
+                                <h4 style="font-size:0.9rem;margin-bottom:1rem">🎯 KPI指标与权重</h4>
+                                <div id="kpi-inputs">
+                                    <div class="form-group" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:0.5rem;align-items:end">
+                                        <label style="font-size:0.8rem">指标名称</label>
+                                        <label style="font-size:0.8rem">权重%</label>
+                                        <label style="font-size:0.8rem">得分</label>
+                                        <label></label>
+                                    </div>
+                                </div>
+                                <button class="btn btn-secondary btn-sm" onclick="addKPIRow()" style="margin-top:0.5rem">➕ 添加指标</button>
+                                <div class="form-group" style="margin-top:1rem"><label>KPI奖金基数（元）</label><input type="number" class="form-control" id="calc-kpi-base" value="30000" oninput="calcKPI()"></div>
+                            </div>
+                            <div>
+                                <div class="calc-result" id="kpi-result">
+                                    <div class="label">KPI综合得分</div>
+                                    <div class="amount" id="kpi-score">85.0</div>
+                                    <div class="label">KPI奖金金额</div>
+                                    <div class="amount" style="font-size:1.8rem" id="kpi-total">¥25,500</div>
+                                </div>
+                                <div id="kpi-breakdown" style="margin-top:1rem"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Compare ========== -->
+        <div id="page-compare" class="page-content">
+            <div class="card">
+                <div class="card-header"><h2>⚖️ 政策对比分析</h2></div>
+                <div class="card-body">
+                    <div id="compare-select" style="margin-bottom:1.5rem">
+                        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:end">
+                            <div class="form-group"><label>政策 A</label><select class="form-control" id="compare-a" onchange="updateCompare()"><option value="">选择政策...</option></select></div>
+                            <div style="padding-bottom:0.5rem;font-size:1.5rem;color:var(--text-secondary)">VS</div>
+                            <div class="form-group"><label>政策 B</label><select class="form-control" id="compare-b" onchange="updateCompare()"><option value="">选择政策...</option></select></div>
+                        </div>
+                    </div>
+                    <div class="compare-area" id="compare-area">
+                        <div class="compare-slot" id="compare-slot-a"><h4>选择政策 A 进行对比</h4></div>
+                        <div class="compare-slot" id="compare-slot-b"><h4>选择政策 B 进行对比</h4></div>
+                    </div>
+                    <div id="compare-summary" style="display:none;margin-top:1.5rem">
+                        <div class="card-header"><h2>📋 对比总结</h2></div>
+                        <div class="card-body" id="compare-summary-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Evaluate ========== -->
+        <div id="page-evaluate" class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>📈 政策效果评估框架</h2>
+                    <div style="display:flex;gap:0.75rem">
+                        <select class="form-control" id="eval-policy-select" style="width:auto" onchange="loadEvalPolicy()">
+                            <option value="">选择要评估的政策...</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="saveEvaluation()">💾 保存评估</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="eval-content">
+                        <div class="empty-state">
+                            <div class="empty-icon">📈</div>
+                            <p>请选择一个政策开始评估</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Archive ========== -->
+        <div id="page-archive" class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>📁 政策存档与历史记录</h2>
+                    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+                        <div class="search-box"><input type="text" id="archive-search" placeholder="搜索政策..." oninput="renderArchive()"></div>
+                        <select class="form-control" id="archive-filter" style="width:auto" onchange="renderArchive()">
+                            <option value="all">全部状态</option>
+                            <option value="draft">草稿</option>
+                            <option value="active">已生效</option>
+                            <option value="paused">已暂停</option>
+                            <option value="expired">已过期</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body" id="archive-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Policy Detail Modal -->
+    <div class="modal-overlay" id="policy-detail-modal">
+        <div class="modal" style="max-width:700px">
+            <div class="modal-header"><h3 id="detail-modal-title">政策详情</h3><button class="modal-close" onclick="closeModal('policy-detail-modal')">×</button></div>
+            <div class="modal-body" id="policy-detail-content"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('policy-detail-modal')">关闭</button>
+                <button class="btn btn-primary" id="detail-edit-btn">✏️ 编辑</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Detail Modal -->
+    <div class="modal-overlay" id="template-detail-modal">
+        <div class="modal" style="max-width:700px">
+            <div class="modal-header"><h3 id="tpl-detail-title">模板详情</h3><button class="modal-close" onclick="closeModal('template-detail-modal')">×</button></div>
+            <div class="modal-body" id="template-detail-content"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('template-detail-modal')">关闭</button>
+                <button class="btn btn-primary" id="tpl-use-btn">🧭 使用此模板</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ==================== DATA LAYER ====================
+const LS_PREFIX = 'inc_';
+function getData(k, d) { try { return JSON.parse(localStorage.getItem(LS_PREFIX + k)) || d; } catch(e) { return d; } }
+function setData(k, v) { localStorage.setItem(LS_PREFIX + k, JSON.stringify(v)); }
+function genId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 6); }
+function fmt(n) { return '¥' + Number(n).toLocaleString('zh-CN', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
+function fmtDate(d) { if (!d) return '-'; return new Date(d).toLocaleDateString('zh-CN'); }
+
+// ==================== POLICY TEMPLATES ====================
+const TEMPLATES = [
+    {
+        id: 'tpl_sales', name: '销售业绩激励', icon: '💰', category: 'sales',
+        color: '#ebf4ff', bgColor: '#667eea',
+        desc: '基于销售额和利润指标的提成+奖金组合激励方案，适合销售团队和业务开发团队。',
+        tags: ['短期', '结果导向', '高弹性'],
+        defaults: {
+            type: 'sales', name: '销售业绩激励政策',
+            target: '销售目标达成率 ≥ 100%，利润率 ≥ 15%',
+            objects: '销售人员、销售经理、业务拓展团队',
+            methods: '基础提成 + 超额奖金 + 季度冲刺奖',
+            assessment: '月度销售额、毛利率、客户转化率、回款率',
+            mechanism: '月度结算提成，季度发放奖金，年终统一决算'
+        }
+    },
+    {
+        id: 'tpl_team', name: '团队协作激励', icon: '👥', category: 'team',
+        color: '#f0fff4', bgColor: '#48bb78',
+        desc: '以团队整体绩效为核心的集体激励方案，促进跨部门协作和团队凝聚力。',
+        tags: ['中期', '团队导向', '协作共赢'],
+        defaults: {
+            type: 'team', name: '团队协作激励政策',
+            target: '团队整体目标达成，跨部门协作项目按期交付',
+            objects: '项目团队、部门团队、跨职能小组',
+            methods: '团队奖金池 + 协作系数调整 + 优秀团队评选',
+            assessment: '团队目标达成率、项目交付质量、协作满意度评分',
+            mechanism: '季度评估，奖金按团队内部贡献度分配'
+        }
+    },
+    {
+        id: 'tpl_innovation', name: '创新驱动激励', icon: '💡', category: 'innovation',
+        color: '#fffaf0', bgColor: '#ed8936',
+        desc: '鼓励创新思维和创造性成果的激励方案，包含专利、新产品、流程优化等维度。',
+        tags: ['长期', '创新导向', '成果奖励'],
+        defaults: {
+            type: 'innovation', name: '创新驱动激励政策',
+            target: '年度创新项目数量、专利申请数、流程优化效率提升',
+            objects: '研发人员、产品团队、全员（创新提案）',
+            methods: '创新奖金 + 专利奖励 + 项目孵化基金 + 创新积分',
+            assessment: '创新项目评审得分、专利授权数、实施效果评估',
+            mechanism: '项目评审通过即发放，专利授权追加奖励，年度创新大会表彰'
+        }
+    },
+    {
+        id: 'tpl_longterm', name: '长期股权激励', icon: '📈', category: 'longterm',
+        color: '#faf5ff', bgColor: '#9f7aea',
+        desc: '通过股权/期权绑定核心人才，实现利益共享和长期留存的激励机制。',
+        tags: ['长期', '人才绑定', '利益共享'],
+        defaults: {
+            type: 'longterm', name: '长期股权激励政策',
+            target: '公司市值增长、核心人才3年以上留存率 ≥ 80%',
+            objects: '高管团队、核心技术人员、关键岗位骨干',
+            methods: '限制性股票 + 股票期权 + 虚拟股权 + 分红权',
+            assessment: '公司业绩增长、个人绩效评估、服务年限',
+            mechanism: '4年归属，每年25%，离职未归属部分回购'
+        }
+    },
+    {
+        id: 'tpl_kpi', name: 'KPI考核激励', icon: '🎯', category: 'kpi',
+        color: '#fff5f5', bgColor: '#f56565',
+        desc: '基于关键绩效指标（KPI）的量化考核激励方案，确保目标对齐和结果可控。',
+        tags: ['短期', '量化考核', '目标对齐'],
+        defaults: {
+            type: 'kpi', name: 'KPI考核激励政策',
+            target: '各岗位KPI综合得分 ≥ 85分',
+            objects: '全体员工（按岗位分层）',
+            methods: 'KPI评分 × 奖金基数 + 突出贡献加分',
+            assessment: '岗位KPI得分、月度/季度/年度考核',
+            mechanism: '月度KPI反馈，季度绩效奖金，年度综合评定'
+        }
+    },
+    {
+        id: 'tpl_culture', name: '文化建设激励', icon: '🌟', category: 'culture',
+        color: '#ebf8ff', bgColor: '#4299e1',
+        desc: '以价值观和文化认同为核心的软性激励方案，增强归属感和文化认同。',
+        tags: ['长期', '文化导向', '精神激励'],
+        defaults: {
+            type: 'culture', name: '文化建设激励政策',
+            target: '员工满意度 ≥ 90%，文化认同度评分 ≥ 4.5/5',
+            objects: '全体员工',
+            methods: '文化之星评选 + 积分商城 + 成长基金 + 弹性福利',
+            assessment: '360度文化评估、价值观践行案例、同事互评',
+            mechanism: '季度评选，年度盛典表彰，积分实时兑换'
+        }
+    },
+    {
+        id: 'tpl_learning', name: '学习成长激励', icon: '📖', category: 'learning',
+        color: '#f0fff4', bgColor: '#38a169',
+        desc: '鼓励员工持续学习和能力提升的激励方案，推动组织学习能力建设。',
+        tags: ['中期', '成长导向', '能力提升'],
+        defaults: {
+            type: 'learning', name: '学习成长激励政策',
+            target: '人均年培训时长 ≥ 80小时，技能认证通过率 ≥ 85%',
+            objects: '全体员工（重点倾斜高潜力人才）',
+            methods: '培训补贴 + 认证奖励 + 学历提升支持 + 内部讲师课酬',
+            assessment: '培训完成率、认证获取数、内部分享次数',
+            mechanism: '按季度统计，认证通过即时奖励，年度学习标兵表彰'
+        }
+    },
+    {
+        id: 'tpl_referral', name: '人才推荐激励', icon: '🤝', category: 'referral',
+        color: '#fefcbf', bgColor: '#d69e2e',
+        desc: '鼓励员工推荐优秀人才的激励方案，降低招聘成本，提升人才质量。',
+        tags: ['短期', '推荐导向', '成本节约'],
+        defaults: {
+            type: 'referral', name: '人才推荐激励政策',
+            target: '年度内推占比 ≥ 30%，内推人才半年留存率 ≥ 85%',
+            objects: '全体正式员工',
+            methods: '推荐奖金（按岗位分级）+ 推荐排行榜 + 推荐达人称号',
+            assessment: '推荐人数、面试通过率、入职留存率、绩效表现',
+            mechanism: '面试通过发放30%，入职转正发放50%，半年留存发放20%'
+        }
+    }
+];
+
+const CATEGORIES = [
+    { id: 'all', label: '全部' },
+    { id: 'sales', label: '销售激励' },
+    { id: 'team', label: '团队激励' },
+    { id: 'innovation', label: '创新激励' },
+    { id: 'longterm', label: '长期激励' },
+    { id: 'kpi', label: 'KPI考核' },
+    { id: 'culture', label: '文化建设' },
+    { id: 'learning', label: '学习成长' },
+    { id: 'referral', label: '人才推荐' }
+];
+
+const WIZARD_STEPS = [
+    { id: 'goal', label: '目标设定', icon: '🎯' },
+    { id: 'objects', label: '激励对象', icon: '👥' },
+    { id: 'methods', label: '激励方式', icon: '💡' },
+    { id: 'assessment', label: '考核标准', icon: '📋' },
+    { id: 'mechanism', label: '兑现机制', icon: '💰' }
+];
+
+const EVAL_DIMENSIONS = [
+    { id: 'motivation', name: '激励强度', desc: '激励金额对员工的驱动力', color: '#667eea' },
+    { id: 'fairness', name: '公平性', desc: '分配机制是否公正透明', color: '#48bb78' },
+    { id: 'feasibility', name: '可执行性', desc: '方案落地的难易程度', color: '#ed8936' },
+    { id: 'sustainability', name: '可持续性', desc: '长期财务可承受能力', color: '#f56565' },
+    { id: 'alignment', name: '战略对齐', desc: '与公司战略目标的匹配度', color: '#9f7aea' },
+    { id: 'risk', name: '风险控制', desc: '防范不当行为的机制', color: '#4299e1' }
+];
+
+// ==================== STATE ====================
+let currentWizardStep = 0;
+let wizardData = { name: '', type: '', goal: '', objects: '', methods: '', assessment: '', mechanism: '', status: 'draft' };
+let kpiRows = [
+    { name: '营收目标', weight: 30, score: 90 },
+    { name: '客户满意度', weight: 25, score: 85 },
+    { name: '项目交付率', weight: 25, score: 80 },
+    { name: '创新贡献', weight: 20, score: 90 }
+];
+
+// ==================== TOAST ====================
+function showToast(msg, type = 'success') {
+    const c = document.getElementById('toast-container');
+    const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+    c.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+}
+
+// ==================== MODAL ====================
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ==================== NAVIGATION ====================
+function showPage(page) {
+    document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const pageMap = { dashboard: 0, templates: 1, wizard: 2, calculator: 3, compare: 4, evaluate: 5, archive: 6 };
+    if (pageMap[page] !== undefined && navBtns[pageMap[page]]) navBtns[pageMap[page]].classList.add('active');
+    if (page === 'dashboard') renderDashboard();
+    if (page === 'templates') renderTemplates();
+    if (page === 'wizard') initWizard();
+    if (page === 'calculator') { calcBonus(); calcCommission(); calcEquity(); renderKPIInputs(); calcKPI(); }
+    if (page === 'compare') initCompare();
+    if (page === 'evaluate') initEvaluate();
+    if (page === 'archive') renderArchive();
+}
+
+// ==================== DASHBOARD ====================
+function getPolicies() { return getData('policies', []); }
+function setPolicies(v) { setData('policies', v); }
+
+function renderDashboard() {
+    const policies = getPolicies();
+    const active = policies.filter(p => p.status === 'active').length;
+    const draft = policies.filter(p => p.status === 'draft').length;
+    const evaluations = getData('evaluations', []).length;
+
+    document.getElementById('dashboard-stats').innerHTML = `
+        <div class="stat-card"><div class="stat-icon" style="background:#ebf4ff">📝</div><div class="stat-info"><h3>${policies.length}</h3><p>政策总数</p></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:#f0fff4">✅</div><div class="stat-info"><h3>${active}</h3><p>已生效</p></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:#fffaf0">📋</div><div class="stat-info"><h3>${draft}</h3><p>草稿</p></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:#faf5ff">📈</div><div class="stat-info"><h3>${evaluations}</h3><p>效果评估</p></div></div>
+    `;
+
+    const tbody = document.getElementById('dashboard-table');
+    const empty = document.getElementById('dashboard-empty');
+
+    if (policies.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+
+    const statusMap = { draft: ['草稿', 'badge-warning'], active: ['已生效', 'badge-success'], paused: ['已暂停', 'badge-info'], expired: ['已过期', 'badge-danger'] };
+    const typeMap = { sales: '销售激励', team: '团队激励', innovation: '创新激励', longterm: '长期激励', kpi: 'KPI考核', culture: '文化建设', learning: '学习成长', referral: '人才推荐' };
+
+    tbody.innerHTML = policies.map(p => {
+        const s = statusMap[p.status] || ['未知', 'badge-primary'];
+        return `<tr>
+            <td><strong>${p.name}</strong></td>
+            <td><span class="badge badge-primary">${typeMap[p.type] || p.type}</span></td>
+            <td>${p.objects || '-'}</td>
+            <td>${fmtDate(p.createdAt)}</td>
+            <td><span class="badge ${s[1]}">${s[0]}</span></td>
+            <td>
+                <button class="btn btn-secondary btn-sm" onclick="viewPolicy('${p.id}')">👁 查看</button>
+                <button class="btn btn-primary btn-sm" onclick="editPolicy('${p.id}')">✏️ 编辑</button>
+                <button class="btn btn-danger btn-sm" onclick="deletePolicy('${p.id}')">🗑</button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+// ==================== TEMPLATES ====================
+function renderTemplates(filterCat = 'all') {
+    const filtersEl = document.getElementById('template-filters');
+    filtersEl.innerHTML = CATEGORIES.map(c =>
+        `<span class="filter-tag ${c.id === filterCat ? 'active' : ''}" onclick="renderTemplates('${c.id}')">${c.label}</span>`
+    ).join('');
+
+    const grid = document.getElementById('template-grid');
+    const filtered = filterCat === 'all' ? TEMPLATES : TEMPLATES.filter(t => t.category === filterCat);
+    grid.innerHTML = filtered.map(t => `
+        <div class="template-card">
+            <div class="tpl-icon" style="background:${t.color}">${t.icon}</div>
+            <h3>${t.name}</h3>
+            <p>${t.desc}</p>
+            <div class="tpl-tags">${t.tags.map(tag => `<span class="badge badge-primary">${tag}</span>`).join('')}</div>
+            <button class="use-btn" onclick="viewTemplate('${t.id}')">📋 查看详情</button>
+        </div>
+    `).join('');
+}
+
+function viewTemplate(tplId) {
+    const tpl = TEMPLATES.find(t => t.id === tplId);
+    if (!tpl) return;
+    document.getElementById('tpl-detail-title').textContent = tpl.name;
+    const d = tpl.defaults;
+    document.getElementById('template-detail-content').innerHTML = `
+        <div style="text-align:center;margin-bottom:1.5rem"><span style="font-size:3rem">${tpl.icon}</span></div>
+        <p style="color:var(--text-secondary);margin-bottom:1.5rem">${tpl.desc}</p>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem">${tpl.tags.map(t => `<span class="badge badge-primary">${t}</span>`).join('')}</div>
+        <div style="display:grid;gap:1rem">
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>🎯 激励目标</strong><p style="margin-top:0.5rem;font-size:0.9rem">${d.target}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>👥 激励对象</strong><p style="margin-top:0.5rem;font-size:0.9rem">${d.objects}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>💡 激励方式</strong><p style="margin-top:0.5rem;font-size:0.9rem">${d.methods}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>📋 考核标准</strong><p style="margin-top:0.5rem;font-size:0.9rem">${d.assessment}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>💰 兑现机制</strong><p style="margin-top:0.5rem;font-size:0.9rem">${d.mechanism}</p></div>
+        </div>
+    `;
+    document.getElementById('tpl-use-btn').onclick = () => { closeModal('template-detail-modal'); useTemplate(tpl.id); };
+    openModal('template-detail-modal');
+}
+
+function useTemplate(tplId) {
+    const tpl = TEMPLATES.find(t => t.id === tplId);
+    if (!tpl) return;
+    wizardData = {
+        name: tpl.defaults.name,
+        type: tpl.defaults.type,
+        goal: tpl.defaults.target,
+        objects: tpl.defaults.objects,
+        methods: tpl.defaults.methods,
+        assessment: tpl.defaults.assessment,
+        mechanism: tpl.defaults.mechanism,
+        status: 'draft'
+    };
+    currentWizardStep = 0;
+    showPage('wizard');
+    showToast(`已加载「${tpl.name}」模板`, 'success');
+}
+
+// ==================== WIZARD ====================
+function initWizard() {
+    const stepsEl = document.getElementById('wizard-steps');
+    stepsEl.innerHTML = WIZARD_STEPS.map((s, i) => `
+        <div class="wizard-step ${i === currentWizardStep ? 'active' : i < currentWizardStep ? 'done' : ''}" onclick="goToWizardStep(${i})">
+            <div class="step-circle">${i < currentWizardStep ? '✓' : (i + 1)}</div>
+            <div class="step-label">${s.icon} ${s.label}</div>
+        </div>
+    `).join('');
+
+    renderWizardPanels();
+    updateWizardActions();
+    populateWizardLoadSelect();
+}
+
+function renderWizardPanels() {
+    const panelsEl = document.getElementById('wizard-panels');
+    const typeOptions = CATEGORIES.filter(c => c.id !== 'all').map(c => `<option value="${c.id}" ${wizardData.type === c.id ? 'selected' : ''}>${c.label}</option>`).join('');
+
+    panelsEl.innerHTML = `
+        <div class="wizard-panel ${currentWizardStep === 0 ? 'active' : ''}">
+            <h3 style="margin-bottom:1rem">🎯 目标设定</h3>
+            <div class="form-group"><label>政策名称 *</label><input type="text" class="form-control" id="wiz-name" value="${wizardData.name}" placeholder="例：2025年Q3销售冲刺激励方案"></div>
+            <div class="form-group"><label>政策类型</label><select class="form-control" id="wiz-type" onchange="wizardData.type=this.value"><option value="">请选择类型</option>${typeOptions}</select></div>
+            <div class="form-group"><label>激励目标 *</label><textarea class="form-control" id="wiz-goal" rows="4" placeholder="清晰描述该政策希望达成的核心目标，尽量量化...">${wizardData.goal}</textarea></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem;margin-top:0.5rem">
+                <h4 style="font-size:0.85rem;margin-bottom:0.5rem">💡 目标设定要点</h4>
+                <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1.2rem;line-height:1.8">
+                    <li>目标应具体可量化（SMART原则）</li>
+                    <li>与公司战略目标保持对齐</li>
+                    <li>考虑可达性和挑战性的平衡</li>
+                    <li>设定明确的时间周期</li>
+                </ul>
+            </div>
+        </div>
+        <div class="wizard-panel ${currentWizardStep === 1 ? 'active' : ''}">
+            <h3 style="margin-bottom:1rem">👥 激励对象</h3>
+            <div class="form-group"><label>激励对象范围 *</label><textarea class="form-control" id="wiz-objects" rows="4" placeholder="明确该政策适用的员工范围...">${wizardData.objects}</textarea></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem">
+                <h4 style="font-size:0.85rem;margin-bottom:0.5rem">💡 对象设计要点</h4>
+                <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1.2rem;line-height:1.8">
+                    <li>明确纳入/排除标准</li>
+                    <li>考虑分层分类（如按职级、岗位）</li>
+                    <li>避免覆盖面过宽或过窄</li>
+                    <li>预留新增人员的衔接机制</li>
+                </ul>
+            </div>
+        </div>
+        <div class="wizard-panel ${currentWizardStep === 2 ? 'active' : ''}">
+            <h3 style="margin-bottom:1rem">💡 激励方式</h3>
+            <div class="form-group"><label>激励方式 *</label><textarea class="form-control" id="wiz-methods" rows="4" placeholder="描述具体的激励手段和计算方式...">${wizardData.methods}</textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:0.5rem">
+                <div style="background:#ebf4ff;border-radius:10px;padding:1rem"><strong style="font-size:0.85rem">💰 物质激励</strong><p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem">奖金、提成、股权、津贴等</p></div>
+                <div style="background:#f0fff4;border-radius:10px;padding:1rem"><strong style="font-size:0.85rem">🌟 精神激励</strong><p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem">荣誉、表彰、成长机会等</p></div>
+                <div style="background:#fffaf0;border-radius:10px;padding:1rem"><strong style="font-size:0.85rem">📈 发展激励</strong><p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem">晋升、培训、项目主导权等</p></div>
+                <div style="background:#faf5ff;border-radius:10px;padding:1rem"><strong style="font-size:0.85rem">⚡ 即时激励</strong><p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem">即时反馈、积分、小额奖励等</p></div>
+            </div>
+        </div>
+        <div class="wizard-panel ${currentWizardStep === 3 ? 'active' : ''}">
+            <h3 style="margin-bottom:1rem">📋 考核标准</h3>
+            <div class="form-group"><label>考核标准 *</label><textarea class="form-control" id="wiz-assessment" rows="4" placeholder="列出关键考核指标和评分标准...">${wizardData.assessment}</textarea></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem">
+                <h4 style="font-size:0.85rem;margin-bottom:0.5rem">💡 考核设计要点</h4>
+                <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1.2rem;line-height:1.8">
+                    <li>指标数量控制在3-7个核心指标</li>
+                    <li>定量与定性指标结合</li>
+                    <li>设定明确的计分规则和权重</li>
+                    <li>建立申诉和复核机制</li>
+                </ul>
+            </div>
+        </div>
+        <div class="wizard-panel ${currentWizardStep === 4 ? 'active' : ''}">
+            <h3 style="margin-bottom:1rem">💰 兑现机制</h3>
+            <div class="form-group"><label>兑现机制 *</label><textarea class="form-control" id="wiz-mechanism" rows="4" placeholder="描述激励兑现的时间、条件和方式...">${wizardData.mechanism}</textarea></div>
+            <div class="form-group"><label>政策状态</label>
+                <select class="form-control" id="wiz-status" onchange="wizardData.status=this.value">
+                    <option value="draft" ${wizardData.status==='draft'?'selected':''}>草稿</option>
+                    <option value="active" ${wizardData.status==='active'?'selected':''}>已生效</option>
+                    <option value="paused" ${wizardData.status==='paused'?'selected':''}>已暂停</option>
+                    <option value="expired" ${wizardData.status==='expired'?'selected':''}>已过期</option>
+                </select>
+            </div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem">
+                <h4 style="font-size:0.85rem;margin-bottom:0.5rem">💡 兑现设计要点</h4>
+                <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1.2rem;line-height:1.8">
+                    <li>兑现周期应与业务节奏匹配</li>
+                    <li>避免一次性大额发放的"峰终效应"</li>
+                    <li>设定明确的扣减和追回条件</li>
+                    <li>兑现过程透明可追溯</li>
+                </ul>
+            </div>
+        </div>
+    `;
+}
+
+function saveWizardState() {
+    const fields = ['name', 'type', 'goal', 'objects', 'methods', 'assessment', 'mechanism', 'status'];
+    const elMap = { name: 'wiz-name', type: 'wiz-type', goal: 'wiz-goal', objects: 'wiz-objects', methods: 'wiz-methods', assessment: 'wiz-assessment', mechanism: 'wiz-mechanism', status: 'wiz-status' };
+    fields.forEach(f => {
+        const el = document.getElementById(elMap[f]);
+        if (el) wizardData[f] = el.value;
+    });
+}
+
+function wizardNav(dir) {
+    saveWizardState();
+    if (dir === 1 && currentWizardStep < WIZARD_STEPS.length - 1) {
+        currentWizardStep++;
+        if (currentWizardStep === WIZARD_STEPS.length - 1) {
+            document.getElementById('wizard-title').textContent = '🧭 最后一步 - 审阅并保存';
+        }
+    } else if (dir === -1 && currentWizardStep > 0) {
+        currentWizardStep--;
+        document.getElementById('wizard-title').textContent = '🧭 政策设计向导';
+    }
+    initWizard();
+}
+
+function goToWizardStep(idx) {
+    saveWizardState();
+    currentWizardStep = idx;
+    initWizard();
+}
+
+function updateWizardActions() {
+    document.getElementById('wiz-prev').disabled = currentWizardStep === 0;
+    document.getElementById('wiz-next').style.display = currentWizardStep < WIZARD_STEPS.length - 1 ? '' : 'none';
+    document.getElementById('wiz-save').style.display = currentWizardStep === WIZARD_STEPS.length - 1 ? '' : 'none';
+}
+
+function resetWizard() {
+    wizardData = { name: '', type: '', goal: '', objects: '', methods: '', assessment: '', mechanism: '', status: 'draft' };
+    currentWizardStep = 0;
+    initWizard();
+    showToast('向导已重置', 'info');
+}
+
+function saveWizardPolicy() {
+    saveWizardState();
+    if (!wizardData.name) { showToast('请输入政策名称', 'warning'); return; }
+    if (!wizardData.goal) { showToast('请设定激励目标', 'warning'); return; }
+
+    const policies = getPolicies();
+    const existing = policies.findIndex(p => p.name === wizardData.name);
+
+    const policy = {
+        ...wizardData,
+        id: wizardData.id || genId(),
+        createdAt: wizardData.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    };
+
+    if (existing >= 0) {
+        policies[existing] = policy;
+        showToast('政策已更新', 'success');
+    } else {
+        policies.unshift(policy);
+        showToast('政策已保存', 'success');
+    }
+    setPolicies(policies);
+    wizardData = { name: '', type: '', goal: '', objects: '', methods: '', assessment: '', mechanism: '', status: 'draft' };
+    currentWizardStep = 0;
+    showPage('dashboard');
+}
+
+function populateWizardLoadSelect() {
+    const policies = getPolicies();
+    const sel = document.getElementById('wizard-load-policy');
+    sel.innerHTML = '<option value="">加载已有政策...</option>' +
+        policies.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+}
+
+function loadPolicyToWizard(policyId) {
+    if (!policyId) return;
+    const policies = getPolicies();
+    const p = policies.find(x => x.id === policyId);
+    if (!p) return;
+    wizardData = { ...p };
+    currentWizardStep = 0;
+    initWizard();
+    showToast(`已加载「${p.name}」`, 'info');
+}
+
+function editPolicy(policyId) {
+    const policies = getPolicies();
+    const p = policies.find(x => x.id === policyId);
+    if (!p) return;
+    wizardData = { ...p };
+    currentWizardStep = 0;
+    showPage('wizard');
+}
+
+function deletePolicy(policyId) {
+    if (!confirm('确定要删除此政策吗？')) return;
+    let policies = getPolicies();
+    policies = policies.filter(p => p.id !== policyId);
+    setPolicies(policies);
+    renderDashboard();
+    showToast('政策已删除', 'info');
+}
+
+function viewPolicy(policyId) {
+    const policies = getPolicies();
+    const p = policies.find(x => x.id === policyId);
+    if (!p) return;
+
+    const typeMap = { sales: '销售激励', team: '团队激励', innovation: '创新激励', longterm: '长期激励', kpi: 'KPI考核', culture: '文化建设', learning: '学习成长', referral: '人才推荐' };
+    const statusMap = { draft: '草稿', active: '已生效', paused: '已暂停', expired: '已过期' };
+
+    document.getElementById('detail-modal-title').textContent = p.name;
+    document.getElementById('policy-detail-content').innerHTML = `
+        <div style="display:flex;gap:0.5rem;margin-bottom:1.25rem">
+            <span class="badge badge-primary">${typeMap[p.type] || p.type}</span>
+            <span class="badge ${p.status === 'active' ? 'badge-success' : 'badge-warning'}">${statusMap[p.status] || p.status}</span>
+        </div>
+        <div style="display:grid;gap:0.75rem">
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>🎯 激励目标</strong><p style="margin-top:0.5rem;font-size:0.9rem">${p.goal || '-'}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>👥 激励对象</strong><p style="margin-top:0.5rem;font-size:0.9rem">${p.objects || '-'}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>💡 激励方式</strong><p style="margin-top:0.5rem;font-size:0.9rem">${p.methods || '-'}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>📋 考核标准</strong><p style="margin-top:0.5rem;font-size:0.9rem">${p.assessment || '-'}</p></div>
+            <div style="background:var(--bg-light);border-radius:10px;padding:1rem"><strong>💰 兑现机制</strong><p style="margin-top:0.5rem;font-size:0.9rem">${p.mechanism || '-'}</p></div>
+        </div>
+        <div style="margin-top:1rem;font-size:0.8rem;color:var(--text-secondary)">
+            创建时间：${fmtDate(p.createdAt)} | 更新时间：${fmtDate(p.updatedAt)}
+        </div>
+    `;
+    document.getElementById('detail-edit-btn').onclick = () => { closeModal('policy-detail-modal'); editPolicy(policyId); };
+    openModal('policy-detail-modal');
+}
+
+// ==================== CALCULATOR ====================
+function switchCalcTab(el, tab) {
+    document.querySelectorAll('.calc-tab').forEach(b => { b.className = 'btn btn-secondary calc-tab'; });
+    el.className = 'btn btn-primary calc-tab active';
+    document.querySelectorAll('.calc-panel').forEach(p => p.style.display = 'none');
+    document.getElementById('calc-' + tab).style.display = 'block';
+}
+
+function calcBonus() {
+    const base = parseFloat(document.getElementById('calc-base-bonus').value) || 0;
+    const rate = parseFloat(document.getElementById('calc-achieve-rate').value) || 0;
+    const overC = parseFloat(document.getElementById('calc-over-coef').value) || 0;
+    const underC = parseFloat(document.getElementById('calc-under-coef').value) || 0;
+    const teamC = parseFloat(document.getElementById('calc-team-coef').value) || 1;
+    const minRate = parseFloat(document.getElementById('calc-min-rate').value) || 0;
+
+    let bonus = base * (rate / 100);
+    let extra = 0;
+    if (rate > 100) {
+        extra = base * ((rate - 100) / 100) * overC;
+    } else if (rate < 100) {
+        extra = base * ((rate - 100) / 100) * underC;
+    }
+    let total = (base + extra) * teamC;
+    let effectiveRate = rate;
+    if (effectiveRate < minRate) effectiveRate = minRate;
+    total = base * (effectiveRate / 100) * teamC;
+    if (rate > 100) {
+        total = (base + base * ((rate - 100) / 100) * overC) * teamC;
+    }
+
+    document.getElementById('bonus-total').textContent = fmt(Math.round(total));
+    document.getElementById('bonus-note').textContent = `目标${rate}%达成，团队系数${teamC}`;
+    document.getElementById('bonus-base-show').textContent = fmt(Math.round(base));
+    document.getElementById('bonus-extra-show').textContent = fmt(Math.round(extra));
+    document.getElementById('bonus-team-show').textContent = fmt(Math.round((base + extra) * teamC));
+    document.getElementById('bonus-rate-show').textContent = rate + '%';
+
+    // Sensitivity
+    let html = '';
+    [60, 70, 80, 90, 100, 110, 120, 130, 150].forEach(r => {
+        let b = base * (r / 100);
+        let ex = 0;
+        if (r > 100) ex = base * ((r - 100) / 100) * overC;
+        else if (r < 100) ex = base * ((r - 100) / 100) * underC;
+        let t = (base + ex) * teamC;
+        const pct = (t / (base * teamC)) * 100;
+        const color = r >= 100 ? '#48bb78' : r >= 80 ? '#ed8936' : '#f56565';
+        html += `<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.35rem;font-size:0.82rem">
+            <span style="width:40px;text-align:right">${r}%</span>
+            <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${Math.min(pct, 100)}%;background:${color}"></div></div>
+            <span style="width:80px;font-weight:600;color:${color}">${fmt(Math.round(t))}</span>
+        </div>`;
+    });
+    document.getElementById('bonus-sensitivity').innerHTML = html;
+}
+
+function calcCommission() {
+    const target = parseFloat(document.getElementById('calc-sales-target').value) || 1;
+    const actual = parseFloat(document.getElementById('calc-sales-actual').value) || 0;
+    const baseRate = parseFloat(document.getElementById('calc-comm-rate').value) || 0;
+    const overRate = parseFloat(document.getElementById('calc-comm-over-rate').value) || 0;
+    const tierType = document.getElementById('calc-comm-tier').value;
+
+    let achieveRate = actual / target * 100;
+    let baseComm = 0, extraComm = 0, tierBonus = 0;
+
+    if (tierType === 'single') {
+        baseComm = actual * (baseRate / 100);
+    } else if (tierType === 'tier') {
+        // 0-80%: baseRate, 80-100%: baseRate*1.2, 100%+: overRate
+        const t80 = target * 0.8;
+        const t100 = target;
+        if (actual <= t80) {
+            baseComm = actual * (baseRate / 100);
+        } else if (actual <= t100) {
+            baseComm = t80 * (baseRate / 100);
+            extraComm = (actual - t80) * (baseRate * 1.2 / 100);
+        } else {
+            baseComm = t80 * (baseRate / 100);
+            extraComm = (t100 - t80) * (baseRate * 1.2 / 100);
+            tierBonus = (actual - t100) * (overRate / 100);
+        }
+    } else {
+        // Accelerate: 0-100% baseRate, 100-120% overRate, 120%+ overRate*1.5
+        const t100 = target;
+        const t120 = target * 1.2;
+        if (actual <= t100) {
+            baseComm = actual * (baseRate / 100);
+        } else if (actual <= t120) {
+            baseComm = t100 * (baseRate / 100);
+            extraComm = (actual - t100) * (overRate / 100);
+        } else {
+            baseComm = t100 * (baseRate / 100);
+            extraComm = (t120 - t100) * (overRate / 100);
+            tierBonus = (actual - t120) * (overRate * 1.5 / 100);
+        }
+    }
+
+    const total = baseComm + extraComm + tierBonus;
+    const effectiveRate = actual > 0 ? (total / actual * 100) : 0;
+
+    document.getElementById('comm-total').textContent = fmt(Math.round(total));
+    document.getElementById('comm-note').textContent = `目标达成率 ${achieveRate.toFixed(0)}%`;
+    document.getElementById('comm-base-show').textContent = fmt(Math.round(baseComm));
+    document.getElementById('comm-extra-show').textContent = fmt(Math.round(extraComm));
+    document.getElementById('comm-tier-show').textContent = fmt(Math.round(tierBonus));
+    document.getElementById('comm-rate-show').textContent = effectiveRate.toFixed(2) + '%';
+}
+
+function calcEquity() {
+    const shares = parseFloat(document.getElementById('calc-eq-shares').value) || 0;
+    const grant = parseFloat(document.getElementById('calc-eq-grant').value) || 0;
+    const current = parseFloat(document.getElementById('calc-eq-current').value) || 0;
+    const exit = parseFloat(document.getElementById('calc-eq-exit').value) || 0;
+    const vested = parseFloat(document.getElementById('calc-eq-vested').value) || 0;
+
+    const cost = shares * grant;
+    const vestedShares = shares * (vested / 100);
+    const unvestedShares = shares - vestedShares;
+    const floatGain = vestedShares * (current - grant);
+    const vestedGain = vestedShares * (exit - grant);
+    const unvestedGain = unvestedShares * (exit - grant);
+    const exitTotal = vestedGain + unvestedGain;
+    const roi = cost > 0 ? (exitTotal / cost * 100) : 0;
+
+    document.getElementById('eq-float').textContent = fmt(Math.round(floatGain));
+    document.getElementById('eq-exit-total').textContent = fmt(Math.round(exitTotal));
+    document.getElementById('eq-cost-show').textContent = fmt(Math.round(cost));
+    document.getElementById('eq-vested-show').textContent = fmt(Math.round(vestedGain));
+    document.getElementById('eq-unvested-show').textContent = fmt(Math.round(unvestedGain));
+    document.getElementById('eq-roi-show').textContent = roi.toFixed(0) + '%';
+}
+
+function renderKPIInputs() {
+    const container = document.getElementById('kpi-inputs');
+    const headerRow = container.children[0];
+    container.innerHTML = '';
+    container.appendChild(headerRow);
+    kpiRows.forEach((row, i) => {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        div.style.cssText = 'display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:0.5rem;align-items:center';
+        div.innerHTML = `
+            <input type="text" class="form-control" value="${row.name}" placeholder="指标名称" oninput="kpiRows[${i}].name=this.value;calcKPI()">
+            <input type="number" class="form-control" value="${row.weight}" min="0" max="100" oninput="kpiRows[${i}].weight=parseFloat(this.value)||0;calcKPI()">
+            <input type="number" class="form-control" value="${row.score}" min="0" max="100" oninput="kpiRows[${i}].score=parseFloat(this.value)||0;calcKPI()">
+            <button class="btn btn-danger btn-sm" onclick="kpiRows.splice(${i},1);renderKPIInputs();calcKPI()" style="height:38px">✕</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addKPIRow() {
+    kpiRows.push({ name: '', weight: 0, score: 0 });
+    renderKPIInputs();
+    calcKPI();
+}
+
+function calcKPI() {
+    const base = parseFloat(document.getElementById('calc-kpi-base').value) || 0;
+    const totalWeight = kpiRows.reduce((s, r) => s + (r.weight || 0), 0);
+    let weightedScore = 0;
+    const breakdownHtml = [];
+
+    kpiRows.forEach(r => {
+        if (r.weight > 0 && totalWeight > 0) {
+            const wScore = (r.weight / totalWeight) * (r.score || 0);
+            weightedScore += wScore;
+            breakdownHtml.push(`<div style="display:flex;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--border);font-size:0.82rem">
+                <span>${r.name || '未命名'}</span>
+                <span><strong>${(r.score || 0)}</strong> × ${(r.weight / totalWeight * 100).toFixed(0)}% = <strong>${wScore.toFixed(1)}</strong></span>
+            </div>`);
+        }
+    });
+
+    const bonus = base * (weightedScore / 100);
+    document.getElementById('kpi-score').textContent = weightedScore.toFixed(1);
+    document.getElementById('kpi-total').textContent = fmt(Math.round(bonus));
+    document.getElementById('kpi-breakdown').innerHTML = breakdownHtml.join('');
+}
+
+// ==================== COMPARE ====================
+function initCompare() {
+    const policies = getPolicies();
+    const opts = '<option value="">选择政策...</option>' + policies.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+    document.getElementById('compare-a').innerHTML = opts;
+    document.getElementById('compare-b').innerHTML = opts;
+    updateCompare();
+}
+
+function updateCompare() {
+    const policies = getPolicies();
+    const aId = document.getElementById('compare-a').value;
+    const bId = document.getElementById('compare-b').value;
+    const pA = policies.find(p => p.id === aId);
+    const pB = policies.find(p => p.id === bId);
+
+    const typeMap = { sales: '销售激励', team: '团队激励', innovation: '创新激励', longterm: '长期激励', kpi: 'KPI考核', culture: '文化建设', learning: '学习成长', referral: '人才推荐' };
+
+    function renderSlot(p, slotId) {
+        const slot = document.getElementById(slotId);
+        if (!p) {
+            slot.className = 'compare-slot';
+            slot.innerHTML = `<h4>${slotId.includes('a') ? '选择政策 A' : '选择政策 B'} 进行对比</h4>`;
+            return;
+        }
+        slot.className = 'compare-slot filled';
+        slot.innerHTML = `
+            <h4 style="color:var(--primary);font-weight:600;font-size:1rem;margin-bottom:1rem">${p.name}</h4>
+            <div class="compare-metric"><span>类型</span><span class="compare-highlight">${typeMap[p.type] || '-'}</span></div>
+            <div class="compare-metric"><span>状态</span><span>${p.status}</span></div>
+            <div class="compare-metric"><span>激励对象</span><span style="max-width:160px">${p.objects || '-'}</span></div>
+            <div class="compare-metric"><span>激励目标</span><span style="max-width:160px;font-size:0.8rem">${p.goal || '-'}</span></div>
+            <div class="compare-metric"><span>激励方式</span><span style="max-width:160px;font-size:0.8rem">${p.methods || '-'}</span></div>
+            <div class="compare-metric"><span>考核标准</span><span style="max-width:160px;font-size:0.8rem">${p.assessment || '-'}</span></div>
+            <div class="compare-metric"><span>兑现机制</span><span style="max-width:160px;font-size:0.8rem">${p.mechanism || '-'}</span></div>
+        `;
+    }
+
+    renderSlot(pA, 'compare-slot-a');
+    renderSlot(pB, 'compare-slot-b');
+
+    const summary = document.getElementById('compare-summary');
+    const summaryBody = document.getElementById('compare-summary-body');
+
+    if (pA && pB) {
+        summary.style.display = 'block';
+        const diffs = [];
+        if (pA.type !== pB.type) diffs.push(`<div style="padding:0.5rem 0">📌 <strong>类型不同：</strong>${typeMap[pA.type]} vs ${typeMap[pB.type]}</div>`);
+        if (pA.objects !== pB.objects) diffs.push(`<div style="padding:0.5rem 0">👥 <strong>对象范围不同</strong></div>`);
+        if (pA.methods !== pB.methods) diffs.push(`<div style="padding:0.5rem 0">💡 <strong>激励方式不同</strong></div>`);
+        if (pA.mechanism !== pB.mechanism) diffs.push(`<div style="padding:0.5rem 0">💰 <strong>兑现机制不同</strong></div>`);
+
+        const evals = getData('evaluations', []);
+        const evalA = evals.find(e => e.policyId === pA.id);
+        const evalB = evals.find(e => e.policyId === pB.id);
+        if (evalA && evalB) {
+            const avgA = evalA.scores ? Object.values(evalA.scores).reduce((a,b)=>a+b,0) / Object.values(evalA.scores).length : 0;
+            const avgB = evalB.scores ? Object.values(evalB.scores).reduce((a,b)=>a+b,0) / Object.values(evalB.scores).length : 0;
+            diffs.push(`<div style="padding:0.5rem 0">📈 <strong>评估均分：</strong>${pA.name} = ${avgA.toFixed(1)} | ${pB.name} = ${avgB.toFixed(1)}</div>`);
+        }
+
+        summaryBody.innerHTML = diffs.length > 0
+            ? diffs.join('')
+            : '<p style="color:var(--text-secondary)">两个政策在核心维度上较为相似</p>';
+    } else {
+        summary.style.display = 'none';
+    }
+}
+
+// ==================== EVALUATE ====================
+function initEvaluate() {
+    const policies = getPolicies();
+    const sel = document.getElementById('eval-policy-select');
+    sel.innerHTML = '<option value="">选择要评估的政策...</option>' +
+        policies.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+    loadEvalPolicy();
+}
+
+function loadEvalPolicy() {
+    const policyId = document.getElementById('eval-policy-select').value;
+    const content = document.getElementById('eval-content');
+
+    if (!policyId) {
+        content.innerHTML = '<div class="empty-state"><div class="empty-icon">📈</div><p>请选择一个政策开始评估</p></div>';
+        return;
+    }
+
+    const policies = getPolicies();
+    const policy = policies.find(p => p.id === policyId);
+    if (!policy) return;
+
+    const evaluations = getData('evaluations', []);
+    const existing = evaluations.find(e => e.policyId === policyId);
+    const scores = existing ? existing.scores : {};
+
+    content.innerHTML = `
+        <h3 style="margin-bottom:0.5rem">${policy.name}</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1.5rem">为各维度评分（1-10分），评估政策的综合效果</p>
+        ${EVAL_DIMENSIONS.map(dim => `
+            <div class="eval-dimension">
+                <div class="dim-label">${dim.name}<br><span style="font-size:0.72rem;color:var(--text-secondary)">${dim.desc}</span></div>
+                <div class="eval-bar-track">
+                    <input type="range" min="1" max="10" value="${scores[dim.id] || 5}" 
+                        style="width:100%;accent-color:${dim.color}" 
+                        oninput="updateEvalBar('${dim.id}',this.value);updateEvalTotal()">
+                </div>
+                <div class="dim-score" id="eval-score-${dim.id}" style="color:${dim.color}">${scores[dim.id] || 5}</div>
+            </div>
+            <div style="margin-bottom:0.75rem;margin-left:136px">
+                <div class="progress-bar"><div class="progress-fill" id="eval-bar-${dim.id}" style="width:${(scores[dim.id]||5)*10}%;background:${dim.color}">${scores[dim.id] || 5}/10</div></div>
+            </div>
+        `).join('')}
+        <div class="calc-result" style="margin-top:1.5rem;background:linear-gradient(135deg,#667eea,#764ba2)">
+            <div class="label">综合评分</div>
+            <div class="amount" id="eval-total-score">0</div>
+            <div class="label" id="eval-total-label">请为各维度评分</div>
+        </div>
+        <div class="form-group" style="margin-top:1.5rem"><label>评估备注</label><textarea class="form-control" id="eval-notes" rows="3" placeholder="记录评估发现和建议...">${existing ? existing.notes || '' : ''}</textarea></div>
+    `;
+
+    updateEvalTotal();
+}
+
+function updateEvalBar(dimId, val) {
+    const dim = EVAL_DIMENSIONS.find(d => d.id === dimId);
+    document.getElementById('eval-score-' + dimId).textContent = val;
+    const bar = document.getElementById('eval-bar-' + dimId);
+    bar.style.width = (val * 10) + '%';
+    bar.textContent = val + '/10';
+}
+
+function updateEvalTotal() {
+    const policyId = document.getElementById('eval-policy-select').value;
+    let total = 0, count = 0;
+    EVAL_DIMENSIONS.forEach(dim => {
+        const scoreEl = document.getElementById('eval-score-' + dim.id);
+        if (scoreEl) {
+            total += parseInt(scoreEl.textContent);
+            count++;
+        }
+    });
+    const avg = count > 0 ? (total / count).toFixed(1) : 0;
+    const totalEl = document.getElementById('eval-total-score');
+    const labelEl = document.getElementById('eval-total-label');
+    if (totalEl) totalEl.textContent = avg;
+    if (labelEl) {
+        if (avg >= 8) labelEl.textContent = '优秀 — 政策效果显著';
+        else if (avg >= 6) labelEl.textContent = '良好 — 政策基本达标';
+        else if (avg >= 4) labelEl.textContent = '一般 — 需要优化改进';
+        else labelEl.textContent = '待改进 — 建议重新设计';
+    }
+}
+
+function saveEvaluation() {
+    const policyId = document.getElementById('eval-policy-select').value;
+    if (!policyId) { showToast('请先选择一个政策', 'warning'); return; }
+
+    const scores = {};
+    EVAL_DIMENSIONS.forEach(dim => {
+        const el = document.getElementById('eval-score-' + dim.id);
+        if (el) scores[dim.id] = parseInt(el.textContent);
+    });
+    const notes = document.getElementById('eval-notes') ? document.getElementById('eval-notes').value : '';
+
+    let evaluations = getData('evaluations', []);
+    const idx = evaluations.findIndex(e => e.policyId === policyId);
+    const record = {
+        policyId,
+        scores,
+        notes,
+        updatedAt: new Date().toISOString()
+    };
+    if (idx >= 0) evaluations[idx] = record;
+    else evaluations.push(record);
+
+    setData('evaluations', evaluations);
+    showToast('评估已保存', 'success');
+}
+
+// ==================== ARCHIVE ====================
+function renderArchive() {
+    const policies = getPolicies();
+    const search = (document.getElementById('archive-search')?.value || '').toLowerCase();
+    const filter = document.getElementById('archive-filter')?.value || 'all';
+
+    let filtered = policies;
+    if (search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search) || (p.type||'').includes(search));
+    if (filter !== 'all') filtered = filtered.filter(p => p.status === filter);
+
+    const list = document.getElementById('archive-list');
+    if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-icon">📁</div><p>没有找到匹配的政策</p></div>';
+        return;
+    }
+
+    const typeMap = { sales: '销售激励', team: '团队激励', innovation: '创新激励', longterm: '长期激励', kpi: 'KPI考核', culture: '文化建设', learning: '学习成长', referral: '人才推荐' };
+    const statusMap = { draft: ['草稿', 'badge-warning'], active: ['已生效', 'badge-success'], paused: ['已暂停', 'badge-info'], expired: ['已过期', 'badge-danger'] };
+    const typeIcons = { sales: '💰', team: '👥', innovation: '💡', longterm: '📈', kpi: '🎯', culture: '🌟', learning: '📖', referral: '🤝' };
+    const typeColors = { sales: '#667eea', team: '#48bb78', innovation: '#ed8936', longterm: '#9f7aea', kpi: '#f56565', culture: '#4299e1', learning: '#38a169', referral: '#d69e2e' };
+
+    list.innerHTML = filtered.map(p => {
+        const s = statusMap[p.status] || ['未知', 'badge-primary'];
+        const color = typeColors[p.type] || '#667eea';
+        return `<div class="history-item">
+            <div class="history-icon" style="background:${color}20;color:${color}">${typeIcons[p.type] || '📝'}</div>
+            <div class="history-info">
+                <h4>${p.name}</h4>
+                <p>${typeMap[p.type] || p.type} · ${s[0]} · 创建于 ${fmtDate(p.createdAt)}</p>
+                <p style="margin-top:0.25rem">${p.goal ? p.goal.substring(0, 80) + (p.goal.length > 80 ? '...' : '') : '暂无目标描述'}</p>
+            </div>
+            <div class="history-actions">
+                <button class="btn btn-primary btn-sm" onclick="viewPolicy('${p.id}')">👁</button>
+                <button class="btn btn-secondary btn-sm" onclick="editPolicy('${p.id}')">✏️</button>
+                <button class="btn btn-danger btn-sm" onclick="deletePolicy('${p.id}')">🗑</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', () => {
+    renderDashboard();
+});
+</script>
+</body>
+</html>

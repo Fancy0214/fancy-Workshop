@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经典案例集 | 组织智慧沉淀</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --info: #4299e1;
+            --gold: #ecc94b;
+            --bg-light: #f7fafc;
+            --bg-card: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        
+        .navbar-brand .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+        
+        .navbar-brand h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .nav-btn:hover {
+            background: var(--bg-light);
+            color: var(--text-primary);
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .nav-btn-home {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn-home:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* 主内容区 */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .stat-icon.primary { background: rgba(102, 126, 234, 0.1); color: var(--primary); }
+        .stat-icon.success { background: rgba(72, 187, 120, 0.1); color: var(--success); }
+        .stat-icon.warning { background: rgba(237, 137, 54, 0.1); color: var(--warning); }
+        .stat-icon.info { background: rgba(66, 153, 225, 0.1); color: var(--info); }
+        .stat-icon.gold { background: rgba(236, 201, 75, 0.1); color: var(--gold); }
+        
+        .stat-content h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .stat-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 工具栏 */
+        .toolbar {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* 分类筛选标签 */
+        .category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-tab {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .category-tab:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .category-tab.active {
+            background: white;
+            color: var(--primary);
+        }
+        
+        /* 案例列表 */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .case-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .case-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .case-card.featured {
+            border: 2px solid var(--gold);
+        }
+        
+        .case-card.featured::before {
+            content: '⭐ 精选';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #ecc94b, #d69e2e);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+        
+        .case-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .case-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+        
+        .case-category.sign { background: rgba(72, 187, 120, 0.1); color: var(--success); }
+        .case-category.service { background: rgba(66, 153, 225, 0.1); color: var(--info); }
+        .case-category.team { background: rgba(102, 126, 234, 0.1); color: var(--primary); }
+        .case-category.innovation { background: rgba(237, 137, 54, 0.1); color: var(--warning); }
+        
+        .case-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .case-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .case-body {
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .case-summary {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .case-tag {
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .case-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-light);
+        }
+        
+        .case-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .author-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .author-name {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .case-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* 模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow: auto;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal-large {
+            max-width: 900px;
+        }
+        
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            z-index: 1;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--bg-light);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: var(--border);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            position: sticky;
+            bottom: 0;
+            background: var(--bg-card);
+        }
+        
+        /* 表单 */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-group label .required {
+            color: var(--danger);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        select.form-control {
+            cursor: pointer;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .tag-input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            min-height: 42px;
+        }
+        
+        .tag-input-container:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .tag-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .tag-item button {
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            font-size: 1rem;
+            line-height: 1;
+        }
+        
+        .tag-item button:hover {
+            color: var(--danger);
+        }
+        
+        .tag-input {
+            flex: 1;
+            min-width: 100px;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            padding: 0.25rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+        
+        /* 按钮 */
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8rem;
+        }
+        
+        /* 案例详情 */
+        .detail-header {
+            margin-bottom: 2rem;
+        }
+        
+        .detail-category {
+            display: inline-block;
+            padding: 0.375rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .detail-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .detail-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .detail-section {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .detail-section p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .detail-tag {
+            padding: 0.375rem 0.75rem;
+            background: white;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .navbar-nav {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal {
+                margin: 0.5rem;
+                max-height: 95vh;
+            }
+        }
+        
+        /* Toast提示 */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--text-primary);
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast.success {
+            background: var(--success);
+        }
+        
+        .toast.error {
+            background: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="#" class="navbar-brand" onclick="goHome()">
+                <div class="icon">📚</div>
+                <h1>经典案例集</h1>
+            </a>
+            <div class="navbar-nav">
+                <button class="nav-btn active" onclick="showPage('list')">📋 案例列表</button>
+                <button class="nav-btn" onclick="showPage('featured')">⭐ 精选案例</button>
+            </div>
+            <a href="javascript:history.back()" class="nav-btn-home">
+                ← 返回主页
+            </a>
+        </div>
+    </nav>
+    
+    <!-- 主内容 -->
+    <div class="main-container">
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon primary">📚</div>
+                <div class="stat-content">
+                    <h3 id="totalCases">0</h3>
+                    <p>案例总数</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon success">🎯</div>
+                <div class="stat-content">
+                    <h3 id="signCases">0</h3>
+                    <p>成功签约</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon info">💬</div>
+                <div class="stat-content">
+                    <h3 id="serviceCases">0</h3>
+                    <p>客户服务</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon gold">⭐</div>
+                <div class="stat-content">
+                    <h3 id="featuredCases">0</h3>
+                    <p>精选案例</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索案例标题、内容或标签..." oninput="filterCases()">
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" data-category="all" onclick="setCategory('all')">全部</button>
+                <button class="filter-btn" data-category="sign" onclick="setCategory('sign')">🎯 成功签约</button>
+                <button class="filter-btn" data-category="service" onclick="setCategory('service')">💬 客户服务</button>
+                <button class="filter-btn" data-category="team" onclick="setCategory('team')">👥 团队管理</button>
+                <button class="filter-btn" data-category="innovation" onclick="setCategory('innovation')">💡 创新实践</button>
+            </div>
+            <button class="btn btn-primary" onclick="openAddModal()">
+                ➕ 新增案例
+            </button>
+        </div>
+        
+        <!-- 案例列表页 -->
+        <div id="listPage" class="page-content active">
+            <div id="casesGrid" class="cases-grid">
+                <!-- 案例卡片将通过JS动态生成 -->
+            </div>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="icon">📭</div>
+                <h3>暂无案例</h3>
+                <p>点击"新增案例"按钮，记录团队中值得分享的真实故事</p>
+                <button class="btn btn-primary" onclick="openAddModal()">➕ 新增案例</button>
+            </div>
+        </div>
+        
+        <!-- 精选案例页 -->
+        <div id="featuredPage" class="page-content">
+            <div id="featuredGrid" class="cases-grid">
+                <!-- 精选案例卡片将通过JS动态生成 -->
+            </div>
+            <div id="featuredEmptyState" class="empty-state" style="display: none;">
+                <div class="icon">⭐</div>
+                <h3>暂无精选案例</h3>
+                <p>在案例详情中点击"设为精选"，将优秀案例置顶展示</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 新增/编辑案例模态框 -->
+    <div id="caseModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">📝 新增案例</h3>
+                <button class="modal-close" onclick="closeModal('caseModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="caseForm">
+                    <input type="hidden" id="caseId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>案例标题 <span class="required">*</span></label>
+                            <input type="text" id="caseTitle" class="form-control" placeholder="请输入案例标题" required>
+                        </div>
+                        <div class="form-group">
+                            <label>案例分类 <span class="required">*</span></label>
+                            <select id="caseCategory" class="form-control" required>
+                                <option value="">请选择分类</option>
+                                <option value="sign">🎯 成功签约</option>
+                                <option value="service">💬 客户服务</option>
+                                <option value="team">👥 团队管理</option>
+                                <option value="innovation">💡 创新实践</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>案例背景 <span class="required">*</span></label>
+                        <textarea id="caseBackground" class="form-control" placeholder="描述案例发生的背景情况，包括客户信息、市场环境等" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>面临的挑战 <span class="required">*</span></label>
+                        <textarea id="caseChallenge" class="form-control" placeholder="描述当时遇到的主要困难或挑战" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>解决方案 <span class="required">*</span></label>
+                        <textarea id="caseSolution" class="form-control" placeholder="详细描述采取的策略、方法和具体行动" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>最终结果 <span class="required">*</span></label>
+                        <textarea id="caseResult" class="form-control" placeholder="描述案例的最终成果，包括量化指标（如签约金额、客户满意度等）" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>关键学习点 <span class="required">*</span></label>
+                        <textarea id="caseLearning" class="form-control" placeholder="总结从案例中获得的经验教训、可复制的方法论" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>标签</label>
+                        <div class="tag-input-container" id="tagContainer">
+                            <input type="text" class="tag-input" id="tagInput" placeholder="输入标签后按回车添加" onkeydown="handleTagInput(event)">
+                        </div>
+                        <small style="color: var(--text-secondary); font-size: 0.8rem;">建议标签：留学、签证、背景提升、申请策略、客户沟通等</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>案例作者</label>
+                            <input type="text" id="caseAuthor" class="form-control" placeholder="案例记录人姓名">
+                        </div>
+                        <div class="form-group">
+                            <label>案例日期</label>
+                            <input type="date" id="caseDate" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="caseFeatured">
+                            <label for="caseFeatured">⭐ 设为精选案例（将置顶展示）</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('caseModal')">取消</button>
+                <button class="btn btn-primary" onclick="saveCase()">💾 保存案例</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 案例详情模态框 -->
+    <div id="detailModal" class="modal-overlay">
+        <div class="modal modal-large">
+            <div class="modal-header">
+                <h3>📖 案例详情</h3>
+                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- 详情内容将通过JS动态生成 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('detailModal')">关闭</button>
+                <button class="btn btn-warning" id="editCaseBtn" onclick="editCurrentCase()">✏️ 编辑</button>
+                <button class="btn btn-danger" id="deleteCaseBtn" onclick="deleteCurrentCase()">🗑️ 删除</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast提示 -->
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        // 数据存储
+        let cases = [];
+        let currentCaseId = null;
+        let currentCategory = 'all';
+        let currentPage = 'list';
+        let currentTags = [];
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCases();
+            renderCases();
+            updateStats();
+            document.getElementById('caseDate').valueAsDate = new Date();
+        });
+        
+        // 加载数据
+        function loadCases() {
+            const saved = localStorage.getItem('caseStudies');
+            if (saved) {
+                cases = JSON.parse(saved);
+            } else {
+                // 初始化预置案例
+                cases = getPresetCases();
+                saveToStorage();
+            }
+        }
+        
+        // 预置案例（留学行业案例）
+        function getPresetCases() {
+            return [
+                {
+                    id: Date.now() - 3,
+                    title: '低GPA逆袭常春藤：精准定位与差异化策略',
+                    category: 'sign',
+                    background: '学生小张，国内某211大学金融专业，GPA仅3.2，托福102，GRE 318。学生在大三下学期找到我们，目标是申请美国前30名校的金融硕士。由于GPA较低，且没有突出的实习经历，多家机构给出的评估都是只能申请50名之后的学校。',
+                    challenge: '1. GPA明显低于目标院校的平均录取水平（通常要求3.5+）\n2. 缺乏高质量实习和科研项目经历\n3. 申请时间紧迫，只有半年时间提升背景\n4. 学生自信心不足，对申请结果预期较低',
+                    solution: '1. 深度挖掘学生特色：发现学生大二曾创业做校园电商平台，年营业额达50万，这是一个极具差异化的亮点\n2. 重新定位目标专业：从纯金融转向分析性更强的商业分析项目，与学生的创业数据分析经历形成呼应\n3. 精选3所"冲刺校"+4所"目标校"+2所"保底校"的稳妥策略\n4. 指导学生补充一段量化分析相关的实习，强化分析能力背景\n5. 文书策略：以创业经历为主线，展现领导力和数据分析能力，将GPA的不足转化为"实务经验丰富"的优势',
+                    result: '1. 成功获得哥伦比亚大学商业分析硕士录取（专排前10）\n2. 同时获得纽约大学、南加州大学等4所名校录取\n3. 学生最终选择哥大，现已毕业进入华尔街投行工作\n4. 签约服务费6.8万元',
+                    learning: '1. 低GPA学生也有机会冲击名校，关键在于找到差异化亮点\n2. 不要局限于学生初始申请方向，要敢于建议更合适的专业路径\n3. 创业经历往往是很好的差异化优势，值得深入挖掘\n4. 申请策略的"精准定位"比"盲目冲刺"更重要',
+                    tags: ['低GPA', '常春藤', '商业分析', '创业背景', '逆袭案例'],
+                    author: '王老师',
+                    date: '2025-12-15',
+                    featured: true
+                },
+                {
+                    id: Date.now() - 2,
+                    title: '化解签证危机：从拒签到顺利获签的专业支持',
+                    category: 'service',
+                    background: '学生小李已获得美国东北大学计算机硕士录取，但在第一次签证面试时被拒签。拒签理由是"有移民倾向"。学生和家长非常焦虑，担心一年的努力付诸东流。他们找到了我们，希望能帮助解决签证问题。',
+                    challenge: '1. 学生已有一次拒签记录，心理压力巨大\n2. 拒签原因不明确，需要分析面试官的疑虑点\n3. 二签时间紧迫，需要在短时间内做充分准备\n4. 家长情绪激动，需要安抚和引导',
+                    solution: '1. 详细复盘首次面签过程，发现学生回答问题时过于紧张，对学习计划表述不清，让签证官产生了怀疑\n2. 帮助学生准备详细的学习计划和职业规划说明材料\n3. 整理学生与国内的联系证明（家庭关系、财产证明等），排除移民倾向嫌疑\n4. 进行多次模拟面试，训练学生清晰、自信地表达\n5. 撰写申诉信，解释之前回答的问题\n6. 安排专业的签证辅导老师全程陪同',
+                    result: '1. 学生在二签时顺利通过，获得5年F1签证\n2. 家长对我们表示高度认可，后续又推荐了两位亲友\n3. 签证辅导服务费2万元\n4. 建立了完善的签证辅导服务流程',
+                    learning: '1. 签证面试重在"沟通表达"，不只是材料准备\n2. 模拟面试训练非常重要，帮助学生克服紧张情绪\n3. 拒签后要冷静分析原因，针对性准备二签材料\n4. 服务过程中对家长的情绪管理也是关键',
+                    tags: ['签证', '拒签', '美国留学', '客户服务', '危机处理'],
+                    author: '李老师',
+                    date: '2026-01-20',
+                    featured: true
+                },
+                {
+                    id: Date.now() - 1,
+                    title: '团队协作模式创新：跨部门项目制的实践',
+                    category: 'innovation',
+                    background: '公司传统的工作模式是顾问独立负责学生全流程，导致效率低下、经验难以共享。高峰期顾问常常忙不过来，服务质量难以保证。客户投诉率上升，员工流失率也居高不下。',
+                    challenge: '1. 单一顾问制效率低，难以应对高峰期\n2. 顾问能力参差不齐，客户体验差异大\n3. 成功经验难以复制，新人成长慢\n4. 部门之间信息孤岛，协作困难',
+                    solution: '1. 设计"项目制"服务模式：将服务流程拆分为前期咨询、文书撰写、申请递交、签证辅导等环节，由专业小组负责\n2. 建立案例共享平台，鼓励团队分享成功案例和经验\n3. 推行"双顾问制"，初级顾问负责事务性工作，资深顾问专注策略指导\n4. 引入CRM系统，实现客户信息和服务进度的实时共享\n5. 建立周例会制度，促进团队沟通和经验交流',
+                    result: '1. 人均服务学生数从25人提升到40人，效率提升60%\n2. 客户投诉率下降75%，NPS评分提升30分\n3. 员工流失率从30%降至15%\n4. 新人独立上手周期从6个月缩短至3个月\n5. 公司年度营收增长35%',
+                    learning: '1. 流程拆分和专业化分工是提升效率的有效手段\n2. 知识管理平台的投入是值得的，能带来长期效益\n3. 变革需要循序渐进，给团队适应的时间\n4. 技术工具和制度流程需要同步推进',
+                    tags: ['团队管理', '流程优化', '创新实践', '效率提升', '知识管理'],
+                    author: '张总监',
+                    date: '2026-03-10',
+                    featured: false
+                }
+            ];
+        }
+        
+        // 保存数据
+        function saveToStorage() {
+            localStorage.setItem('caseStudies', JSON.stringify(cases));
+        }
+        
+        // 渲染案例列表
+        function renderCases() {
+            const grid = document.getElementById('casesGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filteredCases = cases.filter(c => {
+                const matchCategory = currentCategory === 'all' || c.category === currentCategory;
+                const matchSearch = !searchTerm || 
+                    c.title.toLowerCase().includes(searchTerm) ||
+                    c.background.toLowerCase().includes(searchTerm) ||
+                    c.tags.some(t => t.toLowerCase().includes(searchTerm));
+                return matchCategory && matchSearch;
+            });
+            
+            // 精选案例置顶
+            filteredCases.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+            
+            if (filteredCases.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                grid.innerHTML = filteredCases.map(c => createCaseCard(c)).join('');
+            }
+            
+            // 更新精选页面
+            renderFeaturedCases();
+        }
+        
+        // 渲染精选案例
+        function renderFeaturedCases() {
+            const grid = document.getElementById('featuredGrid');
+            const emptyState = document.getElementById('featuredEmptyState');
+            const featuredList = cases.filter(c => c.featured);
+            
+            if (featuredList.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                grid.innerHTML = featuredList.map(c => createCaseCard(c)).join('');
+            }
+        }
+        
+        // 创建案例卡片
+        function createCaseCase(c) {
+            const categoryLabels = {
+                sign: { text: '成功签约', icon: '🎯', class: 'sign' },
+                service: { text: '客户服务', icon: '💬', class: 'service' },
+                team: { text: '团队管理', icon: '👥', class: 'team' },
+                innovation: { text: '创新实践', icon: '💡', class: 'innovation' }
+            };
+            
+            const cat = categoryLabels[c.category] || { text: '未分类', icon: '📁', class: '' };
+            const featuredClass = c.featured ? 'featured' : '';
+            
+            return `
+                <div class="case-card ${featuredClass}" onclick="viewCase(${c.id})">
+                    <div class="case-header">
+                        <span class="case-category ${cat.class}">${cat.icon} ${cat.text}</span>
+                        <h3 class="case-title">${c.title}</h3>
+                        <div class="case-meta">
+                            <span>📅 ${c.date}</span>
+                            <span>✍️ ${c.author || '匿名'}</span>
+                        </div>
+                    </div>
+                    <div class="case-body">
+                        <p class="case-summary">${c.background}</p>
+                        <div class="case-tags">
+                            ${c.tags.slice(0, 4).map(t => `<span class="case-tag">${t}</span>`).join('')}
+                            ${c.tags.length > 4 ? `<span class="case-tag">+${c.tags.length - 4}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="case-footer">
+                        <div class="case-author">
+                            <div class="author-avatar">${(c.author || '匿')[0]}</div>
+                            <span class="author-name">${c.author || '匿名'}</span>
+                        </div>
+                        <span class="case-date">${c.date}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 创建案例卡片（修复函数名）
+        function createCaseCard(c) {
+            const categoryLabels = {
+                sign: { text: '成功签约', icon: '🎯', class: 'sign' },
+                service: { text: '客户服务', icon: '💬', class: 'service' },
+                team: { text: '团队管理', icon: '👥', class: 'team' },
+                innovation: { text: '创新实践', icon: '💡', class: 'innovation' }
+            };
+            
+            const cat = categoryLabels[c.category] || { text: '未分类', icon: '📁', class: '' };
+            const featuredClass = c.featured ? 'featured' : '';
+            
+            return `
+                <div class="case-card ${featuredClass}" onclick="viewCase(${c.id})">
+                    <div class="case-header">
+                        <span class="case-category ${cat.class}">${cat.icon} ${cat.text}</span>
+                        <h3 class="case-title">${c.title}</h3>
+                        <div class="case-meta">
+                            <span>📅 ${c.date}</span>
+                            <span>✍️ ${c.author || '匿名'}</span>
+                        </div>
+                    </div>
+                    <div class="case-body">
+                        <p class="case-summary">${c.background}</p>
+                        <div class="case-tags">
+                            ${c.tags.slice(0, 4).map(t => `<span class="case-tag">${t}</span>`).join('')}
+                            ${c.tags.length > 4 ? `<span class="case-tag">+${c.tags.length - 4}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="case-footer">
+                        <div class="case-author">
+                            <div class="author-avatar">${(c.author || '匿')[0]}</div>
+                            <span class="author-name">${c.author || '匿名'}</span>
+                        </div>
+                        <span class="case-date">${c.date}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 更新统计
+        function updateStats() {
+            document.getElementById('totalCases').textContent = cases.length;
+            document.getElementById('signCases').textContent = cases.filter(c => c.category === 'sign').length;
+            document.getElementById('serviceCases').textContent = cases.filter(c => c.category === 'service').length;
+            document.getElementById('featuredCases').textContent = cases.filter(c => c.featured).length;
+        }
+        
+        // 页面切换
+        function showPage(page) {
+            currentPage = page;
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            
+            if (page === 'list') {
+                document.querySelector('.nav-btn:nth-child(1)').classList.add('active');
+                document.getElementById('listPage').classList.add('active');
+            } else if (page === 'featured') {
+                document.querySelector('.nav-btn:nth-child(2)').classList.add('active');
+                document.getElementById('featuredPage').classList.add('active');
+            }
+        }
+        
+        // 分类筛选
+        function setCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+            renderCases();
+        }
+        
+        // 搜索筛选
+        function filterCases() {
+            renderCases();
+        }
+        
+        // 打开新增模态框
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = '📝 新增案例';
+            document.getElementById('caseForm').reset();
+            document.getElementById('caseId').value = '';
+            document.getElementById('caseDate').valueAsDate = new Date();
+            currentTags = [];
+            renderTags();
+            document.getElementById('caseModal').classList.add('active');
+        }
+        
+        // 查看案例详情
+        function viewCase(id) {
+            const caseData = cases.find(c => c.id === id);
+            if (!caseData) return;
+            
+            currentCaseId = id;
+            
+            const categoryLabels = {
+                sign: { text: '成功签约', icon: '🎯', class: 'sign' },
+                service: { text: '客户服务', icon: '💬', class: 'service' },
+                team: { text: '团队管理', icon: '👥', class: 'team' },
+                innovation: { text: '创新实践', icon: '💡', class: 'innovation' }
+            };
+            const cat = categoryLabels[caseData.category] || { text: '未分类', icon: '📁', class: '' };
+            
+            const detailHtml = `
+                <div class="detail-header">
+                    ${caseData.featured ? '<span style="background: linear-gradient(135deg, #ecc94b, #d69e2e); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">⭐ 精选案例</span>' : ''}
+                    <span class="detail-category ${cat.class}">${cat.icon} ${cat.text}</span>
+                    <h2 class="detail-title">${caseData.title}</h2>
+                    <div class="detail-meta">
+                        <div class="detail-meta-item">
+                            <span>👤</span>
+                            <span>${caseData.author || '匿名'}</span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span>📅</span>
+                            <span>${caseData.date}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>📋 案例背景</h4>
+                    <p>${caseData.background.replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>⚠️ 面临的挑战</h4>
+                    <p>${caseData.challenge.replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>💡 解决方案</h4>
+                    <p>${caseData.solution.replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>✅ 最终结果</h4>
+                    <p>${caseData.result.replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🎓 关键学习点</h4>
+                    <p>${caseData.learning.replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🏷️ 相关标签</h4>
+                    <div class="detail-tags">
+                        ${caseData.tags.map(t => `<span class="detail-tag">${t}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detailContent').innerHTML = detailHtml;
+            document.getElementById('detailModal').classList.add('active');
+        }
+        
+        // 编辑当前案例
+        function editCurrentCase() {
+            const caseData = cases.find(c => c.id === currentCaseId);
+            if (!caseData) return;
+            
+            closeModal('detailModal');
+            
+            document.getElementById('modalTitle').textContent = '✏️ 编辑案例';
+            document.getElementById('caseId').value = caseData.id;
+            document.getElementById('caseTitle').value = caseData.title;
+            document.getElementById('caseCategory').value = caseData.category;
+            document.getElementById('caseBackground').value = caseData.background;
+            document.getElementById('caseChallenge').value = caseData.challenge;
+            document.getElementById('caseSolution').value = caseData.solution;
+            document.getElementById('caseResult').value = caseData.result;
+            document.getElementById('caseLearning').value = caseData.learning;
+            document.getElementById('caseAuthor').value = caseData.author || '';
+            document.getElementById('caseDate').value = caseData.date;
+            document.getElementById('caseFeatured').checked = caseData.featured;
+            
+            currentTags = [...caseData.tags];
+            renderTags();
+            
+            document.getElementById('caseModal').classList.add('active');
+        }
+        
+        // 删除当前案例
+        function deleteCurrentCase() {
+            if (!confirm('确定要删除这个案例吗？此操作不可恢复。')) return;
+            
+            cases = cases.filter(c => c.id !== currentCaseId);
+            saveToStorage();
+            closeModal('detailModal');
+            renderCases();
+            updateStats();
+            showToast('案例已删除', 'success');
+        }
+        
+        // 保存案例
+        function saveCase() {
+            const title = document.getElementById('caseTitle').value.trim();
+            const category = document.getElementById('caseCategory').value;
+            const background = document.getElementById('caseBackground').value.trim();
+            const challenge = document.getElementById('caseChallenge').value.trim();
+            const solution = document.getElementById('caseSolution').value.trim();
+            const result = document.getElementById('caseResult').value.trim();
+            const learning = document.getElementById('caseLearning').value.trim();
+            
+            if (!title || !category || !background || !challenge || !solution || !result || !learning) {
+                showToast('请填写所有必填字段', 'error');
+                return;
+            }
+            
+            const caseData = {
+                id: document.getElementById('caseId').value || Date.now(),
+                title,
+                category,
+                background,
+                challenge,
+                solution,
+                result,
+                learning,
+                tags: currentTags,
+                author: document.getElementById('caseAuthor').value.trim() || '匿名',
+                date: document.getElementById('caseDate').value,
+                featured: document.getElementById('caseFeatured').checked
+            };
+            
+            const existingIndex = cases.findIndex(c => c.id == caseData.id);
+            if (existingIndex > -1) {
+                cases[existingIndex] = caseData;
+                showToast('案例更新成功', 'success');
+            } else {
+                cases.unshift(caseData);
+                showToast('案例添加成功', 'success');
+            }
+            
+            saveToStorage();
+            closeModal('caseModal');
+            renderCases();
+            updateStats();
+        }
+        
+        // 标签处理
+        function handleTagInput(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = document.getElementById('tagInput');
+                const tag = input.value.trim();
+                if (tag && !currentTags.includes(tag)) {
+                    currentTags.push(tag);
+                    renderTags();
+                }
+                input.value = '';
+            }
+        }
+        
+        function renderTags() {
+            const container = document.getElementById('tagContainer');
+            const input = document.getElementById('tagInput');
+            container.innerHTML = currentTags.map((tag, index) => `
+                <span class="tag-item">
+                    ${tag}
+                    <button type="button" onclick="removeTag(${index})">&times;</button>
+                </span>
+            `).join('') + '<input type="text" class="tag-input" id="tagInput" placeholder="输入标签后按回车添加" onkeydown="handleTagInput(event)">';
+        }
+        
+        function removeTag(index) {
+            currentTags.splice(index, 1);
+            renderTags();
+        }
+        
+        // 模态框操作
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        // 点击模态框外部关闭
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+        
+        // Toast提示
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 返回主页
+        function goHome() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+    </script>
+</body>
+</html>

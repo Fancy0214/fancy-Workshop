@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行业信息抓取工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2B6CB0 0%, #1e4f7a 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(43, 108, 176, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 span {
+            font-size: 32px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(-5px);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2B6CB0;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #edf2f7;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #2B6CB0;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e4f7a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-danger {
+            background: #fc8181;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #f56565;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #2B6CB0;
+            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Source List */
+        .source-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .source-item:hover {
+            background: #edf2f7;
+        }
+
+        .source-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .source-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        /* Category Tags */
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: #f7fafc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-item:hover, .category-item.active {
+            background: #ebf8ff;
+            color: #2B6CB0;
+        }
+
+        .category-item.active {
+            font-weight: 600;
+        }
+
+        .category-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .category-count {
+            margin-left: auto;
+            font-size: 12px;
+            color: #718096;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Search & Filter Bar */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2B6CB0;
+            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 10px 16px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4a5568;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #2B6CB0;
+            color: #2B6CB0;
+            background: #ebf8ff;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #2B6CB0, #63b3ed);
+            border-radius: 2px;
+        }
+
+        .timeline-date-group {
+            margin-bottom: 24px;
+        }
+
+        .timeline-date {
+            position: relative;
+            left: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2B6CB0;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .news-item {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-left: 50px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .news-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .news-item.pin {
+            border-left-color: #f6ad55;
+            background: linear-gradient(135deg, #fffaf0 0%, white 100%);
+        }
+
+        .news-item.high {
+            border-left-color: #fc8181;
+        }
+
+        .news-item.medium {
+            border-left-color: #f6e05e;
+        }
+
+        .news-item.low {
+            border-left-color: #68d391;
+        }
+
+        .news-timeline-dot {
+            position: absolute;
+            left: -38px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid #2B6CB0;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .news-item.pin .news-timeline-dot {
+            background: #f6ad55;
+            border-color: #ed8936;
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .news-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            flex: 1;
+        }
+
+        .news-badges {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-category {
+            background: #ebf8ff;
+            color: #2B6CB0;
+        }
+
+        .badge-importance {
+            color: white;
+        }
+
+        .badge-importance.high {
+            background: #fc8181;
+        }
+
+        .badge-importance.medium {
+            background: #f6ad55;
+        }
+
+        .badge-importance.low {
+            background: #68d391;
+        }
+
+        .badge-pin {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .news-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+
+        .news-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .news-summary {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .news-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2B6CB0;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .news-link:hover {
+            color: #1e4f7a;
+            text-decoration: underline;
+        }
+
+        .news-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #edf2f7;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #f7fafc;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #edf2f7;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 24px;
+            border-top: 1px solid #edf2f7;
+            background: #f7fafc;
+            border-radius: 0 0 16px 16px;
+        }
+
+        /* Importance Selector */
+        .importance-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .importance-option {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .importance-option:hover {
+            border-color: #cbd5e0;
+        }
+
+        .importance-option.selected {
+            border-color: currentColor;
+        }
+
+        .importance-option.high {
+            color: #e53e3e;
+        }
+
+        .importance-option.high.selected {
+            background: #fff5f5;
+        }
+
+        .importance-option.medium {
+            color: #dd6b20;
+        }
+
+        .importance-option.medium.selected {
+            background: #fffaf0;
+        }
+
+        .importance-option.low {
+            color: #38a169;
+        }
+
+        .importance-option.low.selected {
+            background: #f0fff4;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .timeline::before {
+                left: 12px;
+            }
+
+            .news-item {
+                margin-left: 30px;
+            }
+
+            .timeline-date {
+                left: 30px;
+                font-size: 12px;
+            }
+
+            .news-timeline-dot {
+                left: -26px;
+                width: 16px;
+                height: 16px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                overflow-x: auto;
+                padding-bottom: 8px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1><span>📰</span> 行业信息抓取工具</h1>
+                <a href="../fancy-workshop.html" class="back-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    返回主页
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">信息总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="todayCount">0</div>
+                <div class="stat-label">今日新增</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="importantCount">0</div>
+                <div class="stat-label">重要信息</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="sourceCount">0</div>
+                <div class="stat-label">信息源</div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Add -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">➕ 快速录入</div>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="openAddModal()">
+                        添加新信息
+                    </button>
+                </div>
+
+                <!-- Categories -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">📂 信息分类</div>
+                    </div>
+                    <div class="category-list" id="categoryList">
+                        <div class="category-item active" data-category="all">
+                            <span class="category-dot" style="background: #2B6CB0;"></span>
+                            全部
+                            <span class="category-count" id="count-all">0</span>
+                        </div>
+                        <div class="category-item" data-category="policy">
+                            <span class="category-dot" style="background: #e53e3e;"></span>
+                            政策变化
+                            <span class="category-count" id="count-policy">0</span>
+                        </div>
+                        <div class="category-item" data-category="visa">
+                            <span class="category-dot" style="background: #dd6b20;"></span>
+                            签证动态
+                            <span class="category-count" id="count-visa">0</span>
+                        </div>
+                        <div class="category-item" data-category="school">
+                            <span class="category-dot" style="background: #38a169;"></span>
+                            院校新闻
+                            <span class="category-count" id="count-school">0</span>
+                        </div>
+                        <div class="category-item" data-category="trend">
+                            <span class="category-dot" style="background: #805ad5;"></span>
+                            行业趋势
+                            <span class="category-count" id="count-trend">0</span>
+                        </div>
+                        <div class="category-item" data-category="exam">
+                            <span class="category-dot" style="background: #3182ce;"></span>
+                            考试信息
+                            <span class="category-count" id="count-exam">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sources -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🔗 信息源</div>
+                        <button class="btn btn-secondary btn-small" onclick="openSourceModal()">
+                            管理
+                        </button>
+                    </div>
+                    <div class="source-list" id="sourceList"></div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Search & Filter -->
+                <div class="card">
+                    <div class="search-bar">
+                        <div class="search-input-wrapper">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" class="search-input" id="searchInput" placeholder="搜索标题、摘要...">
+                        </div>
+                        <div class="filter-group">
+                            <button class="filter-btn active" data-importance="all">全部</button>
+                            <button class="filter-btn" data-importance="high">🔴 高</button>
+                            <button class="filter-btn" data-importance="medium">🟡 中</button>
+                            <button class="filter-btn" data-importance="low">🟢 低</button>
+                            <button class="filter-btn" data-pin="true">📌 置顶</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">📋 信息时间线</div>
+                        <button class="btn btn-secondary btn-small" onclick="exportData()">
+                            导出数据
+                        </button>
+                    </div>
+                    <div class="timeline" id="timeline">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <div class="empty-state-title">暂无信息</div>
+                            <p>点击"添加新信息"开始录入</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit News Modal -->
+    <div class="modal-overlay" id="newsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">添加新信息</div>
+                <button class="modal-close" onclick="closeModal('newsModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="newsForm">
+                    <input type="hidden" id="newsId">
+                    
+                    <div class="form-group">
+                        <label class="form-label">标题 *</label>
+                        <input type="text" class="form-input" id="newsTitle" required placeholder="输入信息标题">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">来源</label>
+                        <select class="form-select" id="newsSource">
+                            <option value="">选择信息源</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">分类 *</label>
+                        <select class="form-select" id="newsCategory" required>
+                            <option value="policy">政策变化</option>
+                            <option value="visa">签证动态</option>
+                            <option value="school">院校新闻</option>
+                            <option value="trend">行业趋势</option>
+                            <option value="exam">考试信息</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">重要程度</label>
+                        <div class="importance-selector">
+                            <div class="importance-option high" data-value="high">
+                                <div>🔴</div>
+                                <div>高</div>
+                            </div>
+                            <div class="importance-option medium selected" data-value="medium">
+                                <div>🟡</div>
+                                <div>中</div>
+                            </div>
+                            <div class="importance-option low" data-value="low">
+                                <div>🟢</div>
+                                <div>低</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="newsImportance" value="medium">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">摘要</label>
+                        <textarea class="form-textarea" id="newsSummary" placeholder="输入信息摘要"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">链接URL</label>
+                        <input type="url" class="form-input" id="newsUrl" placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="newsPin" style="width: 18px; height: 18px;">
+                            <span class="form-label" style="margin: 0;">📌 置顶此信息</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newsModal')">取消</button>
+                <button class="btn btn-primary" onclick="saveNews()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Source Management Modal -->
+    <div class="modal-overlay" id="sourceModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">管理信息源</div>
+                <button class="modal-close" onclick="closeModal('sourceModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">添加新信息源</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" class="form-input" id="newSourceName" placeholder="信息源名称" style="flex: 1;">
+                        <button class="btn btn-primary" onclick="addSource()">添加</button>
+                    </div>
+                </div>
+                <div class="source-list" id="sourceModalList" style="max-height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Category config
+        const CATEGORIES = {
+            policy: { name: '政策变化', color: '#e53e3e', dot: '🔴' },
+            visa: { name: '签证动态', color: '#dd6b20', dot: '🟠' },
+            school: { name: '院校新闻', color: '#38a169', dot: '🟢' },
+            trend: { name: '行业趋势', color: '#805ad5', dot: '🟣' },
+            exam: { name: '考试信息', color: '#3182ce', dot: '🔵' }
+        };
+
+        // Default sources
+        const DEFAULT_SOURCES = [
+            '教育部留学服务中心',
+            '美国签证官网',
+            '英国签证官网',
+            '澳洲移民局',
+            'QS世界大学排名',
+            'THE世界大学排名',
+            'US News排名',
+            '留学行业报告',
+            '雅思官网',
+            '托福官网',
+            'GRE官网',
+            'GMAT官网'
+        ];
+
+        // State
+        let newsList = [];
+        let sources = [];
+        let currentFilter = {
+            category: 'all',
+            importance: 'all',
+            pin: false,
+            search: ''
+        };
+
+        // Initialize
+        function init() {
+            loadData();
+            renderSources();
+            renderSourceModal();
+            renderTimeline();
+            updateStats();
+            updateCategoryCounts();
+            setupEventListeners();
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const savedNews = localStorage.getItem('industryNews');
+            const savedSources = localStorage.getItem('industrySources');
+            
+            newsList = savedNews ? JSON.parse(savedNews) : [];
+            sources = savedSources ? JSON.parse(savedSources) : [...DEFAULT_SOURCES];
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('industryNews', JSON.stringify(newsList));
+            localStorage.setItem('industrySources', JSON.stringify(sources));
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category filter
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    currentFilter.category = item.dataset.category;
+                    renderTimeline();
+                });
+            });
+
+            // Importance filter
+            document.querySelectorAll('.filter-btn[data-importance]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter.importance = btn.dataset.importance;
+                    currentFilter.pin = false;
+                    renderTimeline();
+                });
+            });
+
+            // Pin filter
+            document.querySelector('.filter-btn[data-pin]').addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter.pin = true;
+                currentFilter.importance = 'all';
+                renderTimeline();
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                currentFilter.search = e.target.value.toLowerCase();
+                renderTimeline();
+            });
+
+            // Importance selector
+            document.querySelectorAll('.importance-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.importance-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    document.getElementById('newsImportance').value = opt.dataset.value;
+                });
+            });
+        }
+
+        // Open add modal
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = '添加新信息';
+            document.getElementById('newsForm').reset();
+            document.getElementById('newsId').value = '';
+            document.getElementById('newsImportance').value = 'medium';
+            document.querySelectorAll('.importance-option').forEach(o => o.classList.remove('selected'));
+            document.querySelector('.importance-option.medium').classList.add('selected');
+            
+            // Populate source dropdown
+            const sourceSelect = document.getElementById('newsSource');
+            sourceSelect.innerHTML = '<option value="">选择信息源</option>';
+            sources.forEach(s => {
+                sourceSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+            
+            document.getElementById('newsModal').classList.add('active');
+        }
+
+        // Edit news
+        function editNews(id) {
+            const news = newsList.find(n => n.id === id);
+            if (!news) return;
+
+            document.getElementById('modalTitle').textContent = '编辑信息';
+            document.getElementById('newsId').value = news.id;
+            document.getElementById('newsTitle').value = news.title;
+            document.getElementById('newsCategory').value = news.category;
+            document.getElementById('newsImportance').value = news.importance;
+            document.getElementById('newsSummary').value = news.summary || '';
+            document.getElementById('newsUrl').value = news.url || '';
+            document.getElementById('newsPin').checked = news.pin;
+            
+            // Set importance selector
+            document.querySelectorAll('.importance-option').forEach(o => o.classList.remove('selected'));
+            document.querySelector(`.importance-option.${news.importance}`).classList.add('selected');
+            
+            // Populate and set source
+            const sourceSelect = document.getElementById('newsSource');
+            sourceSelect.innerHTML = '<option value="">选择信息源</option>';
+            sources.forEach(s => {
+                sourceSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+            sourceSelect.value = news.source || '';
+            
+            document.getElementById('newsModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Save news
+        function saveNews() {
+            const id = document.getElementById('newsId').value;
+            const title = document.getElementById('newsTitle').value.trim();
+            
+            if (!title) {
+                alert('请输入标题');
+                return;
+            }
+
+            const newsData = {
+                id: id || Date.now().toString(),
+                title: title,
+                source: document.getElementById('newsSource').value,
+                category: document.getElementById('newsCategory').value,
+                importance: document.getElementById('newsImportance').value,
+                summary: document.getElementById('newsSummary').value.trim(),
+                url: document.getElementById('newsUrl').value.trim(),
+                pin: document.getElementById('newsPin').checked,
+                createdAt: id ? newsList.find(n => n.id === id).createdAt : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            if (id) {
+                const index = newsList.findIndex(n => n.id === id);
+                if (index !== -1) {
+                    newsList[index] = newsData;
+                }
+            } else {
+                newsList.unshift(newsData);
+            }
+
+            saveData();
+            closeModal('newsModal');
+            renderTimeline();
+            updateStats();
+            updateCategoryCounts();
+        }
+
+        // Delete news
+        function deleteNews(id) {
+            if (confirm('确定要删除这条信息吗？')) {
+                newsList = newsList.filter(n => n.id !== id);
+                saveData();
+                renderTimeline();
+                updateStats();
+                updateCategoryCounts();
+            }
+        }
+
+        // Toggle pin
+        function togglePin(id) {
+            const news = newsList.find(n => n.id === id);
+            if (news) {
+                news.pin = !news.pin;
+                news.updatedAt = new Date().toISOString();
+                saveData();
+                renderTimeline();
+                updateStats();
+            }
+        }
+
+        // Render timeline
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            
+            // Filter news
+            let filtered = [...newsList];
+            
+            if (currentFilter.category !== 'all') {
+                filtered = filtered.filter(n => n.category === currentFilter.category);
+            }
+            
+            if (currentFilter.importance !== 'all') {
+                filtered = filtered.filter(n => n.importance === currentFilter.importance);
+            }
+            
+            if (currentFilter.pin) {
+                filtered = filtered.filter(n => n.pin);
+            }
+            
+            if (currentFilter.search) {
+                filtered = filtered.filter(n => 
+                    n.title.toLowerCase().includes(currentFilter.search) ||
+                    (n.summary && n.summary.toLowerCase().includes(currentFilter.search))
+                );
+            }
+
+            // Sort by pin and date
+            filtered.sort((a, b) => {
+                if (a.pin && !b.pin) return -1;
+                if (!a.pin && b.pin) return 1;
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+
+            if (filtered.length === 0) {
+                timeline.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div class="empty-state-title">暂无信息</div>
+                        <p>点击"添加新信息"开始录入</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group by date
+            const grouped = {};
+            filtered.forEach(news => {
+                const date = formatDateGroup(news.createdAt);
+                if (!grouped[date]) {
+                    grouped[date] = [];
+                }
+                grouped[date].push(news);
+            });
+
+            let html = '';
+            Object.keys(grouped).forEach(date => {
+                html += `<div class="timeline-date-group">`;
+                html += `<div class="timeline-date">${date}</div>`;
+                
+                grouped[date].forEach(news => {
+                    const cat = CATEGORIES[news.category];
+                    html += `
+                        <div class="news-item ${news.importance} ${news.pin ? 'pin' : ''}">
+                            <div class="news-timeline-dot"></div>
+                            <div class="news-header">
+                                <div class="news-title">${escapeHtml(news.title)}</div>
+                                <div class="news-badges">
+                                    ${news.pin ? '<span class="badge badge-pin">📌 置顶</span>' : ''}
+                                    <span class="badge badge-category">${cat.dot} ${cat.name}</span>
+                                    <span class="badge badge-importance ${news.importance}">${news.importance === 'high' ? '高' : news.importance === 'medium' ? '中' : '低'}</span>
+                                </div>
+                            </div>
+                            <div class="news-meta">
+                                ${news.source ? `<span>📰 ${escapeHtml(news.source)}</span>` : ''}
+                                <span>🕐 ${formatDateTime(news.createdAt)}</span>
+                            </div>
+                            ${news.summary ? `<div class="news-summary">${escapeHtml(news.summary)}</div>` : ''}
+                            ${news.url ? `<a href="${escapeHtml(news.url)}" target="_blank" class="news-link">查看详情 →</a>` : ''}
+                            <div class="news-actions">
+                                <button class="btn btn-secondary btn-small" onclick="togglePin('${news.id}')">
+                                    ${news.pin ? '取消置顶' : '📌 置顶'}
+                                </button>
+                                <button class="btn btn-secondary btn-small" onclick="editNews('${news.id}')">
+                                    ✏️ 编辑
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="deleteNews('${news.id}')">
+                                    🗑️ 删除
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            });
+
+            timeline.innerHTML = html;
+        }
+
+        // Render sources
+        function renderSources() {
+            const list = document.getElementById('sourceList');
+            list.innerHTML = sources.slice(0, 8).map(s => `
+                <div class="source-item">
+                    <span class="source-name">${escapeHtml(s)}</span>
+                </div>
+            `).join('');
+        }
+
+        // Render source modal
+        function renderSourceModal() {
+            const list = document.getElementById('sourceModalList');
+            list.innerHTML = sources.map((s, i) => `
+                <div class="source-item">
+                    <span class="source-name">${escapeHtml(s)}</span>
+                    <div class="source-actions">
+                        <button class="btn btn-secondary btn-icon btn-small" onclick="editSource(${i})">✏️</button>
+                        <button class="btn btn-danger btn-icon btn-small" onclick="deleteSource(${i})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update source select in news form
+            const sourceSelect = document.getElementById('newsSource');
+            const currentValue = sourceSelect.value;
+            sourceSelect.innerHTML = '<option value="">选择信息源</option>';
+            sources.forEach(s => {
+                sourceSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+            sourceSelect.value = currentValue;
+        }
+
+        // Open source modal
+        function openSourceModal() {
+            renderSourceModal();
+            document.getElementById('sourceModal').classList.add('active');
+        }
+
+        // Add source
+        function addSource() {
+            const input = document.getElementById('newSourceName');
+            const name = input.value.trim();
+            
+            if (!name) {
+                alert('请输入信息源名称');
+                return;
+            }
+            
+            if (sources.includes(name)) {
+                alert('该信息源已存在');
+                return;
+            }
+            
+            sources.push(name);
+            saveData();
+            renderSources();
+            renderSourceModal();
+            updateStats();
+            input.value = '';
+        }
+
+        // Edit source
+        function editSource(index) {
+            const newName = prompt('编辑信息源名称:', sources[index]);
+            if (newName && newName.trim()) {
+                sources[index] = newName.trim();
+                saveData();
+                renderSources();
+                renderSourceModal();
+            }
+        }
+
+        // Delete source
+        function deleteSource(index) {
+            if (confirm('确定要删除这个信息源吗？')) {
+                sources.splice(index, 1);
+                saveData();
+                renderSources();
+                renderSourceModal();
+                updateStats();
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('totalCount').textContent = newsList.length;
+            
+            const today = new Date().toDateString();
+            const todayNews = newsList.filter(n => new Date(n.createdAt).toDateString() === today);
+            document.getElementById('todayCount').textContent = todayNews.length;
+            
+            const importantNews = newsList.filter(n => n.importance === 'high');
+            document.getElementById('importantCount').textContent = importantNews.length;
+            
+            document.getElementById('sourceCount').textContent = sources.length;
+        }
+
+        // Update category counts
+        function updateCategoryCounts() {
+            document.getElementById('count-all').textContent = newsList.length;
+            
+            Object.keys(CATEGORIES).forEach(cat => {
+                const count = newsList.filter(n => n.category === cat).length;
+                const el = document.getElementById(`count-${cat}`);
+                if (el) el.textContent = count;
+            });
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                news: newsList,
+                sources: sources,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `industry-news-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Format date group
+        function formatDateGroup(dateStr) {
+            const date = new Date(dateStr);
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (date.toDateString() === today.toDateString()) {
+                return '今天';
+            } else if (date.toDateString() === yesterday.toDateString()) {
+                return '昨天';
+            } else {
+                return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+        }
+
+        // Format datetime
+        function formatDateTime(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleString('zh-CN', { 
+                month: 'numeric', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
