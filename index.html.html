@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy's Workshop | B2B留学销售管理工具箱</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2B6CB0;
+            --primary-light: #63B3ED;
+            --primary-lighter: #EBF8FF;
+            --accent: #38A169;
+            --accent-light: #C6F6D5;
+            --warm: #ED8936;
+            --warm-light: #FEFCBF;
+            --purple: #805AD5;
+            --purple-light: #E9D8FD;
+            --gray-50: #F7FAFC;
+            --gray-100: #EDF2F7;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E0;
+            --gray-400: #A0AEC0;
+            --gray-500: #718096;
+            --gray-600: #4A5568;
+            --gray-700: #2D3748;
+            --gray-800: #1A202C;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --radius-sm: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-700);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-500);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background: var(--primary-lighter);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--gray-600);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            padding: 140px 24px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(99,179,237,0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(56,161,105,0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(128,90,213,0.05) 0%, transparent 70%);
+            animation: heroFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(20px, -20px) rotate(1deg); }
+            66% { transform: translate(-10px, 10px) rotate(-1deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-avatar {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 24px rgba(43,108,176,0.25);
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .wave {
+            display: inline-block;
+            animation: wave 2.5s ease-in-out infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0%, 60%, 100% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--gray-500);
+            max-width: 540px;
+            margin: 0 auto 32px;
+            line-height: 1.8;
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--gray-200);
+            background: white;
+            color: var(--gray-600);
+            transition: all 0.2s ease;
+        }
+
+        .hero-tag:hover {
+            border-color: var(--primary-light);
+            background: var(--primary-lighter);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        /* ===== Modules Section ===== */
+        .modules {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            color: var(--gray-400);
+            font-size: 15px;
+        }
+
+        /* Module Cards */
+        .module-card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+            margin-bottom: 32px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .module-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .module-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .module-header {
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .module-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .module-icon.blue { background: var(--primary-lighter); }
+        .module-icon.green { background: var(--accent-light); }
+        .module-icon.orange { background: var(--warm-light); }
+        .module-icon.purple { background: var(--purple-light); }
+
+        .module-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+        }
+
+        .module-info p {
+            font-size: 14px;
+            color: var(--gray-400);
+        }
+
+        .module-toggle {
+            margin-left: auto;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .module-toggle svg {
+            width: 16px;
+            height: 16px;
+            color: var(--gray-400);
+            transition: transform 0.3s ease;
+        }
+
+        .module-card.open .module-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .module-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .module-body-inner {
+            padding: 0 32px 28px;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            border: 1px solid var(--gray-100);
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .tool-card:hover {
+            background: white;
+            border-color: var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-2px);
+        }
+
+        .tool-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .tool-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .tool-card-icon.blue { background: #DBEAFE; }
+        .tool-card-icon.green { background: #D1FAE5; }
+        .tool-card-icon.orange { background: #FEF3C7; }
+        .tool-card-icon.purple { background: #EDE9FE; }
+        .tool-card-icon.red { background: #FEE2E2; }
+        .tool-card-icon.teal { background: #CCFBF1; }
+
+        .tool-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+
+        .tool-card .badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge-blue { background: var(--primary-lighter); color: var(--primary); }
+        .badge-green { background: var(--accent-light); color: var(--accent); }
+        .badge-orange { background: var(--warm-light); color: var(--warm); }
+        .badge-purple { background: var(--purple-light); color: var(--purple); }
+        .badge-gray { background: var(--gray-100); color: var(--gray-500); }
+
+        /* ===== Stats Bar ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto 48px;
+            padding: 0 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 24px;
+            border: 1px solid var(--gray-200);
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-number.blue { color: var(--primary); }
+        .stat-number.green { color: var(--accent); }
+        .stat-number.orange { color: var(--warm); }
+        .stat-number.purple { color: var(--purple); }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid var(--gray-200);
+            background: white;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: var(--gray-400);
+            margin-bottom: 4px;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .hero p { font-size: 16px; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .module-header { padding: 20px 20px; }
+            .module-body-inner { padding: 0 20px 20px; }
+            .tool-grid { grid-template-columns: 1fr; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: white;
+                border-bottom: 1px solid var(--gray-200);
+                padding: 16px;
+                box-shadow: var(--shadow-md);
+            }
+        }
+
+        /* ===== Animations ===== */
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Search ===== */
+        .search-wrapper {
+            max-width: 480px;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 15px;
+            background: white;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .search-wrapper input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(99,179,237,0.15);
+        }
+
+        .search-wrapper input::placeholder {
+            color: var(--gray-300);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-300);
+        }
+
+        /* Module highlight on search */
+        .module-card.search-hidden {
+            display: none;
+        }
+
+        .tool-card.search-highlight {
+            border-color: var(--primary-light);
+            background: var(--primary-lighter);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <span>✨ Fancy's Workshop</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#results">直接结果</a>
+                <a href="#team">团队建设</a>
+                <a href="#culture">企业文化</a>
+                <a href="#others">其他</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-avatar">F</div>
+            <h1><span class="wave">👋</span> Hi, 我是 Fancy</h1>
+            <p>留学行业 B2B 销售经理，专注于英国方向。<br>这里是我的个人工作坊 —— 沉淀方法论、工具与实战经验，用 AI 赋能业务增长。</p>
+            <div class="hero-tags">
+                <span class="hero-tag">🇬🇧 英国留学</span>
+                <span class="hero-tag">🤝 B2B 销售</span>
+                <span class="hero-tag">📊 竞品分析</span>
+                <span class="hero-tag">👥 团队管理</span>
+                <span class="hero-tag">🏗️ 团队搭建</span>
+                <span class="hero-tag">💡 AI 赋能</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-number blue">4</div>
+            <div class="stat-label">核心模块</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number green">12+</div>
+            <div class="stat-label">实战工具</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number orange">100%</div>
+            <div class="stat-label">AI 驱动搭建</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number purple">∞</div>
+            <div class="stat-label">持续迭代</div>
+        </div>
+    </div>
+
+    <!-- Modules -->
+    <section class="modules" id="modules">
+        <!-- Search -->
+        <div class="search-wrapper">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="searchInput" placeholder="搜索工具、模块..." />
+        </div>
+
+        <div class="section-header">
+            <h2>四大模块</h2>
+            <p>点击模块卡片展开查看详情</p>
+        </div>
+
+        <!-- Module 1: 直接结果 -->
+        <div class="module-card" id="results" data-keywords="业绩 竞品 话术 思维 分析 客户 签约">
+            <div class="module-header" onclick="toggleModule(this)">
+                <div class="module-icon blue">🎯</div>
+                <div class="module-info">
+                    <h3>直接结果</h3>
+                    <p>日常业绩所需的核心工具与方法论</p>
+                </div>
+                <div class="module-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-body-inner">
+                    <div class="tool-grid">
+                        <a href="tools/competitor-analysis.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon blue">🔍</div>
+                                <h4>竞品比对</h4>
+                            </div>
+                            <p>系统化对比竞品的产品、价格、服务、政策等维度，制定差异化竞争策略。</p>
+                            <span class="badge badge-blue">策略工具</span>
+                        </a>
+                        <a href="tools/scripts-library.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon green">💬</div>
+                                <h4>话术库</h4>
+                            </div>
+                            <p>从破冰到成交的全流程话术沉淀，覆盖常见异议处理、逼单技巧、跟进模板。</p>
+                            <span class="badge badge-green">实战积累</span>
+                        </a>
+
+                        <a href="tools/performance-analysis.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon orange">📊</div>
+                                <h4>业绩数据分析</h4>
+                            </div>
+                            <p>签约率、转化率、客户生命周期价值等核心指标的可视化分析与趋势追踪。</p>
+                            <span class="badge badge-orange">数据驱动</span>
+                        </a>
+                        <a href="tools/customer-journey.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon teal">📋</div>
+                                <h4>客户旅程管理</h4>
+                            </div>
+                            <p>从初次接触到签约出产的客户全生命周期管理，确保每个触点的体验质量。</p>
+                            <span class="badge badge-green">流程管理</span>
+                        </a>
+                        <a href="tools/marketing-materials.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon red">📣</div>
+                                <h4>宣传物料制作</h4>
+                            </div>
+                            <p>宣传/分享海报与文案的设计模板与 AI 辅助生成流程，快速产出高质量内容。</p>
+                            <span class="badge badge-orange">AI 效率</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 2: 团队建设 -->
+        <div class="module-card" id="team" data-keywords="九型人格 舒伯 价值观 绩效 面谈 团队 管理 培育">
+            <div class="module-header" onclick="toggleModule(this)">
+                <div class="module-icon green">👥</div>
+                <div class="module-info">
+                    <h3>团队建设</h3>
+                    <p>识人、用人、育人的系统方法</p>
+                </div>
+                <div class="module-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-body-inner">
+                    <div class="tool-grid">
+                        <a href="enneagram.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon purple">🎭</div>
+                                <h4>九型人格分析</h4>
+                            </div>
+                            <p>通过九型人格体系了解团队成员的性格特质，优化分工协作与沟通方式。</p>
+                            <span class="badge badge-purple">识人工具</span>
+                        </a>
+                        <a href="tools/super-values.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon blue">💎</div>
+                                <h4>舒伯价值观分析</h4>
+                            </div>
+                            <p>运用舒伯职业价值观理论，理解团队成员的内在驱动力，实现人岗匹配。</p>
+                            <span class="badge badge-blue">价值观</span>
+                        </a>
+                        <a href="tools/performance-review.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon orange">📝</div>
+                                <h4>绩效面谈</h4>
+                            </div>
+                            <p>结构化绩效面谈框架与话术，让反馈更有效、让目标更清晰、让成长更可见。</p>
+                            <span class="badge badge-orange">管理工具</span>
+                        </a>
+                        <a href="tools/training-system.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon green">🌱</div>
+                                <h4>新人培育体系</h4>
+                            </div>
+                            <p>从入职到独立的系统化培育路径，包括业务知识、技能训练与文化融入。</p>
+                            <span class="badge badge-green">人才发展</span>
+                        </a>
+                        <a href="tools/thinking-models.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon purple">🧠</div>
+                                <h4>思维模型</h4>
+                            </div>
+                            <p>经典商业思维模型在团队管理与业务场景中的应用，提升决策质量与洞察力。</p>
+                            <span class="badge badge-purple">认知升级</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 3: 企业文化 -->
+        <div class="module-card" id="culture" data-keywords="文化 案例 评选 价值观 活动 团建">
+            <div class="module-header" onclick="toggleModule(this)">
+                <div class="module-icon orange">🏛️</div>
+                <div class="module-info">
+                    <h3>企业文化</h3>
+                    <p>打造有温度、有力量的团队文化</p>
+                </div>
+                <div class="module-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-body-inner">
+                    <div class="tool-grid">
+                        <a href="tools/culture-awards.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon orange">🏆</div>
+                                <h4>企业文化评选</h4>
+                            </div>
+                            <p>定期评选文化标杆与优秀案例，让价值观看得见、摸得着、学得会。</p>
+                            <span class="badge badge-orange">文化践行</span>
+                        </a>
+                        <a href="tools/case-studies.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon blue">📖</div>
+                                <h4>经典案例集</h4>
+                            </div>
+                            <p>记录团队中值得分享的真实故事与成功案例，沉淀组织智慧与最佳实践。</p>
+                            <span class="badge badge-blue">知识沉淀</span>
+                        </a>
+                        <a href="tools/incentive-design.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon green">🎯</div>
+                                <h4>激励政策设计</h4>
+                            </div>
+                            <p>各类激励政策的设计框架与案例，激发团队内驱力，推动业绩持续增长。</p>
+                            <span class="badge badge-green">激励机制</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 4: 其他 -->
+        <div class="module-card" id="others" data-keywords="AI 效率 资源 学习 行业 信息 政策">
+            <div class="module-header" onclick="toggleModule(this)">
+                <div class="module-icon purple">🚀</div>
+                <div class="module-info">
+                    <h3>其他</h3>
+                    <p>AI 工具、行业资源与持续学习</p>
+                </div>
+                <div class="module-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-body-inner">
+                    <div class="tool-grid">
+                        <a href="tools/ai-toolbox.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon teal">🤖</div>
+                                <h4>AI 工具箱</h4>
+                            </div>
+                            <p>日常工作提效的 AI 工具推荐与使用指南，让重复工作自动化、创意工作智能化。</p>
+                            <span class="badge badge-green">效率工具</span>
+                        </a>
+                        <a href="tools/industry-news.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon blue">📰</div>
+                                <h4>行业信息抓取</h4>
+                            </div>
+                            <p>留学行业最新动态、政策变化与趋势分析的信息源与整理方法。</p>
+                            <span class="badge badge-blue">信息洞察</span>
+                        </a>
+                        <a href="tools/learning-resources.html" class="tool-card" style="text-decoration:none;display:block;">
+                            <div class="tool-card-header">
+                                <div class="tool-card-icon purple">📚</div>
+                                <h4>学习资源</h4>
+                            </div>
+                            <p>推荐阅读、课程与社群，涵盖销售技巧、管理方法论、行业知识等方向。</p>
+                            <span class="badge badge-purple">持续学习</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Built with ❤️ by <strong>Fancy</strong> · Powered by AI</p>
+        <p style="margin-top: 4px; font-size: 12px; color: var(--gray-300);">"用 AI 做自己的工具，只差一个想法的距离"</p>
+    </footer>
+
+    <script>
+        // Toggle module
+        function toggleModule(header) {
+            const card = header.parentElement;
+            const body = card.querySelector('.module-body');
+            const isOpen = card.classList.contains('open');
+
+            if (isOpen) {
+                body.style.maxHeight = '0';
+                card.classList.remove('open');
+            } else {
+                body.style.maxHeight = body.scrollHeight + 'px';
+                card.classList.add('open');
+            }
+        }
+
+        // Auto open first module
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstCard = document.querySelector('.module-card');
+            if (firstCard) {
+                const body = firstCard.querySelector('.module-body');
+                body.style.maxHeight = body.scrollHeight + 'px';
+                firstCard.classList.add('open');
+            }
+
+            // Intersection Observer for fade-in
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.module-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Nav scroll effect
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 10) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+
+            // Mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('navLinks').classList.toggle('mobile-open');
+            });
+
+            // Smooth scroll for nav links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.querySelector(link.getAttribute('href'));
+                    if (target) {
+                        // Open the module
+                        const card = target;
+                        if (!card.classList.contains('open')) {
+                            const body = card.querySelector('.module-body');
+                            body.style.maxHeight = body.scrollHeight + 'px';
+                            card.classList.add('open');
+                        }
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        document.getElementById('navLinks').classList.remove('mobile-open');
+                    }
+                });
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const modules = document.querySelectorAll('.module-card');
+
+            if (!query) {
+                modules.forEach(mod => {
+                    mod.classList.remove('search-hidden');
+                    mod.querySelectorAll('.tool-card').forEach(tool => {
+                        tool.classList.remove('search-highlight');
+                    });
+                });
+                return;
+            }
+
+            modules.forEach(mod => {
+                const keywords = mod.dataset.keywords || '';
+                const tools = mod.querySelectorAll('.tool-card');
+                let hasMatch = keywords.includes(query);
+                let toolHasMatch = false;
+
+                tools.forEach(tool => {
+                    const text = tool.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        tool.classList.add('search-highlight');
+                        toolHasMatch = true;
+                        hasMatch = true;
+                    } else {
+                        tool.classList.remove('search-highlight');
+                    }
+                });
+
+                if (hasMatch) {
+                    mod.classList.remove('search-hidden');
+                    if (toolHasMatch) {
+                        const body = mod.querySelector('.module-body');
+                        if (!mod.classList.contains('open')) {
+                            body.style.maxHeight = body.scrollHeight + 'px';
+                            mod.classList.add('open');
+                        }
+                    }
+                } else {
+                    mod.classList.add('search-hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
